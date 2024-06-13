@@ -62,7 +62,7 @@
                             @endif
                             @if (Auth::User()->level_user == 'superadmin')
                                 <li class="sidebar-item {{ $submenu == 'log_akses' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('home/log_akses') }}'>Akses Pelanggan</a>
+                                        class='sidebar-link' href='{{ url('log_akses') }}'>Akses Pelanggan</a>
                                 </li>
                             @endif
                         </ul>

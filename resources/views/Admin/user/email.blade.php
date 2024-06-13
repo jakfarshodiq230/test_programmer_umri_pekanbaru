@@ -124,7 +124,7 @@
     </table>
     {{-- end isi --}}
     <br><br>
-    <span class="kalimat_isi">silahkan login dengan menggunakan username dan password anda, terimakasih sudah mendaftar 
+    <span class="kalimat_isi">silahkan aktifasi akun ada dengan <a href="{{$data['link']}}">klik</a> agar bisa login dengan menggunakan username dan password anda, terimakasih sudah mendaftar 
         dan jika ada kendala silahkan hubungi melalui Email: shodiqsolution@gmail.com</span>
 
 </body>

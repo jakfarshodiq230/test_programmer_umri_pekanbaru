@@ -336,15 +336,17 @@
                         render: function(data, type, row) {
                             return data == 1 ?
                                 `
-                        <button class="btn btn-sm btn-danger updateBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id}" data-status="0"><i class="fas fa-power-off"></i></button>
-                        <button class="btn btn-sm btn-warning editBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id}"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-sm btn-success passBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Password" data-id="${row.id}"><i class="fas fa-key"></i></button>
-                        <button class="btn btn-sm btn-secondary deleteBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id}"><i class="fas fa-trash"></i></button>` :
+                        <button class="btn btn-sm btn-danger updateBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id}" data-status="0"><i class="fas fa-power-off"></i></button>
+                        <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-success passBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Password" data-id="${row.id}"><i class="fas fa-key"></i></button>
+                        <button class="btn btn-sm btn-info emailBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Kirim Email" data-id="${row.email}"><i class="fas fa-envelope"></i></button>
+                        <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id}"><i class="fas fa-trash"></i></button>` :
                                 `
-                        <button class="btn btn-sm btn-success updateBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.id}" data-status="1"><i class="fas fa-power-off"></i></button>
-                        <button class="btn btn-sm btn-warning editBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id}"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-sm btn-success passBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Password" data-id="${row.id}"><i class="fas fa-key"></i></button>
-                        <button class="btn btn-sm btn-secondary deleteBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id}"><i class="fas fa-trash"></i></button>`;
+                        <button class="btn btn-sm btn-success updateBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.id}" data-status="1"><i class="fas fa-power-off"></i></button>
+                        <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-success passBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Password" data-id="${row.id}"><i class="fas fa-key"></i></button>
+                        <button class="btn btn-sm btn-info emailBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Kirim Email" data-id="${row.email}"><i class="fas fa-envelope"></i></button>
+                        <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id}"><i class="fas fa-trash"></i></button>`;
                         }
                     }
                 ],
@@ -698,5 +700,33 @@
                 }
             });
         });
+
+        $(document).on('click', '.emailBtn', function() {
+            var id = $(this).data('id');
+            var url = '{{ url('kirim_verivikasi_akun') }}/' + id;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    $('#datatables-ajax').DataTable().ajax.reload();
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Berhasil Kirim Email',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Gagal Kirim Email',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
+
+
     </script>
 @endsection

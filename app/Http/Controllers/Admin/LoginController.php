@@ -147,9 +147,13 @@ class LoginController extends Controller
                 }else if(Auth::User()->level_user === 'admin'){
                     Alert::success('Success!', 'Selamat Datang');
                     return redirect()->intended('home');
-                }else{
+                }else if(Auth::User()->level_user === 'superadmin'){
                     Alert::success('Success!', 'Selamat Datang');
-                    return redirect()->intended('home/log_akses');
+                    return redirect()->intended('log_akses');
+                }else{
+                    Alert::error('Error!', 'Akun Tidak Terdaftar');
+                    Auth::logout(); 
+                    return redirect()->intended('/');
                 }
 
             } else {

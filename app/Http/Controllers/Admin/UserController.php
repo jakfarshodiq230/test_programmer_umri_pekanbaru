@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendEmailPendaftaran;
+use App\Mail\SendEmailVerifikasi;
 use Carbon\Carbon;
 
 use App\Models\User;
@@ -156,7 +158,8 @@ class UserController extends Controller
             'alamat_usaha' => $request->alamat_user_akun,
             'no_hp_usaha' => $request->no_hp_user_akun,
             'password' => $request->password_user_akun,
-            'tanggal_aktifasi' => Carbon::now()
+            'tanggal_aktifasi' => Carbon::now(),
+            'link' => 'verivikasi_akun/'.$request->email_user_akun
         ];
         Mail::to($request->email_user_akun)->send(new SendEmailPendaftaran($data_pesan));
         $DataUser = User::create($data);
@@ -218,8 +221,39 @@ class UserController extends Controller
         }
         
         
+    }    
+
+    public function kirimEmailVerifikasi($email)
+    {
+        $user = User::where('email',$email)->first();
+       //kirim email
+       $data_pesan = [
+            'title' => 'AKUN APKIS',
+            'link' => 'verivikasi_akun/'.$email
+        ];
+        
+        Mail::to($email)->send(new SendEmailVerifikasi($data_pesan));
     }
 
-    
-    
+    public function verifikasi_akun($id)
+    {
+        $cekData = User::where('email',$id)->first();
+        if ( $cekData == true) {
+            $data = [
+                'email_verified_at' => Carbon::now(), 
+                'status_user' => 1             
+            ];
+            $DataUser = User::where('id',$cekData->id)->update($data);
+             if ($DataUser == true) {
+                Alert::success('Success!', 'Berhasil Aktifasi Akun');
+                return redirect()->intended('/');
+             }else{
+                Alert::error('Errorr!', 'Gagal Aktifasi Akun');
+                return redirect()->intended('/');
+             }
+        } else {
+            Alert::error('Errorr!', 'Gagal Aktifasi Akun');
+            return redirect()->intended('/');
+        }
+    }
 }

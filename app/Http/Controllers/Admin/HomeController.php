@@ -33,7 +33,7 @@ class HomeController extends Controller
 
     public function pelanggan(){
         $menu = 'main';
-        $submenu= 'akses_pelanggan';
+        $submenu= 'log_akses';
         $PelangganAktif = PelangganModel::where('status_pelanggan',1)->count();
         $PelangganTidakAktif = PelangganModel::where('status_pelanggan',0)->count();
         $UserAktif = User::where('status_user',1)->count();

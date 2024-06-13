@@ -38,11 +38,18 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('action_login', 'authenticate')->middleware('guest');
     Route::get('actionlogout', 'actionlogout')->middleware('auth');
 });
+
+// verifikasi akun
+Route::controller(UserController::class)->group(function () {
+    Route::get('kirim_verivikasi_akun/{email}', 'kirimEmailVerifikasi')->middleware('auth');
+    Route::get('verivikasi_akun/{email}', 'verifikasi_akun')->middleware('guest');
+});
+
 Route::middleware('auth')->group(function () {
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('home', 'index')->name('home');
-    Route::get('home/log_akses', 'pelanggan');
+    Route::get('log_akses', 'pelanggan');
     Route::get('home/data_akses_pengguna', 'AjaxDataPengunjung');
     Route::delete('home/hapus_akses_pengguna', 'AjaxHapusPengunjung');
     Route::get('home/pembelian', 'AjaxDataPembelian');
