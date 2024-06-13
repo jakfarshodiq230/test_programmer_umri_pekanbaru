@@ -177,7 +177,7 @@
                         data: 'status_pelanggan',
                         name: 'status_pelanggan',
                         render: function(data, type, row) {
-                            return data === 1 ?
+                            return data == 1 ?
                                 '<span class="badge bg-success">Aktif</span>' :
                                 '<span class="badge bg-danger">Tidak Aktif</span>';
                         }
@@ -186,7 +186,7 @@
                         data: 'status_pelanggan',
                         name: 'status_pelanggan',
                         render: function(data, type, row) {
-                            return data === 1 ?
+                            return data == 1 ?
                                 `
                             <button class="btn btn-sm btn-danger updateBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id_pelanggan}" data-status="0"><i class="fas fa-power-off"></i></button>
                             <button class="btn btn-sm btn-secondary deleteBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_pelanggan}"><i class="fas fa-trash"></i></button>` :

@@ -326,7 +326,7 @@
                         data: 'status_user',
                         name: 'status_user',
                         render: function(data) {
-                            return data === 1 ? '<span class="badge bg-success">Aktif</span>' :
+                            return data == 1 ? '<span class="badge bg-success">Aktif</span>' :
                                 '<span class="badge bg-danger">Tidak Aktif</span>';
                         }
                     },
@@ -334,7 +334,7 @@
                         data: 'status_user',
                         name: 'status_user',
                         render: function(data, type, row) {
-                            return data === 1 ?
+                            return data == 1 ?
                                 `
                         <button class="btn btn-sm btn-danger updateBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id}" data-status="0"><i class="fas fa-power-off"></i></button>
                         <button class="btn btn-sm btn-warning editBtn me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id}"><i class="fas fa-edit"></i></button>

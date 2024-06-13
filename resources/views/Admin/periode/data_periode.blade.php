@@ -126,7 +126,7 @@
                         data: 'status_periode',
                         name: 'status_periode',
                         render: function(data, type, row) {
-                            return data === 1 ?
+                            return data == 1 ?
                                 '<span class="badge bg-success">Aktif</span>' :
                                 '<span class="badge bg-danger">Tidak Aktif</span>';
                         }
@@ -135,7 +135,7 @@
                         data: 'status_periode',
                         name: 'status_periode',
                         render: function(data, type, row) {
-                            if (data === 1) {
+                            if (data == 1) {
                                 return `
                                     <button class="btn btn-sm btn-danger updateBtn0" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id_periode}"><i class="fas fa-power-off"></i></button>
                                     <button class="btn btn-sm btn-warning editBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_periode}"><i class="fas fa-edit"></i></button>
