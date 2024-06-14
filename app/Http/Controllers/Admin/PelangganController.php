@@ -29,7 +29,8 @@ class PelangganController extends Controller
         $DataPelanggan = PelangganModel::where('id_pelanggan',$id)->first();
         if ($DataPelanggan == true) {
         $data = [
-            'deleted_at' => now()->format('Y-m-d h:i:s')
+            'deleted_at' => now()->format('Y-m-d h:i:s'),
+            'status_pelanggan' => 0
         ];
             PelangganModel::where('id_pelanggan',$id)->update($data);
             return response()->json(['success' => true, 'message' => 'Berhasil Hapus Data']);
