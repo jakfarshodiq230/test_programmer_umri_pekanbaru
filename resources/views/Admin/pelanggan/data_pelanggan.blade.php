@@ -286,7 +286,7 @@
                     $.ajax({
                         url: '{{ url('pelanggan/status_pelanggan') }}/' + id + '/' + (status ? 1 :
                             0),
-                        type: 'DELETE',
+                        type: 'GET',
                         data: {
                             _token: '{{ csrf_token() }}'
                         },

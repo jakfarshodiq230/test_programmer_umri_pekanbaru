@@ -12,6 +12,6 @@ class PelangganModel extends Model
     protected $primaryKey = "id_pelanggan";
     protected $keyType = 'string';
     protected $fillable = [
-       'id_pelanggan', 'nama_pelanggan', 'email_pelanggan', 'nama_usaha', 'alamat_usaha', 'no_hp_usaha', 'status_pelanggan','tggl_daftar_pelanggan', 'tggl_batas_pelanggan'
+       'id_pelanggan', 'nama_pelanggan', 'email_pelanggan', 'nama_usaha', 'alamat_usaha', 'no_hp_usaha', 'status_pelanggan','tggl_daftar_pelanggan', 'tggl_batas_pelanggan','deleted_at'
     ];
 }

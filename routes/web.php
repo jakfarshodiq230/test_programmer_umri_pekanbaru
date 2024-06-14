@@ -96,7 +96,8 @@ Route::controller(TransaksiController::class)->group(function () {
 Route::controller(PelangganController::class)->group(function () {
     Route::get('pelanggan', 'index');
     Route::get('pelanggan/data_pelanggan', 'AjaxData');
-    Route::delete('pelanggan/status_pelanggan/{id}/{status}', 'statusData');
+    Route::delete('pelanggan/delete_pelanggan/{id}', 'deleteData');
+    Route::get('pelanggan/status_pelanggan/{id}/{status}', 'statusData');
 });
 
 Route::controller(PeriodeController::class)->group(function () {
