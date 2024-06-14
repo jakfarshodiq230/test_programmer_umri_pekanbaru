@@ -15,7 +15,7 @@ class PelangganController extends Controller
         return view ('Admin/pelanggan/data_pelanggan',compact('menu','submenu'));
     }
     public function AjaxData(Request $request) {
-        $DataPelanggan = PelangganModel::all();
+        $DataPelanggan = PelangganModel::where('deleted_at',null) ->get();
         if ($DataPelanggan == true) {
             return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data' => $DataPelanggan]);
         }else{
