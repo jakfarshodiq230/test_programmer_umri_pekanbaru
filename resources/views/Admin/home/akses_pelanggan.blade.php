@@ -5,7 +5,7 @@
 
             <div class="header">
                 <h1 class="header-title">
-                    Selamat Datang Di APKIS, {{ Auth::User()->nama_user }} !
+                    Selamat Datang Di APKIS, {{ ucwords(Auth::User()->nama_user) }} !
                 </h1>
                 <p class="header-subtitle">APKIS merupakan sistem manajemen pembukuan sederhana dalam melakukan pembelian
                     atau penjualan hasil panen sawit</p>
