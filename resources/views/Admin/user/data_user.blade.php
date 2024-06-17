@@ -69,7 +69,7 @@
                                                 <div class="mb-3">
                                                     <label>No. HP</label>
                                                     <input type="text" name="no_hp_user" id="no_hp_user"
-                                                        class="form-control" placeholder="Nomor HP"  required readonly>
+                                                        class="form-control" placeholder="Nomor HP" required readonly>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Email</label>
@@ -423,8 +423,11 @@
                     var $select = $('select[name="pelanggan"]');
                     $select.find('option:not(:first)').remove();
                     $.each(response.data, function(index, value) {
-                        $select.append('<option value="' + value.id_pelanggan + '">' + value
-                            .nama_usaha.toUpperCase() + '</option>');
+                        // cek user
+                        if (value.deleted_at == null) {
+                            $select.append('<option value="' + value.id_pelanggan + '">' + value
+                                .nama_usaha.toUpperCase() + '</option>');
+                        }
                     });
                     $select.trigger('change.select2'); // Reinitialize Select2
                 },
@@ -727,7 +730,5 @@
                 }
             });
         });
-
-
     </script>
 @endsection
