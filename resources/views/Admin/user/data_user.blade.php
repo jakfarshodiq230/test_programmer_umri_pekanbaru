@@ -423,7 +423,8 @@
                     var $select = $('select[name="pelanggan"]');
                     $select.find('option:not(:first)').remove();
                     $.each(response.data, function(index, value) {
-                        // cek user
+                        // cek user update
+                        
                         if (value.deleted_at == null) {
                             $select.append('<option value="' + value.id_pelanggan + '">' + value
                                 .nama_usaha.toUpperCase() + '</option>');
