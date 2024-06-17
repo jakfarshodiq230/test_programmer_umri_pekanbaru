@@ -71,10 +71,10 @@ class UserController extends Controller
             'alamat_usaha' => $request->alamat_user,
             'no_hp_usaha' => $request->no_hp_user,
             'password' => $request->password,
-            'tanggal_aktifasi' => Carbon::now()
+            'tanggal_aktifasi' => Carbon::now(),
+            'link' => 'verivikasi_akun/'.$request->email_user
         ];
-        dd($data);
-        //Mail::to($request->email_user)->send(new SendEmailPendaftaran($data_pesan));
+        Mail::to($request->email_user)->send(new SendEmailPendaftaran($data_pesan));
         $DataUser = User::create($data);
         if ($DataUser == true) {
             return response()->json(['success' => true, 'message' => 'Berhasil Tambah Data']);
