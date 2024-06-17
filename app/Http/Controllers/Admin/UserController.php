@@ -73,7 +73,8 @@ class UserController extends Controller
             'password' => $request->password,
             'tanggal_aktifasi' => Carbon::now()
         ];
-        Mail::to($request->email_user)->send(new SendEmailPendaftaran($data_pesan));
+        dd($data);
+        //Mail::to($request->email_user)->send(new SendEmailPendaftaran($data_pesan));
         $DataUser = User::create($data);
         if ($DataUser == true) {
             return response()->json(['success' => true, 'message' => 'Berhasil Tambah Data']);
