@@ -441,6 +441,7 @@
                     type: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
+                        console.lgo(response);
                         $('#dataForm')[0].reset();
                         $('#datatables-ajax').DataTable().ajax.reload();
                         Swal.fire({
