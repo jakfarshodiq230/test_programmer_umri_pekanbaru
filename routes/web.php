@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\PeriodeController;
+use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\SetingEmailController;
 /*
 |--------------------------------------------------------------------------
@@ -26,14 +26,14 @@ Route::controller(SetingEmailController::class)->group(function () {
     Route::post('email/update_email/{id}', 'updateData');
 });
 
-Route::controller(PeriodeController::class)->group(function () {
-    Route::get('periode', 'index');
-    Route::get('periode/data_periode', 'AjaxData');
-    Route::get('periode/edit_periode/{id}', 'editData');
-    Route::post('periode/store_periode', 'storeData');
-    Route::post('periode/update_periode/{id}', 'updateData');
-    Route::delete('periode/delete_periode/{id}', 'deleteData');
-    Route::delete('periode/status_periode/{id}/{status}', 'statusData');
+Route::controller(SiswaController::class)->group(function () {
+    Route::get('siswa', 'index');
+    Route::get('siswa/data_siswa', 'AjaxData');
+    Route::get('siswa/edit_siswa/{id}', 'editData');
+    Route::post('siswa/store_siswa', 'storeData');
+    Route::post('siswa/update_siswa/{id}', 'updateData');
+    Route::delete('siswa/delete_siswa/{id}', 'deleteData');
+    Route::delete('siswa/status_siswa/{id}/{status}', 'statusData');
 });
 
 

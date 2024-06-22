@@ -73,8 +73,8 @@
                             <ul id="ui" class="sidebar-dropdown list-unstyled collapse "
                                 data-bs-parent="#sidebar">
 
-                                <li class="sidebar-item {{ $submenu == 'periode' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('periode') }}'>Periode</a>
+                                <li class="sidebar-item {{ $submenu == 'siswa' ? 'active' : null }}"><a
+                                        class='sidebar-link' href='{{ url('siswa') }}'>Siswa</a>
                                 </li>
                             </ul>
                         </li>
