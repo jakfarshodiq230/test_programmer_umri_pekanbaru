@@ -34,6 +34,9 @@ Route::controller(SiswaController::class)->group(function () {
     Route::post('siswa/update_siswa/{id}', 'updateData');
     Route::delete('siswa/delete_siswa/{id}', 'deleteData');
     Route::delete('siswa/status_siswa/{id}/{status}', 'statusData');
+    Route::get('siswa/foto_siswa/', 'fotoUpdate');
+    Route::get('siswa/foto_siswa_data/', 'AjaxDataFoto');
+    Route::post('siswa/store_foto_siswa', 'updateDataFoto');
 });
 
 

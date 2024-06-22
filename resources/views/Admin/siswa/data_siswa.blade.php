@@ -15,7 +15,7 @@
                                 <div>
                                     <button class="btn btn-warning" id="importBtn" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Import Data"><i class="fas fa-upload"></i></button>
-                                    <button class="btn btn-success" id="fotoBtn" data-bs-toggle="tooltip"
+                                    <button class="btn btn-success uploadBtn" id="fotoBtn" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Upload Foto"><i class="fas fa-user"></i></button>
                                     <button class="btn btn-primary" id="addBtn" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Tambah Data"><i class="fas fa-add"></i></button>
@@ -26,8 +26,7 @@
                             <table id="datatables-ajax" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th></th>
+                                        <th>#</th>
                                         <th>NISN</th>
                                         <th>Nama</th>
                                         <th>Tempat/Tanggal Lahir</th>
@@ -41,8 +40,7 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>No.</th>
-                                        <th></th>
+                                        <th>#</th>
                                         <th>NISN</th>
                                         <th>Nama</th>
                                         <th>Tempat/Tanggal Lahir</th>
@@ -74,7 +72,10 @@
                                                     <div class="mb-3">
                                                         <label>NISN</label>
                                                         <input type="text" name="nisn_siswa" id="nisn_siswa"
-                                                            class="form-control" placeholder="Nomor Induk Nasional">
+                                                            class="form-control" onkeypress="return hanyaAngka(event)"
+                                                            placeholder="Nomor Induk Nasional">
+                                                        <input type="text" name="id_siswa" id="id_siswa"
+                                                            class="form-control" placeholder="id_siswa" hidden>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Nama</label>
@@ -96,13 +97,27 @@
                                                 <div class="col-6 col-lg-6">
                                                     <div class="mb-3">
                                                         <label>Jenis Kelamin</label>
-                                                        <input type="date" name="jenis_kelamin_siswa"
-                                                            class="form-control" placeholder="Tanggal Mulai" required>
+                                                        <br>
+                                                        <label class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="jenis_kelamin_siswa" value="L">
+                                                            <span class="form-check-label">
+                                                                Laki-Laki
+                                                            </span>
+                                                        </label>
+                                                        <label class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="jenis_kelamin_siswa" value="P">
+                                                            <span class="form-check-label">
+                                                                Perempuan
+                                                            </span>
+                                                        </label>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>No HP</label>
                                                         <input type="text" name="no_hp_siswa" class="form-control"
-                                                            placeholder="Nomor HP" required>
+                                                            placeholder="Nomor HP" onkeypress="return hanyaAngka(event)"
+                                                            required>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Email</label>
@@ -111,8 +126,9 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Tahun Masuk</label>
-                                                        <input type="date" name="tahun_masuk_siswa" class="form-control"
-                                                            placeholder="Tanggal Akhir" required>
+                                                        <select class="form-control select2" name="tahun_masuk_siswa"
+                                                            data-bs-toggle="select2" required>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -137,6 +153,25 @@
 @section('scripts')
     <!-- Your other content -->
     <script>
+        // tahun option
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectElement = document.querySelector('select[name="tahun_masuk_siswa"]');
+            const currentYear = new Date().getFullYear();
+            const startYear = 2000;
+
+            for (let year = currentYear; year >= startYear; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                selectElement.appendChild(option);
+            }
+
+            // Initialize select2 if it is being used
+            if (typeof $.fn.select2 !== 'undefined') {
+                $(selectElement).select2();
+            }
+        });
+
         $(document).ready(function() {
             // menampilkan data
             $('#datatables-ajax').DataTable({
@@ -147,19 +182,12 @@
                 responsive: true,
                 ajax: '{{ url('siswa/data_siswa') }}',
                 columns: [{
-                        data: null,
-                        name: 'nomor',
-                        render: function(data, type, row, meta) {
-                            return meta.row + 1;
-                        }
-                    },
-                    {
                         data: 'foto_siswa',
                         name: 'foto_siswa',
                         render: function(data, type, row) {
                             return data == null ?
-                                `<img src="{{ url('img/avatars/avatar.jpg') }}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar">` :
-                                `<img src="{{ url('storage/siswa/') }}/${row.foto_siswa}" height="32" class="rounded-circle my-n1" alt="Avatar">`;
+                                `<img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar">` :
+                                `<img src="{{ url('storage') }}/${row.foto_siswa}" height="32" class="rounded-circle my-n1" alt="Avatar">`;
                         }
                     },
                     {
@@ -169,14 +197,39 @@
                     {
                         data: 'nama_siswa',
                         name: 'nama_siswa',
+                        render: function(data, type, row) {
+                            // Convert tempat_lahir_siswa to start with uppercase letter
+                            var nama_siswa = row.nama_siswa.charAt(0)
+                                .toUpperCase() + row.nama_siswa.slice(1);
+
+                            // Return formatted string
+                            return nama_siswa;
+                        }
                     },
                     {
                         data: 'tanggal_lahir_siswa',
                         name: 'tanggal_lahir_siswa',
+                        render: function(data, type, row) {
+                            // Convert tempat_lahir_siswa to start with uppercase letter
+                            var tempat_lahir_formatted = row.tempat_lahir_siswa.charAt(0)
+                                .toUpperCase() + row.tempat_lahir_siswa.slice(1);
+
+                            // Return formatted string
+                            return tempat_lahir_formatted + ' <br> ' + row.tanggal_lahir_siswa;
+                        }
+
+
                     },
                     {
                         data: 'jenis_kelamin_siswa',
                         name: 'jenis_kelamin_siswa',
+                        render: function(data, type, row) {
+                            if (data == 'L') {
+                                return 'LAKI - LAKI';
+                            } else {
+                                return 'PEREMPUAN';
+                            }
+                        }
                     },
                     {
                         data: 'no_hp_siswa',
@@ -196,10 +249,10 @@
                         render: function(data, type, row) {
                             if (data == 1) {
                                 return '<span class="badge bg-success">Aktif</span>';
-                            } else if (data == 2) {
+                            } else if (data == 0) {
                                 return '<span class="badge bg-danger">Tidak Aktif</span>';
                             } else {
-                                return '<span class="badge bg-secondary">Hapus</span>';
+                                return '<span class="badge bg-warning">Hapus</span>';
                             }
                         }
 
@@ -210,15 +263,15 @@
                         render: function(data, type, row) {
                             if (data == 1) {
                                 return `
-                                    <button class="btn btn-sm btn-danger updateBtn0" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id_siswa}"><i class="fas fa-power-off"></i></button>
-                                    <button class="btn btn-sm btn-warning editBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_siswa}"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-secondary deleteBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_siswa}"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger updateBtn0" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.nisn_siswa}"><i class="fas fa-power-off"></i></button>
+                                    <button class="btn btn-sm btn-warning editBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.nisn_siswa}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-secondary deleteBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.nisn_siswa}"><i class="fas fa-trash"></i></button>
                                 `;
                             } else {
                                 return `
-                                    <button class="btn btn-sm btn-success updateBtn1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.id_siswa}"><i class="fas fa-power-off"></i></button>
-                                    <button class="btn btn-sm btn-warning editBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_siswa}"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-secondary deleteBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_siswa}"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success updateBtn1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.nisn_siswa}"><i class="fas fa-power-off"></i></button>
+                                    <button class="btn btn-sm btn-warning editBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.nisn_siswa}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-secondary deleteBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.nisn_siswa}"><i class="fas fa-trash"></i></button>
                                 `;
                             }
                         }
@@ -236,7 +289,7 @@
 
         // editData
         $(document).on('click', '.editBtn', function() {
-            $('#ModalLabel').text('Edit siswa');
+            $('#ModalLabel').text('Edit Siswa');
             var id = $(this).data('id');
             // Open the edit modal and populate it with data
             $.ajax({
@@ -245,15 +298,30 @@
                 success: function(data) {
                     // Populate the modal fields with the data
                     $('#formModal input[name="id_siswa"]').val(data.data.id_siswa);
-                    $('#formModal input[name="judul_siswa"]').val(data.data.judul_siswa);
+                    $('#formModal input[name="nisn_siswa"]').val(data.data.nisn_siswa);
+                    $('#formModal input[name="nama_siswa"]').val(data.data.nama_siswa);
+                    $('#formModal input[name="tanggal_lahir_siswa"]').val(data.data
+                        .tanggal_lahir_siswa);
+                    $('#formModal input[name="tempat_lahir_siswa"]').val(data.data.tempat_lahir_siswa);
+                    $('#formModal input[name="jenis_kelamin_siswa"]').each(function() {
+                        if ($(this).val() == data.data.jenis_kelamin_siswa) {
+                            $(this).prop('checked',
+                                true); // Check the radio button with matching value
+                        } else {
+                            $(this).prop('checked', false); // Uncheck other radio buttons
+                        }
+                    });
+                    $('#formModal input[name="no_hp_siswa"]').val(data.data.no_hp_siswa);
+                    $('#formModal input[name="email_siswa"]').val(data.data.email_siswa);
+                    $('#formModal input[name="tahun_masuk_siswa"]').val(data.data.tahun_masuk_siswa);
                     $('#formModal').modal('show');
                 },
                 error: function(response) {
                     $('#formModal').modal('hide');
                     Swal.fire({
-                        title: 'Gagal!',
-                        text: response.massage,
-                        icon: 'error',
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
                         confirmButtonText: 'OK'
                     });
                 }
@@ -276,20 +344,22 @@
                     $('#formModal').modal('hide');
                     $('#datatables-ajax').DataTable().ajax.reload();
                     Swal.fire({
-                        title: 'Success!',
-                        text: response.massage,
-                        icon: 'success',
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
                         confirmButtonText: 'OK'
                     });
+
                 },
                 error: function(response) {
                     $('#formModal').modal('hide');
                     Swal.fire({
-                        title: 'Gagal!',
-                        text: response.massage,
-                        icon: 'error',
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
                         confirmButtonText: 'OK'
                     });
+
                 }
             });
         });
@@ -317,18 +387,18 @@
                     success: function(response) {
                         // Reload the table data
                         Swal.fire({
-                            title: 'Success!',
-                            text: response.massage,
-                            icon: 'success',
+                            title: response.success ? 'Success' : 'Error',
+                            text: response.message,
+                            icon: response.success ? 'success' : 'error',
                             confirmButtonText: 'OK'
                         });
                         $('#datatables-ajax').DataTable().ajax.reload();
                     },
                     error: function(response) {
                         Swal.fire({
-                            title: 'Gagal!',
-                            text: response.massage,
-                            icon: 'error',
+                            title: response.success ? 'Success' : 'Error',
+                            text: response.message,
+                            icon: response.success ? 'success' : 'error',
                             confirmButtonText: 'OK'
                         });
                     }
@@ -337,9 +407,10 @@
         });
 
         // update status 
-        $(document).on('click', '.updateBtn1', function() {
+        $(document).on('click', '.updateBtn1, .updateBtn0', function() {
             var id = $(this).data('id');
-            // Make an Ajax call to delete the record
+            var status = $(this).hasClass('updateBtn1') ? 1 : 0; // Determine status based on the class
+
             Swal.fire({
                 title: 'Aktifkan Data',
                 text: 'Apakah Anda Ingin Mengaktifkan Data Ini?',
@@ -349,75 +420,39 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
-                $.ajax({
-                    url: '{{ url('siswa/status_siswa') }}/' + id + '/' +
-                        1, // URL to delete data for the selected row
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // Reload the table data
-                        Swal.fire({
-                            title: response.error == true ? 'Error !' : 'Success',
-                            text: response.message,
-                            icon: response.error == true ? 'error' : 'success',
-                            confirmButtonText: 'OK'
-                        });
-                        $('#datatables-ajax').DataTable().ajax.reload();
-
-                    },
-                    error: function(response) {
-                        Swal.fire({
-                            title: 'Gagal!',
-                            text: response.message,
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ url('siswa/status_siswa') }}/' + id + '/' + status,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: response.error ? 'Error!' : 'Success!',
+                                text: response.message,
+                                icon: response.error ? 'error' : 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            $('#datatables-ajax').DataTable().ajax.reload();
+                        },
+                        error: function(response) {
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                }
             });
         });
 
-        $(document).on('click', '.updateBtn0', function() {
-            var id = $(this).data('id');
-            // Make an Ajax call to delete the record
-            Swal.fire({
-                title: 'Aktifkan Data',
-                text: 'Apakah Anda Ingin Mengaktifkan Data Ini?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, saya menghapus data ini'
-            }).then((result) => {
-                $.ajax({
-                    url: '{{ url('siswa/status_siswa') }}/' + id + '/' +
-                        0, // URL to delete data for the selected row
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // Reload the table data
-                        Swal.fire({
-                            title: 'Success!',
-                            text: response.message,
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        });
-                        $('#datatables-ajax').DataTable().ajax.reload();
-                    },
-                    error: function(response) {
-                        Swal.fire({
-                            title: 'Gagal!',
-                            text: response.message,
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
-            });
+        // upload foto
+        $(document).on('click', '.uploadBtn', function() {
+            var url = '{{ url('siswa/foto_siswa/')}}'; // Replace with your URL
+            window.location.href = url;
         });
     </script>
 @endsection
