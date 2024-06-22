@@ -10,7 +10,7 @@
     <meta name="description" content="Modern, flexible and responsive Bootstrap 5 admin &amp; dashboard template">
     <meta name="author" content="Bootlab">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>APKIS</title>
+    <title>MY TAHFIDZ</title>
     <style>
         body {
             opacity: 0;
@@ -31,14 +31,14 @@
     <div class="wrapper">
         <nav id="sidebar" class="sidebar">
             <a class='sidebar-brand' href='{{ url('/') }}'>
-                APKIS
+                MY TAHFIDZ
             </a>
             <div class="sidebar-content">
                 <div class="sidebar-user">
                     <img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" class="img-fluid rounded-circle mb-2"
                         alt="Linda Miller" />
-                    <div class="fw-bold">{{ strtoupper(Auth::User()->nama_user) }}</div>
-                    <small>{{ strtoupper(Auth::User()->level_user) }}</small>
+                    <div class="fw-bold">ADMIN/SUPERADMIN</div>
+                    <small>ADMIN/SUPERADMIN</small>
                 </div>
 
                 <ul class="sidebar-nav">
@@ -52,29 +52,23 @@
                                 class="align-middle">Dashboard</span>
                         </a>
                         <ul id="main" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            @if (Auth::User()->level_user == 'admin')
                                 <li class="sidebar-item {{ $submenu == 'home' ? 'active' : null }}"><a
                                         class='sidebar-link' href='{{ url('home') }}'>Default</a>
                                 </li>
                                 <li class="sidebar-item {{ $submenu == 'statistik' ? 'active' : null }}"><a
                                         class='sidebar-link' href='{{ url('home/statistik') }}'>Statistik</a>
                                 </li>
-                            @endif
-                            @if (Auth::User()->level_user == 'superadmin')
                                 <li class="sidebar-item {{ $submenu == 'log_akses' ? 'active' : null }}"><a
                                         class='sidebar-link' href='{{ url('log_akses') }}'>Akses Pelanggan</a>
                                 </li>
-                            @endif
                         </ul>
                     </li>
-                    @if (Auth::User()->level_user == 'admin')
                         <li class="sidebar-header">
                             Master
                         </li>
                         <li class="sidebar-item {{ $menu == 'master' ? 'active' : null }}">
                             <a data-bs-target="#ui" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle me-2 fas fa-fw fa-database"></i> <span class="align-middle">Data
-                                    Master</span>
+                                <i class="align-middle me-2 fas fa-fw fa-database"></i> <span class="align-middle">Master</span>
                             </a>
                             <ul id="ui" class="sidebar-dropdown list-unstyled collapse "
                                 data-bs-parent="#sidebar">
@@ -82,10 +76,6 @@
                                 <li class="sidebar-item {{ $submenu == 'periode' ? 'active' : null }}"><a
                                         class='sidebar-link' href='{{ url('periode') }}'>Periode</a>
                                 </li>
-                                <li class="sidebar-item {{ $submenu == 'harga' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('harga') }}'>Harga</a>
-                                </li>
-
                             </ul>
                         </li>
 
@@ -98,70 +88,6 @@
                                     class="align-middle">Transaksi</span>
                             </a>
                         </li>
-
-                        <li class="sidebar-header">
-                            Pembukuan
-                        </li>
-                        <li class="sidebar-item {{ $menu == 'pembukuan' ? 'active' : null }}">
-                            <a data-bs-target="#buku" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle me-2 fas fa-fw fa-book"></i> <span
-                                    class="align-middle">Pembukuan</span>
-                            </a>
-                            <ul id="buku" class="sidebar-dropdown list-unstyled collapse "
-                                data-bs-parent="#sidebar">
-                                <li class="sidebar-item {{ $submenu == 'hari' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('pembukuan/hari') }}'>Hari</a>
-                                </li>
-                                <li class="sidebar-item {{ $submenu == 'bulan' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('pembukuan/bulan') }}'>Bulan</a>
-                                </li>
-                                <li class="sidebar-item {{ $submenu == 'tahun' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('pembukuan/tahun') }}'>Tahun</a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                    @if (Auth::User()->level_user == 'superadmin')
-                        <li class="sidebar-header">
-                            Pengaturan
-                        </li>
-                        <li class="sidebar-item {{ $menu == 'seting' ? 'active' : null }}">
-                            <a data-bs-target="#seting" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle me-2 fas fa-fw fa-cog"></i> <span
-                                    class="align-middle">Pengaturan</span>
-                            </a>
-                            <ul id="seting" class="sidebar-dropdown list-unstyled collapse "
-                                data-bs-parent="#sidebar">
-                                <li class="sidebar-item {{ $submenu == 'email' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('email') }}'>Email</a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                    <li class="sidebar-header">
-                        Pelanggan
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'pelanggan' ? 'active' : null }}">
-                        <a data-bs-target="#pelanggan" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-user"></i> <span
-                                class="align-middle">Pelanggan</span>
-                        </a>
-                        <ul id="pelanggan" class="sidebar-dropdown list-unstyled collapse "
-                            data-bs-parent="#sidebar">
-                            {{-- superadmin atau yang memiliki aplikasi --}}
-                            @if (Auth::User()->level_user == 'superadmin')
-                                <li class="sidebar-item {{ $submenu == 'pelanggan' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('pelanggan') }}'>Pelanggan</a>
-                                </li>
-                            @endif
-
-                            <li class="sidebar-item {{ $submenu == 'user' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('user') }}'>Akun</a>
-                            </li>
-                            {{-- end superadmin atau yang memiliki aplikasi --}}
-
-                        </ul>
-                    </li>
 
                     <li class="sidebar-header">
                         Logout
@@ -186,7 +112,7 @@
                             <a class="nav-link dropdown-toggle position-relative" href="#" id="userDropdown"
                                 data-bs-toggle="dropdown">
                                 <i class="align-middle fas fa-user"></i>
-                                {{ strtoupper(Auth::User()->nama_user) }}
+                                okey
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ url('actionlogout') }}"><i
