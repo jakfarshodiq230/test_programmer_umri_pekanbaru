@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Admin\SiswaModel;
 
@@ -193,10 +194,11 @@ class SiswaController extends Controller
                 $originalFileName = $file->getClientOriginalName();
                 $customFileName = $nama_siswa . '-' . $originalFileName;
                 $path = $file->storeAs('public/siswa', $customFileName);
+                //$path = $file->move('siswa', $customFileName);
             }
 
             $data = [
-                'foto_siswa' => $path 
+                'foto_siswa' => 'siswa/'.$customFileName
             ];
             $siswa = SiswaModel::where('nisn_siswa', $request->nama_siswa)->update($data);
 

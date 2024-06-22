@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Data Siswa/i
+                    Data Siswa
                 </h1>
             </div>
             <div class="row">
@@ -15,8 +15,6 @@
                                 <div>
                                     <button class="btn btn-warning" id="importBtn" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Import Data"><i class="fas fa-upload"></i></button>
-                                    <button class="btn btn-success uploadBtn" id="fotoBtn" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" title="Upload Foto"><i class="fas fa-user"></i></button>
                                     <button class="btn btn-primary" id="addBtn" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Tambah Data"><i class="fas fa-add"></i></button>
                                 </div>
@@ -54,7 +52,7 @@
                                 </tfoot>
                             </table>
                         </div>
-                        {{-- add siswa --}}
+                        {{-- add atau edit siswa --}}
                         <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true"
                             data-bs-keyboard="false" data-bs-backdrop="static">
                             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -143,7 +141,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- end siswa --}}
+                        {{-- end atau edit siswa --}}
                     </div>
                 </div>
             </div>
@@ -186,8 +184,8 @@
                         name: 'foto_siswa',
                         render: function(data, type, row) {
                             return data == null ?
-                                `<img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar">` :
-                                `<img src="{{ url('storage') }}/${row.foto_siswa}" height="32" class="rounded-circle my-n1" alt="Avatar">`;
+                                `<img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" width="42" height="42" class="rounded-circle my-n1" alt="Avatar">` :
+                                `<img src="{{ url('storage') }}/${row.foto_siswa}" width="52" height="52" class="rounded-circle my-n1" alt="Avatar">`;
                         }
                     },
                     {
@@ -447,12 +445,6 @@
                     });
                 }
             });
-        });
-
-        // upload foto
-        $(document).on('click', '.uploadBtn', function() {
-            var url = '{{ url('siswa/foto_siswa/')}}'; // Replace with your URL
-            window.location.href = url;
         });
     </script>
 @endsection
