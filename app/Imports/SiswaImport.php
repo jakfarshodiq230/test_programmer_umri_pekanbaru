@@ -8,62 +8,23 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class SiswaImport implements ToModel, WithHeadingRow
 {
-    private $importedCount = 0;
-    private $skippedCount = 0;
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
     public function model(array $row)
     {
-        // Check if the nisn already exists in the database
-        $existingSiswa = SiswaModel::where('nisn', $row['nisn'])->first();
-
-        if ($existingSiswa) {
-            $this->skippedCount++;
-            return null;
-        }
-        $this->importedCount++;
-        $tanggal = now()->format('dmY');
-        // If the nisn does not exist, create a new record
+        $tanggal = now()->format('dmy');
+        $nomorUrut = SiswaModel::whereDate('created_at', now()->toDateString())->count() + 1;
+        $id = 'SW' . '-' . $tanggal . '-' . $nomorUrut;
         return new SiswaModel([
-            'nisn' => $row['nisn'],
-            'id_periode' => $row['id_periode'],
-            'nomor_ujian_siswa' => $row['nomor_ujian_siswa'],
-            'nomor_surat' => $row['nomor_surat'],
-            'tanggal_surat' => $row['tanggal_surat'], 
-            'tandat_angan_surat' => $row['tandat_angan_surat'],
+            'id_siswa' => $id,
+            'nisn_siswa' => $row['nisn_siswa'],
             'nama_siswa' => $row['nama_siswa'],
-            'orang_tua' => $row['orang_tua'],
-            'alamat_siswa' => $row['alamat_siswa'],
-            'email_siswa' => $row['email_siswa'],
-            'no_hp_siswa' => $row['no_hp_siswa'],
-            'tempat_lahir' => $row['tempat_lahir'],
             'tanggal_lahir_siswa' => $row['tanggal_lahir_siswa'],
+            'tempat_lahir_siswa' => $row['tempat_lahir_siswa'],
             'jenis_kelamin_siswa' => $row['jenis_kelamin_siswa'],
-            'keterangan_siswa' => $row['keterangan_siswa'],
-            'kode_verifikasi_siswa' => $tanggal.$row['nisn'].mt_rand(100000, 999999),
+            'no_hp_siswa' => $row['no_hp_siswa'],
+            'email_siswa' => $row['email_siswa'],
+            'tahun_masuk_siswa' => $row['tahun_masuk_siswa'],
+            'status_siswa' => '0',
+            'id_user' => 1,
         ]);
-
-    }
-     /**
-     * Get the total imported count.
-     *
-     * @return int
-     */
-    public function getImportedCount()
-    {
-        return $this->importedCount;
-    }
-
-    /**
-     * Get the total skipped count.
-     *
-     * @return int
-     */
-    public function getSkippedCount()
-    {
-        return $this->skippedCount;
     }
 }

@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use App\Imports\SiswaImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Admin\SiswaModel;
 
 class SiswaController extends Controller
@@ -48,7 +49,8 @@ class SiswaController extends Controller
                 'jenis_kelamin_siswa' => 'required|in:L,P',
                 'no_hp_siswa' => 'required|numeric|digits_between:10,15',
                 'email_siswa' => 'required|email|max:255|unique:siswa,email_siswa,NULL,id',
-                'tahun_masuk_siswa' => 'required|numeric|digits:4|min:2000|max:' . date('Y')
+                'tahun_masuk_siswa' => 'required|numeric|digits:4|min:2000|max:' . date('Y'),
+                'foto_siswa' => 'required|file|mimes:jpeg,png,jpg|max:2048'
             ]);
     
             // Generate unique ID based on current date and count
@@ -56,6 +58,17 @@ class SiswaController extends Controller
             $nomorUrut = SiswaModel::whereDate('created_at', now()->toDateString())->count() + 1;
             $id = 'SW' . '-' . $tanggal . '-' . $nomorUrut;
     
+            if ($request->hasFile('foto_siswa')) {
+                $file = $request->file('foto_siswa');
+                $nama_siswa = $request->nama_siswa;
+                // Dapatkan nama asli file
+                $originalFileName = $file->getClientOriginalName();
+                // Buat nama file kustom
+                $customFileName = $nama_siswa . '-' . $originalFileName;
+                // Simpan file dengan nama kustom
+                $path = $file->storeAs('public/siswa', $customFileName);
+            }
+
             // Prepare data for insertion
             $data = [
                 'id_siswa' => $id,
@@ -67,9 +80,11 @@ class SiswaController extends Controller
                 'no_hp_siswa' => $validatedData['no_hp_siswa'],
                 'email_siswa' => $validatedData['email_siswa'],
                 'tahun_masuk_siswa' => $validatedData['tahun_masuk_siswa'],
+                'foto_siswa' => 'siswa/' . $customFileName,
                 'status_siswa' => '0',
                 'id_user' => 1,
             ];
+
     
             // Store data into database
             $siswa = SiswaModel::create($data);
@@ -99,8 +114,41 @@ class SiswaController extends Controller
                 'jenis_kelamin_siswa' => 'required|in:L,P',
                 'no_hp_siswa' => 'required|numeric|digits_between:10,15',
                 'email_siswa' => 'required|email|max:255',
-                'tahun_masuk_siswa' => 'required|numeric|digits:4|min:2000|max:' . date('Y')
+                'tahun_masuk_siswa' => 'required|numeric|digits:4|min:2000|max:' . date('Y'),
+                'foto_siswa' => 'nullable|file|mimes:jpeg,png,jpg|max:2048' // nullable karena tidak selalu ada saat update
             ]);
+
+            $siswaCek = SiswaModel::where('id_siswa',$request->id_siswa)->first();
+            if (!$siswaCek) {
+                return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
+            }
+
+            if ($request->hasFile('foto_siswa')) {
+                // Hapus gambar lama jika ada
+                if ($siswaCek->foto_siswa) {
+                    // Menggunakan Storage facade untuk menghapus file
+                    Storage::delete('public/' . $siswaCek->foto_siswa);
+                }
+        
+                // Simpan gambar baru
+                $file = $request->file('foto_siswa');
+                if ($file) {
+                    $nama_siswa = $request->nama_siswa;
+
+                    // Dapatkan nama asli file
+                    $originalFileName = $file->getClientOriginalName();
+
+                    // Buat nama file kustom
+                    $customFileName = $nama_siswa . '-' . $originalFileName;
+
+                    // Simpan file dengan nama kustom
+                    $path = $file->storeAs('public/siswa', $customFileName);
+                    $data = [
+                        'foto_siswa' => 'siswa/' . $customFileName
+                    ];
+                    $siswa = SiswaModel::where('id_siswa',$request->id_siswa)->update($data);
+                }
+            }
     
             // Prepare data for insertion
             $data = [
@@ -165,53 +213,45 @@ class SiswaController extends Controller
         }
     }
 
-    public function fotoUpdate(){
-        $menu = 'master';
-        $submenu= 'siswa';
-        return view ('Admin/siswa/data_foto_siswa',compact('menu','submenu'));
-    }
-
-    public function AjaxDataFoto(Request $request) {
-        $DataSiswa = SiswaModel::whereNotNull('foto_siswa')->whereNull('deleted_at')->get();
-        if ($DataSiswa == true) {
-            return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data' => $DataSiswa]);
-        }else{
-            return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
-        }
-    }
-
-    public function updateDataFoto(Request $request)
+    public function importExcel(Request $request)
     {
-        try {
-
-            $validatedData = $request->validate([
-                'foto_siswa' => 'required|file|mimes:jpeg,png,jpg|max:2048', // Example: allow JPEG and PNG files, max size 2MB
-            ]);
-
-            if ($request->hasFile('foto_siswa')) {
-                $file = $request->file('foto_siswa');
-                $nama_siswa = $request->nama_siswa; 
-                $originalFileName = $file->getClientOriginalName();
-                $customFileName = $nama_siswa . '-' . $originalFileName;
-                $path = $file->storeAs('public/siswa', $customFileName);
-                //$path = $file->move('siswa', $customFileName);
-            }
-
-            $data = [
-                'foto_siswa' => 'siswa/'.$customFileName
-            ];
-            $siswa = SiswaModel::where('nisn_siswa', $request->nama_siswa)->update($data);
-
-            if ($siswa) {
-                return response()->json(['success' => true, 'message' => 'Berhasil Upload Foto', 'data' => $siswa]);
-            } else {
-                return response()->json(['error' => true, 'message' => 'Gagal Upload Foto']);
-            }
+        $request->validate([
+            'file_siswa' => 'required|mimes:xls,xlsx|max:2048', // max 2MB
+        ]);
     
+        $file = $request->file('file_siswa');
+    
+        try {
+            Excel::import(new SiswaImport, $file);
+    
+            return response()->json(['success' => true, 'message' => 'Berhasil Import Data']);
         } catch (\Exception $e) {
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
-        }        
-    }
-    
-    
+        }
+    }  
+
+    public function setingData(Request $request) {
+        try {
+            $validatedData = $request->validate([
+                'tahun_masuk_siswa2' => 'required|numeric|digits:4|min:2000|max:' . date('Y'),
+                'status_siswa' => 'required|string|max:255'
+            ]);
+            $DataSiswa = SiswaModel::where('tahun_masuk_siswa',$validatedData['tahun_masuk_siswa2'])->whereNull('deleted_at')->get();
+
+            if ($DataSiswa == true) {
+                foreach ($DataSiswa as $key => $value) {
+                    SiswaModel::where('id_siswa',$value->id_siswa)->update([
+                        'status_siswa' => $validatedData['status_siswa']
+                    ]);
+                }
+                return response()->json(['success' => true, 'message' => 'Data Ditemukan']);
+            }else{
+                return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
+        
+}
+        
 }

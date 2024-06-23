@@ -13,6 +13,9 @@
                         <div class="card-header">
                             <div class="card-actions float-end">
                                 <div>
+                                    <button class="btn btn-success" id="setingBtn" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Seting Data Siswa"><i
+                                            class="fas fa-cog"></i></button>
                                     <button class="btn btn-warning" id="importBtn" data-bs-toggle="tooltip"
                                         data-bs-placement="top" title="Import Data"><i class="fas fa-upload"></i></button>
                                     <button class="btn btn-primary" id="addBtn" data-bs-toggle="tooltip"
@@ -91,6 +94,11 @@
                                                             id="tanggal_lahir_siswa" class="form-control"
                                                             placeholder="Tanggal Lahir">
                                                     </div>
+                                                    <div class="mb-3">
+                                                        <label>Foto</label>
+                                                        <input type="file" name="foto_siswa" class="form-control"
+                                                            placeholder="Foto" required>
+                                                    </div>
                                                 </div>
                                                 <div class="col-6 col-lg-6">
                                                     <div class="mb-3">
@@ -142,6 +150,86 @@
                             </div>
                         </div>
                         {{-- end atau edit siswa --}}
+
+                        {{-- import excel siswa --}}
+                        <div class="modal fade" id="formModalUpload" tabindex="-1" role="dialog" aria-hidden="true"
+                            data-bs-keyboard="false" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <form method="POST" id="dataFormUpload" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalLabelUpload">Edit Harga</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body progres m-3">
+                                            <div class="row">
+                                                <div class="col-12 col-lg-12">
+                                                    <div class="mb-3">
+                                                        <label>File Excel</label>
+                                                        <input type="file" name="file_siswa" class="form-control"
+                                                            placeholder="File Excel" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Batal</button>
+                                            <button type="button" id="saveBtnUpload"
+                                                class="btn btn-primary">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- end import excel siswa --}}
+
+                        {{-- seting siswa --}}
+                        <div class="modal fade" id="formModalSeting" tabindex="-1" role="dialog" aria-hidden="true"
+                            data-bs-keyboard="false" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <form method="POST" id="dataFormSeting" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalLabelSeting">Edit Harga</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body progres-seting m-3">
+                                            <div class="row">
+                                                <div class="col-12 col-lg-12">
+                                                    <div class="mb-3">
+                                                        <label>Tahun Masuk</label>
+                                                        <select class="form-control select2" name="tahun_masuk_siswa2"
+                                                            data-bs-toggle="select2" required>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Status Siswa</label>
+                                                        <select class="form-control select2" name="status_siswa"
+                                                            data-bs-toggle="select2" required>
+                                                            <option selected>PILIH</option>
+                                                            <option value="1">AKTIF</option>
+                                                            <option value="0">TIDAK AKTIF</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Batal</button>
+                                            <button type="button" id="saveBtnSeting"
+                                                class="btn btn-primary">Simpan</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- seting siswa --}}
                     </div>
                 </div>
             </div>
@@ -151,22 +239,35 @@
 @section('scripts')
     <!-- Your other content -->
     <script>
+        $('#dataForm')[0].reset();
+        $('#dataFormUpload')[0].reset();
+        $('#dataFormSeting')[0].reset();
         // tahun option
         document.addEventListener('DOMContentLoaded', function() {
             const selectElement = document.querySelector('select[name="tahun_masuk_siswa"]');
+            const selectElement2 = document.querySelector('select[name="tahun_masuk_siswa2"]');
             const currentYear = new Date().getFullYear();
             const startYear = 2000;
 
             for (let year = currentYear; year >= startYear; year--) {
+
                 const option = document.createElement('option');
                 option.value = year;
                 option.textContent = year;
                 selectElement.appendChild(option);
+
+
+                // Create options for selectElement2
+                const option2 = document.createElement('option');
+                option2.value = year;
+                option2.textContent = year;
+                selectElement2.appendChild(option2);
             }
 
             // Initialize select2 if it is being used
             if (typeof $.fn.select2 !== 'undefined') {
                 $(selectElement).select2();
+                $(selectElement2).select2();
             }
         });
 
@@ -261,15 +362,15 @@
                         render: function(data, type, row) {
                             if (data == 1) {
                                 return `
-                                    <button class="btn btn-sm btn-danger updateBtn0" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.nisn_siswa}"><i class="fas fa-power-off"></i></button>
-                                    <button class="btn btn-sm btn-warning editBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.nisn_siswa}"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-secondary deleteBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.nisn_siswa}"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger updateBtn0 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.nisn_siswa}"><i class="fas fa-power-off"></i></button>
+                                    <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.nisn_siswa}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.nisn_siswa}"><i class="fas fa-trash"></i></button>
                                 `;
                             } else {
                                 return `
-                                    <button class="btn btn-sm btn-success updateBtn1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.nisn_siswa}"><i class="fas fa-power-off"></i></button>
-                                    <button class="btn btn-sm btn-warning editBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.nisn_siswa}"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-secondary deleteBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.nisn_siswa}"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-success updateBtn1 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.nisn_siswa}"><i class="fas fa-power-off"></i></button>
+                                    <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.nisn_siswa}"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.nisn_siswa}"><i class="fas fa-trash"></i></button>
                                 `;
                             }
                         }
@@ -312,6 +413,7 @@
                     $('#formModal input[name="no_hp_siswa"]').val(data.data.no_hp_siswa);
                     $('#formModal input[name="email_siswa"]').val(data.data.email_siswa);
                     $('#formModal input[name="tahun_masuk_siswa"]').val(data.data.tahun_masuk_siswa);
+                    //$('#formModal input[name="foto_siswa"]').val(data.data.foto_siswa);
                     $('#formModal').modal('show');
                 },
                 error: function(response) {
@@ -330,16 +432,22 @@
         $('#saveBtn').on('click', function() {
             var id = $('#id_siswa').val();
             var url = '{{ url('siswa/store_siswa') }}';
+
             if (id) {
                 url = '{{ url('siswa/update_siswa') }}/' + id;
             }
+            var form = $('#dataForm')[0];
+            var formData = new FormData(form);
+
             $.ajax({
                 url: url,
                 method: 'POST',
-                data: $('#dataForm').serialize(),
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function(response) {
-                    console.log(response.data);
                     $('#formModal').modal('hide');
+                    $('#dataForm')[0].reset();
                     $('#datatables-ajax').DataTable().ajax.reload();
                     Swal.fire({
                         title: response.success ? 'Success' : 'Error',
@@ -443,6 +551,131 @@
                             });
                         }
                     });
+                }
+            });
+        });
+
+        // Upload Excel
+        $('#importBtn').on('click', function() {
+            $('#ModalLabelUpload').text('Import Excel');
+            $('#dataFormUpload')[0].reset();
+            $('#formModalUpload').modal('show');
+        });
+
+        // prosess imprt excel
+        $('#saveBtnUpload').on('click', function() {
+            var url = '{{ url('siswa/import_siswa') }}';
+            var form = $('#dataFormUpload')[0];
+            var formData = new FormData(form);
+
+            // Tambahkan progres bar
+            var progressBar = $(
+                '<div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div></div>'
+            );
+            $('.progres').append(progressBar);
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    // Listen to the upload progress.
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            // Update progress bar with the new percentage.
+                            progressBar.find('.progress-bar').css('width', percentComplete +
+                                '%');
+                            progressBar.find('.progress-bar').html(percentComplete.toFixed(2) +
+                                '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    $('#dataFormUpload')[0].reset();
+                    $('#datatables-ajax').DataTable().ajax.reload();
+                    Swal.fire({
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                error: function(response) {
+                    Swal.fire({
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                complete: function() {
+                    $('#formModalUpload').modal('hide');
+                    progressBar.remove();
+                }
+            });
+        });
+
+        // Seting Siswa
+        $('#setingBtn').on('click', function() {
+            $('#ModalLabelSeting').text('Seting Siswa');
+            $('#dataFormSeting')[0].reset();
+            $('#formModalSeting').modal('show');
+        });
+
+        // prosess imprt excel
+        $('#saveBtnSeting').on('click', function() {
+            var url = '{{ url('siswa/seting_siswa') }}';
+            // Tambahkan progres bar
+            var progressBar = $(
+                '<div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div></div>'
+            );
+            $('.progres-seting').append(progressBar);
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: $('#dataFormSeting').serialize(),
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    // Listen to the upload progress.
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            // Update progress bar with the new percentage.
+                            progressBar.find('.progress-bar').css('width', percentComplete +
+                                '%');
+                            progressBar.find('.progress-bar').html(percentComplete.toFixed(2) +
+                                '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    $('#dataFormSeting')[0].reset();
+                    $('#datatables-ajax').DataTable().ajax.reload();
+                    Swal.fire({
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                error: function(response) {
+                    Swal.fire({
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                complete: function() {
+                    progressBar.remove();
+                    $('#formModalSeting').modal('hide');
                 }
             });
         });
