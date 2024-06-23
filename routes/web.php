@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SiswaController;
+use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\SetingEmailController;
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,18 @@ Route::controller(SiswaController::class)->group(function () {
     Route::delete('siswa/status_siswa/{id}/{status}', 'statusData');
     Route::post('siswa/import_siswa', 'importExcel');
     Route::post('siswa/seting_siswa', 'setingData');
+});
+
+Route::controller(GuruController::class)->group(function () {
+    Route::get('guru', 'index');
+    Route::get('guru/data_guru', 'AjaxData');
+    Route::get('guru/edit_guru/{id}', 'editData');
+    Route::post('guru/store_guru', 'storeData');
+    Route::post('guru/update_guru/{id}', 'updateData');
+    Route::delete('guru/delete_guru/{id}', 'deleteData');
+    Route::delete('guru/status_guru/{id}/{status}', 'statusData');
+    Route::post('guru/import_guru', 'importExcel');
+    Route::post('guru/seting_guru', 'setingData');
 });
 
 

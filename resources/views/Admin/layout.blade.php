@@ -52,42 +52,45 @@
                                 class="align-middle">Dashboard</span>
                         </a>
                         <ul id="main" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                                <li class="sidebar-item {{ $submenu == 'home' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('home') }}'>Default</a>
-                                </li>
-                                <li class="sidebar-item {{ $submenu == 'statistik' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('home/statistik') }}'>Statistik</a>
-                                </li>
-                                <li class="sidebar-item {{ $submenu == 'log_akses' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('log_akses') }}'>Akses Pelanggan</a>
-                                </li>
+                            <li class="sidebar-item {{ $submenu == 'home' ? 'active' : null }}"><a class='sidebar-link'
+                                    href='{{ url('home') }}'>Default</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'statistik' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('home/statistik') }}'>Statistik</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'log_akses' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('log_akses') }}'>Akses Pelanggan</a>
+                            </li>
                         </ul>
                     </li>
-                        <li class="sidebar-header">
-                            Master
-                        </li>
-                        <li class="sidebar-item {{ $menu == 'master' ? 'active' : null }}">
-                            <a data-bs-target="#ui" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle me-2 fas fa-fw fa-database"></i> <span class="align-middle">Master</span>
-                            </a>
-                            <ul id="ui" class="sidebar-dropdown list-unstyled collapse "
-                                data-bs-parent="#sidebar">
+                    <li class="sidebar-header">
+                        Master
+                    </li>
+                    <li class="sidebar-item {{ $menu == 'master' ? 'active' : null }}">
+                        <a data-bs-target="#ui" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                                class="align-middle">Master</span>
+                        </a>
+                        <ul id="ui" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
 
-                                <li class="sidebar-item {{ $submenu == 'siswa' ? 'active' : null }}"><a
-                                        class='sidebar-link' href='{{ url('siswa') }}'>Siswa</a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="sidebar-item {{ $submenu == 'siswa' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('siswa') }}'>Siswa</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'guru' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('guru') }}'>Guru</a>
+                            </li>
+                        </ul>
+                    </li>
 
-                        <li class="sidebar-header">
-                            Transaksi
-                        </li>
-                        <li class="sidebar-item {{ $submenu == 'transaksi' ? 'active' : null }}">
-                            <a class='sidebar-link' href='{{ url('transaksi') }}'>
-                                <i class="align-middle me-2 fas fa-fw fa-address-card"></i> <span
-                                    class="align-middle">Transaksi</span>
-                            </a>
-                        </li>
+                    <li class="sidebar-header">
+                        Transaksi
+                    </li>
+                    <li class="sidebar-item {{ $submenu == 'transaksi' ? 'active' : null }}">
+                        <a class='sidebar-link' href='{{ url('transaksi') }}'>
+                            <i class="align-middle me-2 fas fa-fw fa-address-card"></i> <span
+                                class="align-middle">Transaksi</span>
+                        </a>
+                    </li>
 
                     <li class="sidebar-header">
                         Logout
