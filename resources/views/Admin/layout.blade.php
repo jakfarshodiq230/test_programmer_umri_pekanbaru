@@ -79,6 +79,9 @@
                             <li class="sidebar-item {{ $submenu == 'guru' ? 'active' : null }}"><a
                                     class='sidebar-link' href='{{ url('guru') }}'>Guru</a>
                             </li>
+                            <li class="sidebar-item {{ $submenu == 'kelas' ? 'active' : null }}"><a
+                                class='sidebar-link' href='{{ url('kelas') }}'>Kelas</a>
+                        </li>
                         </ul>
                     </li>
 

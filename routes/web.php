@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\GuruController;
+use App\Http\Controllers\Admin\KelasController;
 use App\Http\Controllers\Admin\SetingEmailController;
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,16 @@ Route::controller(GuruController::class)->group(function () {
     Route::delete('guru/status_guru/{id}/{status}', 'statusData');
     Route::post('guru/import_guru', 'importExcel');
     Route::post('guru/seting_guru', 'setingData');
+});
+
+Route::controller(KelasController::class)->group(function () {
+    Route::get('kelas', 'index');
+    Route::get('kelas/data_kelas', 'AjaxData');
+    Route::get('kelas/edit_kelas/{id}', 'editData');
+    Route::post('kelas/store_kelas', 'storeData');
+    Route::post('kelas/update_kelas/{id}', 'updateData');
+    Route::delete('kelas/delete_kelas/{id}', 'deleteData');
+    Route::delete('kelas/status_kelas/{id}/{status}', 'statusData');
 });
 
 
