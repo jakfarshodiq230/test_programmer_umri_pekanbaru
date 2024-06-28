@@ -88,13 +88,18 @@
                     </li>
 
                     <li class="sidebar-header">
-                        Transaksi
+                        Kegiatan
                     </li>
-                    <li class="sidebar-item {{ $submenu == 'transaksi' ? 'active' : null }}">
-                        <a class='sidebar-link' href='{{ url('transaksi') }}'>
-                            <i class="align-middle me-2 fas fa-fw fa-address-card"></i> <span
-                                class="align-middle">Transaksi</span>
+                    <li class="sidebar-item {{ $menu == 'kegiatan' ? 'active' : null }}">
+                        <a data-bs-target="#ui-tahfidz" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                                class="align-middle">Kegiatan</span>
                         </a>
+                        <ul id="ui-tahfidz" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                            <li class="sidebar-item {{ $submenu == 'periode' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('periode') }}'>Periode</a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="sidebar-header">

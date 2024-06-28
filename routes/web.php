@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\KelasController;
+use App\Http\Controllers\Admin\PeriodeController;
 use App\Http\Controllers\Admin\TahunAjaranController;
 use App\Http\Controllers\Admin\SetingEmailController;
 /*
@@ -71,6 +72,17 @@ Route::controller(TahunAjaranController::class)->group(function () {
     Route::post('tahun_ajaran/update_tahun_ajaran/{id}', 'updateData');
     Route::delete('tahun_ajaran/delete_tahun_ajaran/{id}', 'deleteData');
     Route::delete('tahun_ajaran/status_tahun_ajaran/{id}/{status}', 'statusData');
+});
+
+Route::controller(PeriodeController::class)->group(function () {
+    Route::get('periode', 'index');
+    Route::get('periode/data_tahun', 'AjaxDataTahun');
+    Route::get('periode/data_periode', 'AjaxData');
+    Route::get('periode/edit_periode/{id}', 'editData');
+    Route::post('periode/store_periode', 'storeData');
+    Route::post('periode/update_periode/{id}', 'updateData');
+    Route::delete('periode/delete_periode/{id}', 'deleteData');
+    Route::delete('periode/status_periode/{id}/{status}', 'statusData');
 });
 
 

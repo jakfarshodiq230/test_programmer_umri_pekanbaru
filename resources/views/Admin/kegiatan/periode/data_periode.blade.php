@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Data Kelas
+                    Data Periode Tahfidz
                 </h1>
             </div>
             <div class="row">
@@ -24,17 +24,33 @@
                                     <form class="row row-cols-md-auto align-items-center" id="dataForm"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        <div class="col-12">
-                                            <label class="visually-hidden" for="inlineFormInputName2">Name</label>
-                                            <input type="text" name="nama_kelas" id="nama_kelas"
-                                                class="form-control mb-2 me-sm-2" placeholder="A.12">
-                                            <input type="text" name="id_kelas" id="id_kelas"
-                                                class="form-control mb-2 me-sm-2" placeholder="id_kelas" hidden>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="button" id="saveBtn" class="btn btn-primary mb-2">Tambah
-                                                Kelas</button>
-                                        </div>
+                                            <div class="col-12">
+                                                <div class="input-group mb-2 me-sm-2">
+                                                    <div class="input-group-text">Tahun Ajaran</div>
+                                                    <select class="form-control select2 mb-4 me-sm-2 mt-0"
+                                                        name="tahun_ajaran" data-bs-toggle="select2" required>
+                                                        <option>PILIH</option>
+                                                    </select>
+                                                    <input type="text" name="id_periode" id="id_periode" hidden>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="input-group mb-2 me-sm-2">
+                                                    <div class="input-group-text">Kegiatan</div>
+                                                    <select class="form-control select2 mb-4 me-sm-2 mt-0 " name="kegiatan"
+                                                        data-bs-toggle="select2" required>
+                                                        <option selected>PILIH</option>
+                                                        <option value="tahfidz">TAHFIDZ</option>
+                                                        <option value="tahsin">TAHSIN</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="button" id="saveBtn"
+                                                    class="btn btn-primary mb-2 me-sm-2">Simpan</button>
+                                            </div>
                                     </form>
                                 </div>
                             </div>
@@ -46,8 +62,8 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>Status</th>
+                                        <th>Periode</th>
+                                        <th>Kegaitan</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -55,8 +71,8 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>ID</th>
-                                        <th>Nama</th>
-                                        <th>Status</th>
+                                        <th>Periode</th>
+                                        <th>Kegaitan</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
@@ -71,7 +87,38 @@
 @section('scripts')
     <!-- Your other content -->
     <script>
-        $('#dataForm')[0].reset();
+        $('.select2').val(null).trigger('change');
+        // tahun ajaran
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectElement = document.querySelector('select[name="tahun_ajaran"]');
+            $.ajax({
+                url: '{{ url('periode/data_tahun') }}',
+                type: 'GET',
+                dataType: 'json', // Ensure response is treated as JSON
+                success: function(response) {
+                    const data = response.data; // Assuming response has a 'data' array
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id_tahun_ajaran;
+                        option.textContent = item.nama_tahun_ajaran;
+                        selectElement.appendChild(option);
+                    });
+
+                    // Initialize Select2 after appending options
+                    $(selectElement).select2();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to load data tahun',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
+
 
         $(document).ready(function() {
             // menampilkan data
@@ -81,34 +128,34 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('kelas/data_kelas') }}',
+                ajax: '{{ url('periode/data_periode') }}',
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
                         "render": function(data, type, row, meta) {
                             return meta.row +
-                            1;
+                                1;
                         }
                     },
                     {
-                        data: 'id_kelas',
-                        name: 'id_kelas',
+                        data: 'id_periode',
+                        name: 'id_periode',
                     },
                     {
-                        data: 'nama_kelas',
-                        name: 'nama_kelas',
+                        data: 'nama_tahun_ajaran',
+                        name: 'nama_tahun_ajaran',
                         render: function(data, type, row) {
-                            // Convert tempat_lahir_kelas to start with uppercase letter
-                            var nama_kelas = row.nama_kelas.charAt(0)
-                                .toUpperCase() + row.nama_kelas.slice(1);
-
-                            // Return formatted string
-                            return nama_kelas;
+                            var nama_tahun_ajaran = row.nama_tahun_ajaran.charAt(0).toUpperCase() +
+                                row.nama_tahun_ajaran.slice(1);
+                            var jenis_periode = row.jenis_periode.trim().toUpperCase();
+                            var formatted_string = nama_tahun_ajaran + ' [ ' + jenis_periode + ' ]';
+                            return formatted_string;
                         }
+
                     },
                     {
-                        data: 'status_kelas',
-                        name: 'status_kelas',
+                        data: 'status_periode',
+                        name: 'status_periode',
                         render: function(data, type, row) {
                             if (data == 1) {
                                 return '<span class="badge bg-success">Aktif</span>';
@@ -121,21 +168,21 @@
 
                     },
                     {
-                        data: 'status_kelas',
-                        name: 'status_kelas',
+                        data: 'status_periode',
+                        name: 'status_periode',
                         render: function(data, type, row) {
                             if (data == 1) {
                                 return `
-                                    <button class="btn btn-sm btn-danger updateBtn0 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id_kelas}"><i class="fas fa-power-off"></i></button>
-                                    <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_kelas}"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_kelas}"><i class="fas fa-trash"></i></button>
-                                `;
+                                <button class="btn btn-sm btn-danger updateBtn0 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id_periode}"><i class="fas fa-power-off"></i></button>
+                                <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_periode}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_periode}"><i class="fas fa-trash"></i></button>
+                            `;
                             } else {
                                 return `
-                                    <button class="btn btn-sm btn-success updateBtn1 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.id_kelas}"><i class="fas fa-power-off"></i></button>
-                                    <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_kelas}"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_kelas}"><i class="fas fa-trash"></i></button>
-                                `;
+                                <button class="btn btn-sm btn-success updateBtn1 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.id_periode}"><i class="fas fa-power-off"></i></button>
+                                <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_periode}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_periode}"><i class="fas fa-trash"></i></button>
+                            `;
                             }
                         }
                     },
@@ -148,12 +195,28 @@
             var id = $(this).data('id');
             // Open the edit modal and populate it with data
             $.ajax({
-                url: '{{ url('kelas/edit_kelas') }}/' + id, // URL to fetch data for the selected row
+                url: '{{ url('periode/edit_periode') }}/' +
+                    id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
                     // Populate the modal fields with the data
-                    $('#dataForm input[name="id_kelas"]').val(data.data.id_kelas);
-                    $('#dataForm input[name="nama_kelas"]').val(data.data.nama_kelas);
+                    $('#dataForm input[name="id_periode"]').val(data.data.id_periode);
+                    $('select[name="tahun_ajaran"] option').each(function() {
+                        // Check if the value of the option matches tahun_awal
+                        if ($(this).val() === data.data.id_tahun_ajaran) {
+                            // Set the selected attribute of the matching option
+                            $(this).prop('selected', true);
+                        }
+                    });
+                    $('select[name="tahun_ajaran"]').select2();
+                    $('select[name="kegiatan"] option').each(function() {
+                        // Check if the value of the option matches tahun_awal
+                        if ($(this).val() === data.data.jenis_periode) {
+                            // Set the selected attribute of the matching option
+                            $(this).prop('selected', true);
+                        }
+                    });
+                    $('select[name="kegiatan"]').select2();
                 },
                 error: function(response) {
                     Swal.fire({
@@ -168,11 +231,11 @@
 
         // save dan update data
         $('#saveBtn').on('click', function() {
-            var id = $('#id_kelas').val();
-            var url = '{{ url('kelas/store_kelas') }}';
+            var id = $('#id_periode').val();
+            var url = '{{ url('periode/store_periode') }}';
 
             if (id) {
-                url = '{{ url('kelas/update_kelas') }}/' + id;
+                url = '{{ url('periode/update_periode') }}/' + id;
             }
             var form = $('#dataForm')[0];
             var formData = new FormData(form);
@@ -191,7 +254,7 @@
                         icon: response.success ? 'success' : 'error',
                         confirmButtonText: 'OK'
                     });
-
+                    
                 },
                 error: function(response) {
                     $('.select2').val(null).trigger('change');
@@ -220,7 +283,7 @@
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
                 $.ajax({
-                    url: '{{ url('kelas/delete_kelas') }}/' +
+                    url: '{{ url('periode/delete_periode') }}/' +
                         id, // URL to delete data for the selected row
                     type: 'DELETE',
                     data: {
@@ -253,6 +316,7 @@
         // update status 
         $(document).on('click', '.updateBtn1, .updateBtn0', function() {
             var id = $(this).data('id');
+            console.log(id);
             var status = $(this).hasClass('updateBtn1') ? 1 : 0; // Determine status based on the class
 
             Swal.fire({
@@ -266,7 +330,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('kelas/status_kelas') }}/' + id + '/' + status,
+                        url: '{{ url('periode/status_periode') }}/' + id + '/' + status,
                         type: 'DELETE',
                         data: {
                             _token: '{{ csrf_token() }}'
