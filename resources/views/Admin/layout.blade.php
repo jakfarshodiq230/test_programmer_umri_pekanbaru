@@ -76,12 +76,14 @@
                             <li class="sidebar-item {{ $submenu == 'siswa' ? 'active' : null }}"><a
                                     class='sidebar-link' href='{{ url('siswa') }}'>Siswa</a>
                             </li>
-                            <li class="sidebar-item {{ $submenu == 'guru' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('guru') }}'>Guru</a>
+                            <li class="sidebar-item {{ $submenu == 'guru' ? 'active' : null }}"><a class='sidebar-link'
+                                    href='{{ url('guru') }}'>Guru</a>
                             </li>
+                            <li class="sidebar-item {{ $submenu == 'tahun_ajaran' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('tahun_ajaran') }}'>Tahun Ajaran</a>
                             <li class="sidebar-item {{ $submenu == 'kelas' ? 'active' : null }}"><a
-                                class='sidebar-link' href='{{ url('kelas') }}'>Kelas</a>
-                        </li>
+                                    class='sidebar-link' href='{{ url('kelas') }}'>Kelas</a>
+                            </li>
                         </ul>
                     </li>
 

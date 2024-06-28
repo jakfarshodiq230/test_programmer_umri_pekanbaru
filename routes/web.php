@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\KelasController;
+use App\Http\Controllers\Admin\TahunAjaranController;
 use App\Http\Controllers\Admin\SetingEmailController;
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,16 @@ Route::controller(KelasController::class)->group(function () {
     Route::post('kelas/update_kelas/{id}', 'updateData');
     Route::delete('kelas/delete_kelas/{id}', 'deleteData');
     Route::delete('kelas/status_kelas/{id}/{status}', 'statusData');
+});
+
+Route::controller(TahunAjaranController::class)->group(function () {
+    Route::get('tahun_ajaran', 'index');
+    Route::get('tahun_ajaran/data_tahun_ajaran', 'AjaxData');
+    Route::get('tahun_ajaran/edit_tahun_ajaran/{id}', 'editData');
+    Route::post('tahun_ajaran/store_tahun_ajaran', 'storeData');
+    Route::post('tahun_ajaran/update_tahun_ajaran/{id}', 'updateData');
+    Route::delete('tahun_ajaran/delete_tahun_ajaran/{id}', 'deleteData');
+    Route::delete('tahun_ajaran/status_tahun_ajaran/{id}/{status}', 'statusData');
 });
 
 
