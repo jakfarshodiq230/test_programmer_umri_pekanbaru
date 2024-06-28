@@ -99,6 +99,12 @@
                             <li class="sidebar-item {{ $submenu == 'periode' ? 'active' : null }}"><a
                                     class='sidebar-link' href='{{ url('periode') }}'>Periode</a>
                             </li>
+                            <li class="sidebar-item {{ $submenu == 'peserta' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('peserta') }}'>Peserta</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
+                                class='sidebar-link' href='{{ url('penilaian') }}'>Penilaian</a>
+                        </li>
                         </ul>
                     </li>
 

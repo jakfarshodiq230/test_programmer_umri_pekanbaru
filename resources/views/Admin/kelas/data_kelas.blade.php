@@ -183,7 +183,7 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    $('.select2').val(null).trigger('change');
+                    $('#dataForm')[0].reset();
                     $('#datatables-ajax').DataTable().ajax.reload();
                     Swal.fire({
                         title: response.success ? 'Success' : 'Error',
@@ -194,7 +194,6 @@
 
                 },
                 error: function(response) {
-                    $('.select2').val(null).trigger('change');
                     Swal.fire({
                         title: response.success ? 'Success' : 'Error',
                         text: response.message,
@@ -228,7 +227,6 @@
                     },
                     success: function(response) {
                         // Reload the table data
-                        $('.select2').val(null).trigger('change');
                         Swal.fire({
                             title: response.success ? 'Success' : 'Error',
                             text: response.message,
@@ -238,7 +236,6 @@
                         $('#datatables-ajax').DataTable().ajax.reload();
                     },
                     error: function(response) {
-                        $('.select2').val(null).trigger('change');
                         Swal.fire({
                             title: response.success ? 'Success' : 'Error',
                             text: response.message,
@@ -272,7 +269,6 @@
                             _token: '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            $('.select2').val(null).trigger('change');
                             Swal.fire({
                                 title: response.error ? 'Error!' : 'Success!',
                                 text: response.message,
@@ -282,7 +278,6 @@
                             $('#datatables-ajax').DataTable().ajax.reload();
                         },
                         error: function(response) {
-                            $('.select2').val(null).trigger('change');
                             Swal.fire({
                                 title: 'Gagal!',
                                 text: response.message,

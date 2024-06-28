@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Data Periode Tahfidz
+                    Data Periode Kegiatan
                 </h1>
             </div>
             <div class="row">
