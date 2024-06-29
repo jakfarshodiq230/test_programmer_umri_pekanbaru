@@ -327,7 +327,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '{{ url('tahun_ajaran/status_tahun_ajaran') }}/' + id + '/' + status,
-                        type: 'DELETE',
+                        type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'
                         },

@@ -38,7 +38,7 @@ Route::controller(SiswaController::class)->group(function () {
     Route::post('siswa/store_siswa', 'storeData');
     Route::post('siswa/update_siswa/{id}', 'updateData');
     Route::delete('siswa/delete_siswa/{id}', 'deleteData');
-    Route::delete('siswa/status_siswa/{id}/{status}', 'statusData');
+    Route::put('siswa/status_siswa/{id}/{status}', 'statusData');
     Route::post('siswa/import_siswa', 'importExcel');
     Route::post('siswa/seting_siswa', 'setingData');
 });
@@ -50,7 +50,7 @@ Route::controller(GuruController::class)->group(function () {
     Route::post('guru/store_guru', 'storeData');
     Route::post('guru/update_guru/{id}', 'updateData');
     Route::delete('guru/delete_guru/{id}', 'deleteData');
-    Route::delete('guru/status_guru/{id}/{status}', 'statusData');
+    Route::put('guru/status_guru/{id}/{status}', 'statusData');
     Route::post('guru/import_guru', 'importExcel');
     Route::post('guru/seting_guru', 'setingData');
 });
@@ -62,7 +62,7 @@ Route::controller(KelasController::class)->group(function () {
     Route::post('kelas/store_kelas', 'storeData');
     Route::post('kelas/update_kelas/{id}', 'updateData');
     Route::delete('kelas/delete_kelas/{id}', 'deleteData');
-    Route::delete('kelas/status_kelas/{id}/{status}', 'statusData');
+    Route::put('kelas/status_kelas/{id}/{status}', 'statusData');
 });
 
 Route::controller(TahunAjaranController::class)->group(function () {
@@ -72,7 +72,7 @@ Route::controller(TahunAjaranController::class)->group(function () {
     Route::post('tahun_ajaran/store_tahun_ajaran', 'storeData');
     Route::post('tahun_ajaran/update_tahun_ajaran/{id}', 'updateData');
     Route::delete('tahun_ajaran/delete_tahun_ajaran/{id}', 'deleteData');
-    Route::delete('tahun_ajaran/status_tahun_ajaran/{id}/{status}', 'statusData');
+    Route::put('tahun_ajaran/status_tahun_ajaran/{id}/{status}', 'statusData');
 });
 
 Route::controller(PeriodeController::class)->group(function () {
@@ -83,7 +83,7 @@ Route::controller(PeriodeController::class)->group(function () {
     Route::post('periode/store_periode', 'storeData');
     Route::post('periode/update_periode/{id}', 'updateData');
     Route::delete('periode/delete_periode/{id}', 'deleteData');
-    Route::delete('periode/status_periode/{id}/{status}', 'statusData');
+    Route::put('periode/status_periode/{id}/{status}', 'statusData');
 });
 
 Route::controller(PesertaKegiatanController::class)->group(function () {

@@ -331,7 +331,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '{{ url('periode/status_periode') }}/' + id + '/' + status,
-                        type: 'DELETE',
+                        type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'
                         },

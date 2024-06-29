@@ -483,7 +483,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         url: '{{ url('guru/status_guru') }}/' + id + '/' + status,
-                        type: 'DELETE',
+                        type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'
                         },
