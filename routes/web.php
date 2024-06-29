@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\KelasController;
 use App\Http\Controllers\Admin\PeriodeController;
+use App\Http\Controllers\Admin\PesertaKegiatanController;
 use App\Http\Controllers\Admin\TahunAjaranController;
 use App\Http\Controllers\Admin\SetingEmailController;
 /*
@@ -83,6 +84,20 @@ Route::controller(PeriodeController::class)->group(function () {
     Route::post('periode/update_periode/{id}', 'updateData');
     Route::delete('periode/delete_periode/{id}', 'deleteData');
     Route::delete('periode/status_periode/{id}/{status}', 'statusData');
+});
+
+Route::controller(PesertaKegiatanController::class)->group(function () {
+    Route::get('peserta', 'index');
+    Route::get('peserta/data_periode_peserta', 'AjaxDataPeriode');
+    Route::get('peserta/data_list_periode_peserta/{periode}/{tahun}', 'DataListPesertaKegiatan');
+    Route::get('peserta/data_peserta/{periode}/{tahun}', 'AjaxData');
+    Route::get('peserta/data_siswa/{tahun}/{periode}', 'AjaxDataSiswa');
+    Route::get('peserta/edit_peserta/{id}', 'editData');
+    Route::post('peserta/store_peserta', 'storeData');
+    Route::post('peserta/update_peserta/{id}', 'updateData');
+    Route::delete('peserta/delete_peserta/{id}', 'deleteData');
+    Route::put('peserta/status_peserta/{id}/{status}', 'statusData');
+    Route::put('peserta/status_peserta_all/{tahun}/{periode}/{status}', 'statusDataAll');
 });
 
 

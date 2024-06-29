@@ -63,7 +63,7 @@
                                         <th>No.</th>
                                         <th>ID</th>
                                         <th>Periode</th>
-                                        <th>Kegaitan</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -72,7 +72,7 @@
                                         <th>No.</th>
                                         <th>ID</th>
                                         <th>Periode</th>
-                                        <th>Kegaitan</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
