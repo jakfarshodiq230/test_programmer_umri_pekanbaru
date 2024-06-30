@@ -8,11 +8,12 @@
             /* Optional: Adjust the border radius as needed */
         }
     </style>
+
     <main class="content">
         <div class="container-fluid">
             <div class="header">
-                <h1 class="header-title">
-                    Data Peserta Kegiatan
+                <h1 class="header-title" id="judul_header">
+                    Data Penialian Kegiatan {{ $judul_3 }}
                 </h1>
             </div>
             <div class="row">
@@ -23,18 +24,18 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Periode</th>
-                                        <th>Jumlah Peserta</th>
-                                        <th>Status</th>
+                                        <th>Guru</th>
+                                        <th>Siswa</th>
+                                        <th>Kelas</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Periode</th>
-                                        <th>Jumlah Peserta</th>
-                                        <th>Status</th>
+                                        <th>Guru</th>
+                                        <th>Siswa</th>
+                                        <th>Kelas</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
@@ -49,7 +50,8 @@
 @section('scripts')
     <!-- Your other content -->
     <script>
-        $('.select2').val(null).trigger('change');
+        var periode = "{{ $periode }}";
+        var tahun_ajaran = "{{ $tahun_ajaran }}";
 
         $(document).ready(function() {
             // menampilkan data
@@ -59,7 +61,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('peserta/data_periode_peserta') }}',
+                ajax: "{{ url('penilaian_kegiatan/data_penilaian_kegiatan') }}/" + periode + "/" + tahun_ajaran,
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -69,70 +71,71 @@
                         }
                     },
                     {
-                        data: 'nama_tahun_ajaran',
-                        name: 'nama_tahun_ajaran',
+                        data: 'nama_guru',
+                        name: 'nama_guru',
                         render: function(data, type, row) {
-                            var nama_tahun_ajaran = row.nama_tahun_ajaran.charAt(0).toUpperCase() +
-                                row.nama_tahun_ajaran.slice(1);
-                            var jenis_periode = row.jenis_periode.trim().toUpperCase();
-                            var formatted_string = nama_tahun_ajaran + ' [ ' + jenis_periode + ' ]';
-                            return formatted_string;
+                            return row.nama_guru.trim().toUpperCase();
                         }
 
                     },
                     {
-                        data: 'total_peserta_kegiatan',
-                        name: 'total_peserta_kegiatan',
-                    },
-                    {
-                        data: 'status_periode',
-                        name: 'status_periode',
+                        data: 'nama_siswa',
+                        name: 'nama_siswa',
                         render: function(data, type, row) {
-                            if (data == 1) {
-                                return '<span class="badge bg-success">Aktif</span>';
-                            } else if (data == 0) {
-                                return '<span class="badge bg-danger">Tidak Aktif</span>';
-                            } else {
-                                return '<span class="badge bg-warning">Hapus</span>';
-                            }
+                            return row.nama_siswa.trim().toUpperCase();
                         }
-
                     },
                     {
-                        data: 'status_periode',
-                        name: 'status_periode',
+                        data: 'nama_kelas',
+                        name: 'nama_kelas',
                         render: function(data, type, row) {
-                            if (data == 1) {
+                            return row.nama_kelas.trim().toUpperCase();
+                        }
+                    },
+                    {
+                        data: 'status_peserta_kegiatan',
+                        name: 'status_peserta_kegiatan',
+                        render: function(data, type, row) {
                                 return `
-                                <button class="btn btn-sm btn-primary addBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Peserta" data-id_periode="${row.id_periode}" data-tahun_ajaran="${row.id_tahun_ajaran}"><i class="fas fa-users"></i></button>
+                                <button class="btn btn-sm btn-info detalBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
+                                data-id_tahun="${row.id_tahun_ajaran}"
+                                data-id_periode="${row.id_periode}"
+                                data-id_siswa="${row.id_siswa}"
+                                data-id_guru="${row.id_guru}"
+                                data-id_kelas="${row.id_kelas}"
+                                >
+                                <i class="fas fa-eye"></i></button>
                             `;
-                            } else {
-                                return `
-                                <button class="btn btn-sm btn-secondary me-1 disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Peserta"><i class="fas fa-users"></i></button>
-                            `;
-                            }
                         }
                     },
                 ]
             });
         });
 
-        // delete 
-        $(document).on('click', '.addBtn', function() {
+        // detail nilai
+        $(document).on('click', '.detalBtn', function() {
+            var id_tahun = $(this).data('id_tahun');
             var id_periode = $(this).data('id_periode');
-            var tahun_ajaran = $(this).data('tahun_ajaran');
+            var id_siswa = $(this).data('id_siswa');
+            var id_guru = $(this).data('id_guru');
+            var id_kelas = $(this).data('id_kelas');
             // Make an Ajax call to delete the record
             Swal.fire({
-                title: 'Tambah Peserta Kegiatan',
-                text: 'Apakah Anda Ingin Menambah Peserta Kegiatan?',
+                title: 'Penilaian',
+                text: 'Apakah Anda Ingin Melihat Penilaian?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, saya akan menambah data'
+                confirmButtonText: 'Ya, saya akan melihat data penilaian'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var url = "{{ url('peserta/data_list_periode_peserta') }}/" + id_periode + "/" + tahun_ajaran;
+                    var url = "{{ url('penilaian_kegiatan/data_detail_periode_penilaian_kegiatan') }}/"
+                    + id_tahun + "/" 
+                    + id_periode + "/"
+                    + id_siswa + "/"
+                    + id_guru + "/"
+                    + id_kelas ;
                     window.location.href = url;
                 }
             });

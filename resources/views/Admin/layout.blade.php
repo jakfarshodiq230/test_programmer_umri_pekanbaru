@@ -103,7 +103,7 @@
                                     class='sidebar-link' href='{{ url('peserta') }}'>Peserta</a>
                             </li>
                             <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
-                                class='sidebar-link' href='{{ url('penilaian') }}'>Penilaian</a>
+                                class='sidebar-link' href='{{ url('penilaian_kegiatan') }}'>Penilaian</a>
                         </li>
                         </ul>
                     </li>

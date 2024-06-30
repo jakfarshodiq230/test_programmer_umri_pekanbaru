@@ -30,6 +30,7 @@ class PesertaKegiatan extends Model
                 DB::raw('count(peserta_kegiatan.id_periode) as total_peserta_kegiatan')
             )
             ->whereNull('periode.deleted_at')
+            ->whereNull('peserta_kegiatan.deleted_at')
             ->where('periode.judul_periode', 'setoran')
             ->groupBy(
                 'periode.id_periode',
@@ -66,6 +67,34 @@ class PesertaKegiatan extends Model
             ->where('tahun_ajaran.id_tahun_ajaran', $id_tahun_ajaran)
             ->orderBy('peserta_kegiatan.created_at', 'DESC')
             ->get();
+    
+        return $data; // Return the result set
+    }
+
+    public static function DataSiswaProfil($tahun,$periode,$siswa,$guru,$kelas)
+    {
+        $data = DB::table('peserta_kegiatan')
+            ->join('siswa', 'peserta_kegiatan.id_siswa', '=', 'peserta_kegiatan.id_siswa')
+            ->join('guru', 'peserta_kegiatan.id_guru', '=', 'guru.id_guru')
+            ->join('periode', 'peserta_kegiatan.id_periode', '=', 'periode.id_periode')
+            ->join('kelas', 'peserta_kegiatan.id_kelas', '=', 'kelas.id_kelas')
+            ->join('tahun_ajaran', 'peserta_kegiatan.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+            ->select(
+                'siswa.id_siswa',
+                'siswa.nama_siswa',
+                'siswa.foto_siswa',
+                'periode.jenis_periode',
+                'guru.nama_guru',
+                'kelas.nama_kelas',
+                'tahun_ajaran.nama_tahun_ajaran'
+            )
+            ->whereNull('peserta_kegiatan.deleted_at')
+            ->where('tahun_ajaran.id_tahun_ajaran', $tahun)
+            ->where('periode.id_periode', $periode)
+            ->where('siswa.id_siswa', $siswa)
+            ->where('guru.id_guru', $guru)
+            ->where('kelas.id_kelas', $kelas)
+            ->first();
     
         return $data; // Return the result set
     }

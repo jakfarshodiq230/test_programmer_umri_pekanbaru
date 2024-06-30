@@ -25,7 +25,6 @@
                                         <th>No.</th>
                                         <th>Periode</th>
                                         <th>Jumlah Peserta</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -34,7 +33,6 @@
                                         <th>No.</th>
                                         <th>Periode</th>
                                         <th>Jumlah Peserta</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
@@ -85,32 +83,12 @@
                         name: 'total_peserta_kegiatan',
                     },
                     {
-                        data: 'status_periode',
-                        name: 'status_periode',
+                        data: null,
+                        name: null,
                         render: function(data, type, row) {
-                            if (data == 1) {
-                                return '<span class="badge bg-success">Aktif</span>';
-                            } else if (data == 0) {
-                                return '<span class="badge bg-danger">Tidak Aktif</span>';
-                            } else {
-                                return '<span class="badge bg-warning">Hapus</span>';
-                            }
-                        }
-
-                    },
-                    {
-                        data: 'status_periode',
-                        name: 'status_periode',
-                        render: function(data, type, row) {
-                            if (data == 1) {
-                                return `
-                                <button class="btn btn-sm btn-primary addBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Peserta" data-id_periode="${row.id_periode}" data-tahun_ajaran="${row.id_tahun_ajaran}"><i class="fas fa-users"></i></button>
+                            return `
+                                <button class="btn btn-sm btn-secondary addBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Peserta" data-id_periode="${row.id_periode}" data-tahun_ajaran="${row.id_tahun_ajaran}"><i class="fas fa-eye"></i></button>
                             `;
-                            } else {
-                                return `
-                                <button class="btn btn-sm btn-secondary me-1 disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Peserta"><i class="fas fa-users"></i></button>
-                            `;
-                            }
                         }
                     },
                 ]
@@ -123,16 +101,17 @@
             var tahun_ajaran = $(this).data('tahun_ajaran');
             // Make an Ajax call to delete the record
             Swal.fire({
-                title: 'Tambah Peserta Kegiatan',
-                text: 'Apakah Anda Ingin Menambah Peserta Kegiatan?',
+                title: 'Penilaian',
+                text: 'Apakah Anda Ingin Melihat Penilaian?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, saya akan menambah data'
+                confirmButtonText: 'Ya, saya akan melihat data penilaian'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var url = "{{ url('peserta/data_list_periode_peserta') }}/" + id_periode + "/" + tahun_ajaran;
+                    var url = "{{ url('penilaian_kegiatan/data_list_periode_penilaian_kegiatan') }}/" + id_periode + "/" +
+                        tahun_ajaran;
                     window.location.href = url;
                 }
             });
