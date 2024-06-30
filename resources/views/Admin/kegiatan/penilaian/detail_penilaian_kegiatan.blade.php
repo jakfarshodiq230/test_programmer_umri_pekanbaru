@@ -44,9 +44,9 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body ">
                             <form>
-                                <div class="row">
+                                <div class="row border-navy">
                                     <div class="col-md-4 profile">
                                         <div class="profile-item mb-3 d-flex justify-content-between">
                                             <span class="label text-end" style="flex: 1;">Tahun Ajaran</span>
@@ -84,7 +84,6 @@
                                     </div>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                     {{-- tahfidz --}}
@@ -184,9 +183,9 @@
                     $('#avatarImg').attr('src', fotoSiswaUrl);
                 } else {
                     var fotoSiswaUrl = '{{ asset('assets/admin/img/avatars/avatar.jpg') }}'
-                    $('#avatarImg').attr('src',fotoSiswaUrl );
+                    $('#avatarImg').attr('src', fotoSiswaUrl);
                 }
-                
+
                 function capitalizeFirstLetter(string) {
                     return string.charAt(0).toUpperCase() + string.slice(1);
                 }
