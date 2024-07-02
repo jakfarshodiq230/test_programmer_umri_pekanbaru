@@ -115,7 +115,6 @@ Route::controller(PenilaianKegiatanController::class)->group(function () {
 
 
 // guru
-
 Route::prefix('guru/penilaian_kegiatan')->group(function () {
     Route::get('/', [PenilaianKegiatanGuruController::class, 'index'])->name('guru.penilaian_kegiatan.index');
     Route::get('/data_periode_penilaian_kegiatan/{guru}', [PenilaianKegiatanGuruController::class, 'AjaxDataPeriode'])->name('guru.penilaian_kegiatan.data_periode');
