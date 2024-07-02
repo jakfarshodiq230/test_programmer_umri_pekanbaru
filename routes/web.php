@@ -9,6 +9,9 @@ use App\Http\Controllers\Admin\PesertaKegiatanController;
 use App\Http\Controllers\Admin\PenilaianKegiatanController;
 use App\Http\Controllers\Admin\TahunAjaranController;
 use App\Http\Controllers\Admin\SetingEmailController;
+
+// guru
+use App\Http\Controllers\Guru\PenilaianKegiatanGuruController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -101,7 +104,6 @@ Route::controller(PesertaKegiatanController::class)->group(function () {
     Route::put('peserta/status_peserta_all/{tahun}/{periode}/{status}', 'statusDataAll');
 });
 
-
 Route::controller(PenilaianKegiatanController::class)->group(function () {
     Route::get('penilaian_kegiatan', 'index');
     Route::get('penilaian_kegiatan/data_periode_penilaian_kegiatan', 'AjaxDataPeriode');
@@ -110,6 +112,29 @@ Route::controller(PenilaianKegiatanController::class)->group(function () {
     Route::get('penilaian_kegiatan/data_detail_periode_penilaian_kegiatan/{tahun}/{periode}/{siswa}/{guru}/{kelas}', 'DataDetailPenilaianKegiatan');
     Route::get('penilaian_kegiatan/data_penilaian_kegiatan_all/{tahun}/{periode}/{siswa}/{guru}/{kelas}', 'AjaxDataDetailPenilaianKegiatan');
 });
+
+
+// guru
+
+Route::prefix('guru/penilaian_kegiatan')->group(function () {
+    Route::get('/', [PenilaianKegiatanGuruController::class, 'index'])->name('guru.penilaian_kegiatan.index');
+    Route::get('/data_periode_penilaian_kegiatan/{guru}', [PenilaianKegiatanGuruController::class, 'AjaxDataPeriode'])->name('guru.penilaian_kegiatan.data_periode');
+    Route::get('/data_list_periode_penilaian_kegiatan/{periode}/{tahun}', [PenilaianKegiatanGuruController::class, 'DataListPenilaianKegiatan'])->name('guru.penilaian_kegiatan.data_list_periode');
+    Route::get('/data_penilaian_kegiatan/{periode}/{tahun}/{guru}', [PenilaianKegiatanGuruController::class, 'AjaxData'])->name('guru.penilaian_kegiatan.data_penilaian');
+    Route::get('/data_detail_periode_penilaian_kegiatan/{tahun}/{periode}/{siswa}/{guru}/{kelas}', [PenilaianKegiatanGuruController::class, 'DataDetailPenilaianKegiatan'])->name('guru.penilaian_kegiatan.data_detail_periode');
+    Route::get('/data_penilaian_kegiatan_all/{tahun}/{periode}/{siswa}/{guru}/{kelas}', [PenilaianKegiatanGuruController::class, 'AjaxDataDetailPenilaianKegiatan'])->name('guru.penilaian_kegiatan.data_penilaian_all');
+
+    Route::get('/add_penilaian_kegiatan/{periode}/{tahun}', [PenilaianKegiatanGuruController::class, 'addPenilaianKegiatan'])->name('add_penialain');
+    Route::get('/data_siswa/{periode}/{tahun}/{guru}', [PenilaianKegiatanGuruController::class, 'AjaxDataPesertaPenilaian'])->name('Ajax_Peserta');
+    Route::post('/store_penilaian', [PenilaianKegiatanGuruController::class, 'storeData'])->name('storeData');
+    Route::get('/data_penilaian_kegiatan_sm/{periode}/{guru}/{kegiatan}', [PenilaianKegiatanGuruController::class, 'AjaxDataPesertaPenilaianSm'])->name('AjaxDataPesertaPenilaianSm');
+    Route::delete('/hapus_data_penilaian_kegiatan/{id}', [PenilaianKegiatanGuruController::class, 'deleteData'])->name('deleteData');
+    Route::get('/kirim_data_penilaian_kegiatan/{periode}/{guru}/{kegiatan}', [PenilaianKegiatanGuruController::class, 'kirimData'])->name('kirimData');
+    Route::delete('/hapus_penilaian_kegiatan/{id}', [PenilaianKegiatanGuruController::class, 'deleteDataPenilaian'])->name('deleteDataPenilaian');
+    Route::get('/edit_penilaian_kegiatan/{id}', [PenilaianKegiatanGuruController::class, 'editDataPenilaian'])->name('editDataPenilaian');
+    Route::post('/update_penilaian/{id}', [PenilaianKegiatanGuruController::class, 'updateData'])->name('updateData');
+});
+
 
 
 

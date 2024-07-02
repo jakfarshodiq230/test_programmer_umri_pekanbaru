@@ -230,8 +230,14 @@
                             }
                         },
                         {
-                            data: 'surah_penilaian_kegiatan',
-                            name: 'surah_penilaian_kegiatan'
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+                                return 'SURAH AWAL : ' + row.namaLatin_awal.trim().toUpperCase() +
+                                    ' [ ' + row.ayat_awal_penilaian_kegiatan + ' ]<br>' +
+                                    'SURAH AKHIR : ' + row.namaLatin_akhir.trim().toUpperCase() +
+                                    ' [ ' + row.ayat_akhir_penilaian_kegiatan + ' ]';
+                            }
                         },
                         {
                             data: 'nilai_tajwid_penilaian_kegiatan',
@@ -250,8 +256,8 @@
                             name: 'keterangan_penilaian_kegiatan'
                         },
                         {
-                            data: 'status_peserta_kegiatan',
-                            name: 'status_peserta_kegiatan',
+                            data: null,
+                            name: null,
                             render: function(data, type, row) {
                                 return `
                                     <button class="btn btn-sm btn-info detalBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
@@ -288,8 +294,14 @@
                             }
                         },
                         {
-                            data: 'surah_penilaian_kegiatan',
-                            name: 'surah_penilaian_kegiatan'
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+                                return 'SURAH AWAL : ' + row.namaLatin_awal.trim().toUpperCase() +
+                                    ' [ ' + row.ayat_awal_penilaian_kegiatan + ' ]<br>' +
+                                    'SURAH AKHIR : ' + row.namaLatin_akhir.trim().toUpperCase() +
+                                    ' [ ' + row.ayat_akhir_penilaian_kegiatan + ' ]';
+                            }
                         },
                         {
                             data: 'nilai_kelancaran_penilaian_kegiatan',
@@ -312,8 +324,8 @@
                             name: 'keterangan_penilaian_kegiatan'
                         },
                         {
-                            data: 'status_peserta_kegiatan',
-                            name: 'status_peserta_kegiatan',
+                            data: null,
+                            name: null,
                             render: function(data, type, row) {
                                 return `
                                     <button class="btn btn-sm btn-info detalBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
