@@ -149,7 +149,7 @@
                     <div class="row text-muted">
                         <div class="col-12 text-end">
                             <p class="mb-0">
-                                APKIS &copy; {{ date('Y') }}
+                                MY TAHFIDZ &copy; {{ date('Y') }}
                             </p>
                         </div>
                     </div>
