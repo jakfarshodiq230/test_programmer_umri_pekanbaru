@@ -98,7 +98,7 @@
                                         <th>Fasohah</th>
                                         <th>Kelancaran</th>
                                         <th>Keterangan</th>
-                                        <th>Action</th>
+                                        <th>Tanggal Penilaian</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -109,7 +109,7 @@
                                         <th>Fasohah</th>
                                         <th>Kelancaran</th>
                                         <th>Keterangan</th>
-                                        <th>Action</th>
+                                        <th>Tanggal Penilaian</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -129,7 +129,7 @@
                                         <th>Mad</th>
                                         <th>Waqof</th>
                                         <th>Keterangan</th>
-                                        <th>Action</th>
+                                        <th>Tanggal Penilaian</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -141,7 +141,7 @@
                                         <th>Mad</th>
                                         <th>Waqof</th>
                                         <th>Keterangan</th>
-                                        <th>Action</th>
+                                        <th>Tanggal Penilaian</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -153,6 +153,8 @@
     </main>
 @endsection
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/id.min.js"></script>
     <!-- Your other content -->
     <script>
         var id_tahun = "{{ $tahun }}";
@@ -256,16 +258,15 @@
                             name: 'keterangan_penilaian_kegiatan'
                         },
                         {
-                            data: null,
-                            name: null,
-                            render: function(data, type, row) {
-                                return `
-                                    <button class="btn btn-sm btn-info detalBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
-                                    data-id_penialain="${row.id_penialain_kegiatan}">
-                                    <i class="fas fa-eye"></i></button>
-                                    `;
-                            }
-                        }
+    data: 'tanggal_penilaian_kegiatan',
+    name: 'tanggal_penilaian_kegiatan',
+    render: function(data, type, row) {
+        if (data) {
+            return moment(data).locale('id').format('LL'); // For example, "17 Juli 2023"
+        }
+        return data;
+    }
+}
                     ]
                 });
             } else {
@@ -324,16 +325,17 @@
                             name: 'keterangan_penilaian_kegiatan'
                         },
                         {
-                            data: null,
-                            name: null,
-                            render: function(data, type, row) {
-                                return `
-                                    <button class="btn btn-sm btn-info detalBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
-                                    data-id_penialain="${row.id_penialain_kegiatan}">
-                                    <i class="fas fa-eye"></i></button>
-                                    `;
-                            }
-                        }
+    data: 'tanggal_penilaian_kegiatan',
+    name: 'tanggal_penilaian_kegiatan',
+    render: function(data, type, row) {
+        if (data) {
+            // Format the date to Indonesian format
+            return moment(data).locale('id').format('LL'); // For example, "17 Juli 2023"
+        }
+        return data;
+    }
+}
+
                     ]
                 });
             }

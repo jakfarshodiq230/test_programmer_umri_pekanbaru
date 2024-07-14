@@ -156,6 +156,7 @@ class PenilaianKegiatanGuruController extends Controller
                     'nilai_ghunnah_penilaian_kegiatan' => 'required|numeric',
                     'nilai_mad_penilaian_tahsin' => 'required|numeric',
                     'nilai_waqof_penilaian_tahsin' => 'required|numeric',
+                    'nilai_kelancaran_penilaian_kegiatan' => 'required|numeric',
                     'keterangan_penilaian_kegiatan' => 'required|string',
                 ]);
             }
@@ -199,6 +200,7 @@ class PenilaianKegiatanGuruController extends Controller
                     'nilai_ghunnah_penilaian_kegiatan' => $validatedData['nilai_ghunnah_penilaian_kegiatan'],
                     'nilai_mad_penilaian_tahsin' => $validatedData['nilai_mad_penilaian_tahsin'],
                     'nilai_waqof_penilaian_tahsin' => $validatedData['nilai_waqof_penilaian_tahsin'],
+                    'nilai_kelancaran_penilaian_kegiatan' => $validatedData['nilai_kelancaran_penilaian_kegiatan'],
                     'keterangan_penilaian_kegiatan' => $validatedData['keterangan_penilaian_kegiatan'],
                     'id_user' => 'GR-230624-3',
                 ];
@@ -286,6 +288,7 @@ class PenilaianKegiatanGuruController extends Controller
                         'nilai_ghunnah_penilaian_kegiatan' => $value->nilai_ghunnah_penilaian_kegiatan,
                         'nilai_mad_penilaian_tahsin' => $value->nilai_mad_penilaian_tahsin,
                         'nilai_waqof_penilaian_tahsin' => $value->nilai_waqof_penilaian_tahsin,
+                        'nilai_kelancaran_penilaian_kegiatan' => $value->nilai_kelancaran_penilaian_kegiatan,
                         'keterangan_penilaian_kegiatan' => $value->keterangan_penilaian_kegiatan,
                         'id_user' => $value->id_user,
                     ];

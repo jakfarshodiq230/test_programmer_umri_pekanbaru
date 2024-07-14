@@ -128,6 +128,7 @@
                                         <th>Ghunnah</th>
                                         <th>Mad</th>
                                         <th>Waqof</th>
+                                        <th>Kelancaran</th>
                                         <th>Keterangan</th>
                                         <th>Action</th>
                                     </tr>
@@ -141,6 +142,7 @@
                                         <th>Ghunnah</th>
                                         <th>Mad</th>
                                         <th>Waqof</th>
+                                        <th>Kelancaran</th>
                                         <th>Keterangan</th>
                                         <th>Action</th>
                                     </tr>
@@ -279,6 +281,19 @@
                                                             <option value="kurang">KURANG</option>
                                                         </select>
                                                     </div>
+                                                    <div class="mb-3">
+                                                        <label>Kelancaran</label>
+                                                        <select class="form-control select2 mb-4 me-sm-2 mt-0"
+                                                            name="keterangan_kelancaran" data-bs-toggle="select2"
+                                                            onchange="handleNilaiChange(this, $('select[name=\'nilai_kelancaran_penilaian_kegiatan\']'))"
+                                                            required>
+                                                            <option>PILIH</option>
+                                                            <option value="sangat_baik">SANGAT BAIK</option>
+                                                            <option value="baik">BAIK</option>
+                                                            <option value="cukup">CUKUP</option>
+                                                            <option value="kurang">KURANG</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 {{-- end tahsin --}}
                                                 <div class="mb-3">
@@ -382,6 +397,14 @@
                                                         <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                             name="nilai_waqof_penilaian_tahsin" data-bs-toggle="select2"
                                                             required>
+                                                            <option>PILIH</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Nilai Kelancaran</label>
+                                                        <select class="form-control select2 mb-4 me-sm-2 mt-0"
+                                                            name="nilai_kelancaran_penilaian_kegiatan"
+                                                            data-bs-toggle="select2" required>
                                                             <option>PILIH</option>
                                                         </select>
                                                     </div>
@@ -495,9 +518,9 @@
                             name: null,
                             render: function(data, type, row) {
                                 return `
-                                    <button class="btn btn-sm btn-info deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
+                                    <button class="btn btn-sm btn-danger deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" 
                                     data-id_penialain="${row.id_penilaian_kegiatan}">
-                                    <i class="fas fa-eye"></i></button>
+                                    <i class="fas fa-trash"></i></button>
                                     `;
                             }
                         }
@@ -570,6 +593,10 @@
                         {
                             data: 'nilai_waqof_penilaian_tahsin',
                             name: 'nilai_waqof_penilaian_tahsin'
+                        },
+                        {
+                            data: 'nilai_kelancaran_penilaian_kegiatan',
+                            name: 'nilai_kelancaran_penilaian_kegiatan'
                         },
                         {
                             data: 'keterangan_penilaian_kegiatan',
@@ -834,10 +861,10 @@
                         },
                         success: function(response) {
                             if (kegiatan === "tahfidz") {
-                                $('#datatables-ajax-tahfidz').DataTable().ajax.reload();
-                            } else {
-                                $('#datatables-ajax-tahsin').DataTable().ajax.reload();
-                            }
+                        $('#datatables-ajax-tahfidz').DataTable().ajax.reload();
+                    } else {
+                        $('#datatables-ajax-tahsin').DataTable().ajax.reload();
+                    }
                             Swal.fire({
                                 title: response.success ? 'Success' : 'Error',
                                 text: response.message,
@@ -848,10 +875,10 @@
                         },
                         error: function(response) {
                             if (kegiatan === "tahfidz") {
-                                $('#datatables-ajax-tahfidz').DataTable().ajax.reload();
-                            } else {
-                                $('#datatables-ajax-tahsin').DataTable().ajax.reload();
-                            }
+                        $('#datatables-ajax-tahfidz').DataTable().ajax.reload();
+                    } else {
+                        $('#datatables-ajax-tahsin').DataTable().ajax.reload();
+                    }
                             Swal.fire({
                                 title: response.success ? 'Success' : 'Error',
                                 text: response.message,
@@ -906,7 +933,6 @@
                             } else {
                                 $('#datatables-ajax-tahsin').DataTable().ajax.reload();
                             }
-                            $('#datatables-ajax').DataTable().ajax.reload();
                         },
                         error: function(xhr, status, error) {
                             Swal.close(); // Close the loading dialog
