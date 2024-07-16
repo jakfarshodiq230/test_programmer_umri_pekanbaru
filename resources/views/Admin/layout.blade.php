@@ -104,7 +104,28 @@
                             </li>
                             <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
                                 class='sidebar-link' href='{{ url('penilaian_kegiatan') }}'>Penilaian</a>
-                        </li>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Rapor
+                    </li>
+                    <li class="sidebar-item {{ $menu == 'rapor' ? 'active' : null }}">
+                        <a data-bs-target="#ui-rapor" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                                class="align-middle">Rapor</span>
+                        </a>
+                        <ul id="ui-rapor" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                            <li class="sidebar-item {{ $submenu == 'periode-rapor' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('periode_rapor') }}'>Periode</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'peserta-rapor' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('peserta_rapor') }}'>Peserta</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'penilaian-rapor' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('guru/penilaian_rapor') }}'>Penilaian</a>
+                            </li>
                         </ul>
                     </li>
 

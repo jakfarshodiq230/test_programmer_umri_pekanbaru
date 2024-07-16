@@ -179,6 +179,151 @@ class PesertaKegiatan extends Model
     
         return $data; // Return the result set
     }
+
+
+    // rapor
+    public static function DataPesertaRapor($id_tahun_ajaran, $jenisRapor, $tglMulai, $tglAkhir)
+    {
+        if ($jenisRapor == 'tahfidz') {
+            $keterangan_1 = 'tahfidz';
+            $keterangan_2 = 'murajaah';
+        } else {
+            $keterangan_1 = 'tahsin';
+            $keterangan_2 = 'materikulasi';
+        }
+    
+        $queryBase = DB::table('peserta_kegiatan')
+            ->join('tahun_ajaran', 'peserta_kegiatan.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+            ->join('periode', 'peserta_kegiatan.id_periode', '=', 'periode.id_periode')
+            ->join('penilaian_kegiatan', 'peserta_kegiatan.id_peserta_kegiatan', '=', 'penilaian_kegiatan.id_peserta_kegiatan')
+            ->select(
+                'periode.*',
+                'tahun_ajaran.*',
+                'peserta_kegiatan.*'
+            )
+            ->whereNull('peserta_kegiatan.deleted_at')
+            ->where('periode.judul_periode', 'setoran')
+            ->where('periode.jenis_periode', $jenisRapor)
+            ->where('tahun_ajaran.id_tahun_ajaran', $id_tahun_ajaran)
+            ->whereBetween('penilaian_kegiatan.tanggal_penilaian_kegiatan', [$tglMulai, $tglAkhir]);
+    
+        $queryKeterangan = clone $queryBase;
+        $queryKeterangan->addSelect(
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_1 . '\' 
+                THEN penilaian_kegiatan.nilai_tajwid_penilaian_kegiatan 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_tajwid_penilaian_kegiatan), 0) as nilai_tajwid_barau'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_1 . '\' 
+                THEN penilaian_kegiatan.nilai_fasohah_penilaian_kegiatan 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_fasohah_penilaian_kegiatan), 0) as nilai_fasohah_baru'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_1 . '\' 
+                THEN penilaian_kegiatan.nilai_kelancaran_penilaian_kegiatan 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_kelancaran_penilaian_kegiatan), 0) as nilai_kelancaran_baru'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_1 . '\' 
+                THEN penilaian_kegiatan.nilai_ghunnah_penilaian_kegiatan 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_ghunnah_penilaian_kegiatan), 0) as nilai_ghunnah_baru'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_1 . '\' 
+                THEN penilaian_kegiatan.nilai_mad_penilaian_tahsin 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_mad_penilaian_tahsin), 0) as nilai_mad_baru'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_1 . '\' 
+                THEN penilaian_kegiatan.nilai_waqof_penilaian_tahsin 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_waqof_penilaian_tahsin), 0) as nilai_waqof_baru'),
+
+            // keterangan 2
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_2 . '\' 
+                THEN penilaian_kegiatan.nilai_tajwid_penilaian_kegiatan 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_tajwid_penilaian_kegiatan), 0) as nilai_tajwid_lama'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_2 . '\' 
+                THEN penilaian_kegiatan.nilai_fasohah_penilaian_kegiatan 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_fasohah_penilaian_kegiatan), 0) as nilai_fasohah_lama'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_2 . '\' 
+                THEN penilaian_kegiatan.nilai_kelancaran_penilaian_kegiatan 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_kelancaran_penilaian_kegiatan), 0) as nilai_kelancaran_lama'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_2 . '\' 
+                THEN penilaian_kegiatan.nilai_ghunnah_penilaian_kegiatan 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_ghunnah_penilaian_kegiatan), 0) as nilai_ghunnah_lama'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_2 . '\' 
+                THEN penilaian_kegiatan.nilai_mad_penilaian_tahsin 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_mad_penilaian_tahsin), 0) as nilai_mad_lama'),
+            DB::raw('SUM(CASE 
+                WHEN penilaian_kegiatan.jenis_penilaian_kegiatan = \'' . $keterangan_2 . '\' 
+                THEN penilaian_kegiatan.nilai_waqof_penilaian_tahsin 
+                ELSE 0 
+            END) / NULLIF(COUNT(penilaian_kegiatan.nilai_waqof_penilaian_tahsin), 0) as nilai_waqof_lama'),
+
+            // surah
+            DB::raw('(
+                SELECT GROUP_CONCAT(DISTINCT namaLatin)
+                FROM (
+                    SELECT DISTINCT s.namaLatin
+                    FROM penilaian_kegiatan pk
+                    JOIN surah s ON s.nomor = pk.surah_awal_penilaian_kegiatan
+                    WHERE pk.id_peserta_kegiatan = peserta_kegiatan.id_peserta_kegiatan 
+                    AND pk.jenis_penilaian_kegiatan = \'' . $keterangan_1 . '\'
+                    
+                    UNION
+                    
+                    SELECT DISTINCT s.namaLatin
+                    FROM penilaian_kegiatan pk
+                    JOIN surah s ON s.nomor = pk.surah_awal_penilaian_kegiatan
+                    WHERE pk.id_peserta_kegiatan = peserta_kegiatan.id_peserta_kegiatan 
+                    AND pk.jenis_penilaian_kegiatan = \'' . $keterangan_1 . '\'
+                ) AS unique_surahs
+            ) AS surah_baru'),            
+            
+            // surah lama
+            DB::raw('(
+                SELECT GROUP_CONCAT(DISTINCT namaLatin)
+                FROM (
+                    SELECT DISTINCT s.namaLatin
+                    FROM penilaian_kegiatan pk
+                    JOIN surah s ON s.nomor = pk.surah_akhir_penilaian_kegiatan
+                    WHERE pk.id_peserta_kegiatan = peserta_kegiatan.id_peserta_kegiatan 
+                    AND pk.jenis_penilaian_kegiatan = \'' . $keterangan_2 . '\'
+                    
+                    UNION
+                    
+                    SELECT DISTINCT s.namaLatin
+                    FROM penilaian_kegiatan pk
+                    JOIN surah s ON s.nomor = pk.surah_akhir_penilaian_kegiatan
+                    WHERE pk.id_peserta_kegiatan = peserta_kegiatan.id_peserta_kegiatan 
+                    AND pk.jenis_penilaian_kegiatan = \'' . $keterangan_2 . '\'
+                ) AS unique_surahs
+            ) AS surah_lama')          
+
+            )
+        ->groupBy('peserta_kegiatan.id_peserta_kegiatan', 'periode.id_periode', 'tahun_ajaran.id_tahun_ajaran');
+    
+        $dataKeterangan = $queryKeterangan->get();
+    
+        return  $dataKeterangan;
+    }
+    
+    
+    
+    
+    
     
     
     
