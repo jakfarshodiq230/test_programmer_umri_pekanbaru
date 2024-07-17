@@ -270,7 +270,6 @@
                 url: '{{ url('peserta_rapor/ajax_detail_peserta') }}/' + id + '/' + peserta + '/' + tahun + '/' + jenjang + '/' + periode,
                 type: 'GET',
                 success: function(respons) {
-                    console.log(respons);
                    // Ensure data.periode and its properties exist
                     var nama_tahun_ajaran = respons.data.nama_tahun_ajaran || '';
                     var jenis_kegiatan = respons.data.jenis_periode || '';
@@ -419,19 +418,31 @@
                     
 
                     // nilai pengembangan diri
-                    var n_k_p = respons.data.n_k_p || 0;
-                    var n_m_p = respons.data.n_m_p || 0;
-                    var n_t_p = respons.data.n_t_p || 0;
-                    var n_th_p = respons.data.n_th_p || 0;
-                    var n_tf_p = respons.data.n_tf_p || 0;
-                    var n_jk_p = respons.data.n_jk_p || 0;
+                    var rating_n_k_p= getRating(respons.data.n_k_p);
+                    var rata_lama_n_k_p = respons.data.n_k_p.toFixed(2) + " ( " + rating_n_k_p + " )";
 
-                    $('#n_k').text(n_k_p.toFixed(2));
-                    $('#n_m').text(n_m_p.toFixed(2));
-                    $('#n_t').text(n_t_p.toFixed(2));
-                    $('#n_th').text(n_th_p.toFixed(2));
-                    $('#n_tf').text(n_tf_p.toFixed(2));
-                    $('#n_jk').text(n_jk_p.toFixed(2));
+                    var rating_n_m_p= getRating(respons.data.n_m_p);
+                    var rata_lama_n_m_p = respons.data.n_m_p.toFixed(2) + " ( " + rating_n_m_p + " )";
+
+                    var rating_n_t_p= getRating(respons.data.n_t_p);
+                    var rata_lama_n_t_p= respons.data.n_t_p.toFixed(2) + " ( " + rating_n_t_p + " )";
+
+
+                    var rating_n_th_p= getRating(respons.data.n_th_p);
+                    var rata_lama_n_th_p = respons.data.n_th_p.toFixed(2) + " ( " + rating_n_th_p + " )";
+
+                    var rating_n_tf_p= getRating(respons.data.n_tf_p);
+                    var rata_lama_n_tf_p = respons.data.n_tf_p.toFixed(2) + " ( " + rating_n_tf_p + " )";
+
+                    var rating_n_jk_p = getRating(respons.data.n_jk_p);
+                    var rata_lama_n_jk_p= respons.data.n_jk_p.toFixed(0) + " ( " + rating_n_jk_p + " )";
+
+                    $('#n_k').text(rating_n_k_p !== null ? rata_lama_n_k_p : '00.00');
+                    $('#n_m').text(rating_n_m_p !== null ? rata_lama_n_m_p : '00.00');
+                    $('#n_t').text(rating_n_t_p !== null ? rata_lama_n_t_p : '00.00');
+                    $('#n_th').text(rating_n_th_p !== null ? rata_lama_n_th_p : '00.00');
+                    $('#n_tf').text(rating_n_tf_p !== null ? rata_lama_n_tf_p : '00.00');
+                    $('#n_jk').text(rating_n_jk_p !== null ? rata_lama_n_jk_p : '00.00');
 
 
                 },

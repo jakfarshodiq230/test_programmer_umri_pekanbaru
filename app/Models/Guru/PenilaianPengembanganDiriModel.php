@@ -74,4 +74,36 @@ class PenilaianPengembanganDiriModel extends Model
         return $data; // Return the result set
     }
 
+    public static function DataAjaxEditPenilaianRapor($id,$rapor,$peserta,$tahun,$jenjang,$periode)  {
+        
+        $data = DB::table('rapor_pengembangan_diri')
+        ->leftjoin('siswa', 'rapor_pengembangan_diri.id_siswa', '=', 'siswa.id_siswa')
+        ->leftjoin('kelas', 'rapor_pengembangan_diri.id_kelas', '=', 'kelas.id_kelas')
+        ->leftjoin('guru', 'rapor_pengembangan_diri.id_guru', '=', 'guru.id_guru')
+        ->leftjoin('periode', 'rapor_pengembangan_diri.id_periode', '=', 'periode.id_periode')
+        ->leftjoin('rapor_kegiatan', 'rapor_pengembangan_diri.id_rapor', '=', 'rapor_kegiatan.id_rapor')
+        ->leftjoin('tahun_ajaran', 'rapor_pengembangan_diri.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+        ->select(
+            'siswa.*',
+            'kelas.*',
+            'guru.*',
+            'periode.*',
+            'rapor_pengembangan_diri.*',
+            'rapor_kegiatan.*',
+            'tahun_ajaran.*',
+        )
+        ->whereNull('rapor_pengembangan_diri.deleted_at')
+        ->whereNull('siswa.deleted_at')
+        ->where('rapor_pengembangan_diri.id_pengembangan_diri', $id)
+        ->where('rapor_pengembangan_diri.id_rapor', $rapor)
+        ->where('rapor_pengembangan_diri.id_siswa', $peserta)
+        ->where('rapor_pengembangan_diri.id_tahun_ajaran', $tahun)
+        ->where('rapor_pengembangan_diri.jenis_penilaian_kegiatan', $jenjang)
+        ->where('rapor_pengembangan_diri.id_periode', $periode)
+        ->where('rapor_pengembangan_diri.id_guru', 'GR-230624-3') // ganti dengan session nantinya
+        ->first();
+
+        return $data; // Return the result set
+    }
+
 }

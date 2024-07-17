@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TahunAjaranController;
 use App\Http\Controllers\Admin\SetingEmailController;
 use App\Http\Controllers\Admin\PeriodeRaporController;
 use App\Http\Controllers\Admin\PesertaRaporController;
+use App\Http\Controllers\Admin\KopController;
 
 // guru
 use App\Http\Controllers\Guru\PenilaianKegiatanGuruController;
@@ -139,6 +140,12 @@ Route::controller(PesertaRaporController::class)->group(function () {
     Route::get('peserta_rapor/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'AjaxDataDetailPesertaRapor');
 });
 
+Route::prefix('admin/kop')->group(function () {
+    Route::get('/', [KopController::class, 'index'])->name('admin.kop.index');
+    Route::post('/ajax_upload_kop', [KopController::class, 'storeData'])->name('admin.kop.storeData');
+    Route::get('/ajax_view_kop', [KopController::class, 'AjaxData'])->name('admin.kop.AjaxData');
+});
+
 
 // guru
 Route::prefix('guru/penilaian_kegiatan')->group(function () {
@@ -168,6 +175,9 @@ Route::prefix('guru/penilaian_rapor')->group(function () {
     Route::post('/ajax_store_peserta', [PenilaianRaporGuruController::class, 'storeData'])->name('guru.penilaian_rapor.storeData');
     Route::get('/detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'DataDetailPeserta'])->name('guru.penilaian_rapor.DataDetailPeserta');
     Route::get('/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxDataDetailPesertaRapor'])->name('guru.penilaian_rapor.AjaxDataDetailPesertaRapor');
+    Route::delete('/ajax_delete_penilaian_pengembangan/{id}/{idrapor}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxHapusPenilaianPengembanganDiriPesertaRapor'])->name('guru.penilaian_rapor.AjaxHapusPenilaianPengembanganDiriPesertaRapor');
+    Route::get('/ajax_edit_penilaian_pengembangan/{id}/{idrapor}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxEditPenilaianPengembanganDiriPesertaRapor'])->name('guru.penilaian_rapor.AjaxEditPenilaianPengembanganDiriPesertaRapor');
+    Route::post('/ajax_update_penilaian_pengembangan/{id}', [PenilaianRaporGuruController::class, 'updateData'])->name('guru.penilaian_rapor.updateData');
 });
 
 

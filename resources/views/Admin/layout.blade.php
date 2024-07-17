@@ -92,7 +92,7 @@
                     </li>
                     <li class="sidebar-item {{ $menu == 'kegiatan' ? 'active' : null }}">
                         <a data-bs-target="#ui-tahfidz" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                            <i class="align-middle me-2 fas fa-fw fa-address-card"></i> <span
                                 class="align-middle">Kegiatan</span>
                         </a>
                         <ul id="ui-tahfidz" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
@@ -105,6 +105,9 @@
                             <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
                                 class='sidebar-link' href='{{ url('penilaian_kegiatan') }}'>Penilaian</a>
                             </li>
+                            <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
+                                class='sidebar-link' href='{{ url('guru/penilaian_kegiatan') }}'>Penilaian</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -113,7 +116,7 @@
                     </li>
                     <li class="sidebar-item {{ $menu == 'rapor' ? 'active' : null }}">
                         <a data-bs-target="#ui-rapor" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                            <i class="align-middle me-2 fas fa-fw fa-address-book"></i> <span
                                 class="align-middle">Rapor</span>
                         </a>
                         <ul id="ui-rapor" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
@@ -125,6 +128,21 @@
                             </li>
                             <li class="sidebar-item {{ $submenu == 'penilaian-rapor' ? 'active' : null }}"><a
                                     class='sidebar-link' href='{{ url('guru/penilaian_rapor') }}'>Penilaian</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Seting
+                    </li>
+                    <li class="sidebar-item {{ $menu == 'seting' ? 'active' : null }}">
+                        <a data-bs-target="#ui-seting" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-cog"></i> <span
+                                class="align-middle">Seting</span>
+                        </a>
+                        <ul id="ui-seting" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                            <li class="sidebar-item {{ $submenu == 'kop' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/kop') }}'>Kop</a>
                             </li>
                         </ul>
                     </li>

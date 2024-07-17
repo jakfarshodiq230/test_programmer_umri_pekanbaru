@@ -41,7 +41,7 @@ class RaporKegiatanModel extends Model
         return $data; // Return the result set
     }
 
-    public static function DataAjaxPesertaRapor($id,$peserta,$guru, $tahun,$jenjang,$periode)  {
+    public static function DataAjaxPesertaRapor($id,$peserta, $tahun,$jenjang,$periode)  {
         
         $data = DB::table('rapor_kegiatan')
         ->join('siswa', 'rapor_kegiatan.id_siswa', '=', 'siswa.id_siswa')
