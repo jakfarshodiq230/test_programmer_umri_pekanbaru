@@ -19,36 +19,41 @@ class KopController extends Controller
     }   
 
     public function storeData(Request $request) {
-        // Validasi input
-        $request->validate([
-            'file_kop' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        try {
+            // Validasi input
+            $request->validate([
+                'file_kop' => 'nullable|image|mimes:jpg|max:2048',
+            ]);
 
-        // Cek apakah ada gambar yang di-upload
-        if ($request->hasFile('file_kop')) {
-            $image = $request->file('file_kop');
-            $imagePath = 'public/kop/';
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            // Simpan data ke database (update jika ada ID, insert jika tidak)
-            $data = KopModel::first();
-            if ($data) {
-                // Hapus gambar lama jika ada
-                if ($data->image_kop) {
-                    Storage::delete($imagePath . $data->image_kop);
+            // Cek apakah ada gambar yang di-upload
+            if ($request->hasFile('file_kop')) {
+                $image = $request->file('file_kop');
+                $imagePath = 'public/kop/';
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                // Simpan data ke database (update jika ada ID, insert jika tidak)
+                $data = KopModel::first();
+                if ($data) {
+                    // Hapus gambar lama jika ada
+                    if ($data->image_kop) {
+                        Storage::delete($imagePath . $data->image_kop);
+                    }
+                    // Update jika ID ada
+                    $data->image_kop = $imageName;
+                    $data->save();
+                } else {
+                    // Insert jika ID tidak ada
+                    $data = new KopModel();
+                    $data->image_kop = $imageName;
+                    $data->save();
                 }
-                // Update jika ID ada
-                $data->image_kop = $imageName;
-                $data->save();
-            } else {
-                // Insert jika ID tidak ada
-                $data = new KopModel();
-                $data->image_kop = $imageName;
-                $data->save();
+                // Simpan gambar ke storage
+                $image->storeAs($imagePath, $imageName);
             }
-            // Simpan gambar ke storage
-            $image->storeAs($imagePath, $imageName);
+            return response()->json(['success' => true, 'message' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during validation or data insertion
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }
-        return response()->json(['success' => true, 'message' => 'Data Berhasil Disimpan']);
     } 
 
     public function AjaxData(Request $request) {

@@ -285,8 +285,8 @@
                         name: 'foto_siswa',
                         render: function(data, type, row) {
                             return data == null ?
-                                `<img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" width="42" height="42" class="rounded-circle my-n1" alt="Avatar">` :
-                                `<img src="{{ url('storage') }}/${row.foto_siswa}" width="52" height="52" class="rounded-circle my-n1" alt="Avatar">`;
+                                `<img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" width="42" height="42" class="rounded-circle my-n1 ${row.status_siswa == 1 ? 'border border-success border-3' : 'border border-danger border-3'}" alt="Avatar">` :
+                                `<img src="{{ url('storage') }}/${row.foto_siswa}" width="52" height="52"  class="rounded-circle my-n1 ${row.status_siswa == 1 ? 'border border-success border-3' : 'border border-danger border-3'}" alt="Avatar">`;
                         }
                     },
                     {
@@ -312,9 +312,12 @@
                             // Convert tempat_lahir_siswa to start with uppercase letter
                             var tempat_lahir_formatted = row.tempat_lahir_siswa.charAt(0)
                                 .toUpperCase() + row.tempat_lahir_siswa.slice(1);
+                            var tanggal_lahir = new Date(row.tanggal_lahir_siswa);
+                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
+                            var tanggal_formatted = tanggal_lahir.toLocaleDateString('id-ID', options);
 
                             // Return formatted string
-                            return tempat_lahir_formatted + ' <br> ' + row.tanggal_lahir_siswa;
+                            return tempat_lahir_formatted + ' <br> ' + tanggal_formatted;
                         }
 
 

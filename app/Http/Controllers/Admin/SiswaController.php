@@ -50,9 +50,9 @@ class SiswaController extends Controller
                 'no_hp_siswa' => 'required|numeric|digits_between:10,15',
                 'email_siswa' => 'required|email|max:255|unique:siswa,email_siswa,NULL,id',
                 'tahun_masuk_siswa' => 'required|numeric|digits:4|min:2000|max:' . date('Y'),
-                'foto_siswa' => 'required|file|mimes:jpeg,png,jpg|max:2048'
+                'foto_siswa' => 'required|file|mimes:jpg|max:2048'
             ]);
-    
+
             // Generate unique ID based on current date and count
             $tanggal = now()->format('dmy');
             $nomorUrut = SiswaModel::whereDate('created_at', now()->toDateString())->count() + 1;
@@ -115,7 +115,7 @@ class SiswaController extends Controller
                 'no_hp_siswa' => 'required|numeric|digits_between:10,15',
                 'email_siswa' => 'required|email|max:255',
                 'tahun_masuk_siswa' => 'required|numeric|digits:4|min:2000|max:' . date('Y'),
-                'foto_siswa' => 'nullable|file|mimes:jpeg,png,jpg|max:2048' // nullable karena tidak selalu ada saat update
+                'foto_siswa' => 'nullable|file|mimes:jpg|max:2048' // nullable karena tidak selalu ada saat update
             ]);
 
             $siswaCek = SiswaModel::where('id_siswa',$request->id_siswa)->first();

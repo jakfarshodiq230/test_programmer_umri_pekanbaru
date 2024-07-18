@@ -178,6 +178,7 @@ Route::prefix('guru/penilaian_rapor')->group(function () {
     Route::delete('/ajax_delete_penilaian_pengembangan/{id}/{idrapor}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxHapusPenilaianPengembanganDiriPesertaRapor'])->name('guru.penilaian_rapor.AjaxHapusPenilaianPengembanganDiriPesertaRapor');
     Route::get('/ajax_edit_penilaian_pengembangan/{id}/{idrapor}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxEditPenilaianPengembanganDiriPesertaRapor'])->name('guru.penilaian_rapor.AjaxEditPenilaianPengembanganDiriPesertaRapor');
     Route::post('/ajax_update_penilaian_pengembangan/{id}', [PenilaianRaporGuruController::class, 'updateData'])->name('guru.penilaian_rapor.updateData');
+    Route::get('/cetak_rapor/{id}/{idrapor}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'CetakRapor'])->name('admin.penilaian_rapor.CetakRapor');
 });
 
 

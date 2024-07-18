@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Pdf\CustomPdf;
+
 use App\Models\Admin\PeriodeModel;
 use App\Models\Admin\SurahModel;
 
@@ -106,10 +108,7 @@ class PenilaianRaporGuruController extends Controller
                     'awal_ayat_lama' => 'required',
                     'akhir_ayat_lama' => 'required',
                     'n_k_p_k' => 'required',
-                    'n_m_p_k' => 'required',
-                    'n_t_p_k' => 'required',
                     'n_th_p_k' => 'required',
-                    'n_tf_p_k' => 'required',
                     'n_jk_p_k' => 'required',
                     'tggl_penilaian_p' => 'required | date',
                     'ketrangan_p' => 'required|string',
@@ -154,7 +153,7 @@ class PenilaianRaporGuruController extends Controller
                 ];
             } else {
                 $data = [
-                    'id_pengembangan_diri',
+                    'id_pengembangan_diri' => $id,
                     'id_rapor' => $validatedData['id_rapor'],
                     'id_tahun_ajaran' => $validatedData['id_tahun_ajaran'],
                     'id_periode' => $validatedData['id_periode'],
@@ -171,10 +170,7 @@ class PenilaianRaporGuruController extends Controller
                     'awal_ayat_lama' => $validatedData['awal_ayat_lama'],
                     'akhir_ayat_lama' => $validatedData['akhir_ayat_lama'],
                     'n_k_p' => $validatedData['n_k_p_k'],
-                    'n_m_p' => $validatedData['n_m_p_k'],
-                    'n_t_p' => $validatedData['n_t_p_k'],
                     'n_th_p' => $validatedData['n_th_p_k'],
-                    'n_tf_p' => $validatedData['n_tf_p_k'],
                     'n_jk_p' => $validatedData['n_jk_p_k'],
                     'tggl_penilaian_p' => $validatedData['tggl_penilaian_p'],
                     'ketrangan_p' => $validatedData['ketrangan_p'],
@@ -283,10 +279,7 @@ class PenilaianRaporGuruController extends Controller
                     'awal_ayat_lama' => 'required',
                     'akhir_ayat_lama' => 'required',
                     'n_k_p_k' => 'required',
-                    'n_m_p_k' => 'required',
-                    'n_t_p_k' => 'required',
                     'n_th_p_k' => 'required',
-                    'n_tf_p_k' => 'required',
                     'n_jk_p_k' => 'required',
                     'tggl_penilaian_p' => 'required | date',
                     'ketrangan_p' => 'required|string',
@@ -325,10 +318,7 @@ class PenilaianRaporGuruController extends Controller
                     'awal_ayat_lama' => $validatedData['awal_ayat_lama'],
                     'akhir_ayat_lama' => $validatedData['akhir_ayat_lama'],
                     'n_k_p' => $validatedData['n_k_p_k'],
-                    'n_m_p' => $validatedData['n_m_p_k'],
-                    'n_t_p' => $validatedData['n_t_p_k'],
                     'n_th_p' => $validatedData['n_th_p_k'],
-                    'n_tf_p' => $validatedData['n_tf_p_k'],
                     'n_jk_p' => $validatedData['n_jk_p_k'],
                     'tggl_penilaian_p' => $validatedData['tggl_penilaian_p'],
                     'ketrangan_p' => $validatedData['ketrangan_p'],
@@ -350,5 +340,63 @@ class PenilaianRaporGuruController extends Controller
             // Handle any exceptions that occur during validation or data insertion
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }
+    }
+
+    public function CetakRapor($id,$idRapor,$peserta,$tahun,$jenjang,$periode){
+        $pdf = new CustomPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        // Set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetTitle('Bukti Pembelian');
+
+        // Remove default header/footer
+        $pdf->setPrintHeader(true); // Enable custom header
+        $pdf->setPrintFooter(true); // Enable custom footer
+
+        // Set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // Set margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // Set auto page breaks
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // Set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->SetFont('dejavusans', '', 14, '', true);
+        $pdf->AddPage('P', 'A4');
+
+        $pdf->SetY(30);
+        // Add content
+        $nilai = PenilaianPengembanganDiriModel::DataAjaxEditPenilaianRapor($id,$idRapor,$peserta,$tahun,$jenjang,$periode);
+        if ($jenjang === 'tahfidz') {
+            $html = view('Guru/rapor/peserta/cetak_rapor_tahfidz',compact('nilai'));
+        } else {
+            $html = view('Guru/rapor/peserta/cetak_rapor_tahsin',compact('nilai'));
+        }
+        
+        // Print text using writeHTMLCell()
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Center the image
+        if (file_exists(public_path('storage/siswa/' . $nilai->foto_siswa))) {
+            $imagePath = public_path('storage/siswa/' . $nilai->foto_siswa);
+        } else {
+            $imagePath = public_path('assets/admin/img/avatars/pas_foto.jpg');
+        }        
+         // Correctly define the image path
+        $imageWidth = 30; // Set image width (3 cm)
+        $imageHeight = 40; // Set image height (4 cm)
+        $x = ($pdf->getPageWidth() - $imageWidth) / 2; // Calculate X position for centering
+        $y = 230; // Set a fixed Y position from the top
+        
+        // Place the image
+        $pdf->Image($imagePath, $x, $y, $imageWidth, $imageHeight, '', '', '', false, 300, '', false, false, 0, false, false, false);
+           
+
+        // Close and output PDF document
+        $pdf->Output($nilai->nama_siswa.'.pdf', 'I'); // 'I' for inline display or 'D' for download
     }
 }

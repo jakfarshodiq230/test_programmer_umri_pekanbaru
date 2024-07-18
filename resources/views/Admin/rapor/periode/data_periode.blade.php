@@ -75,7 +75,7 @@
 											</div>
                                             <div class="mb-3 col-md-4">
 												<label for="inputEmail4">Pesan Rapor</label>
-												<textarea class="form-control" name="pesan_periode" id="pesan_periode" rows="1" cols="10" placeholder="Pesan Rapor Untuk Peserta" ></textarea>
+												<textarea class="form-control" name="pesan_periode" id="pesan_periode" rows="1" cols="10" placeholder="Pesan Rapor Untuk Peserta" maxlength="100"></textarea>
 											</div>
 										</div>
 										<div class="text-end">
@@ -177,11 +177,13 @@
                                 row.nama_tahun_ajaran.slice(1);
                             var jenis_periode = row.jenis_periode.trim().toUpperCase();
                             var jenis_kegiatan = row.jenis_kegiatan.trim().toUpperCase();
-
+                            var tanggal = new Date(row.tggl_periode);
+                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
+                            var tanggal_formatted = tanggal.toLocaleDateString('id-ID', options);
                             return 'Periode : ' + nama_tahun_ajaran + '<br>' +
                             'Rapor : ' +  jenis_periode +' '+ jenis_kegiatan +
                             '<br> Penanggung Jawab : ' + row.tanggungjawab_periode +
-                            '<br> Tanggal Rapor : ' + row.tggl_periode;
+                            '<br> Tanggal Rapor : ' + tanggal_formatted;
                         }
 
                     },
@@ -190,9 +192,16 @@
                         data: null,
                         name: null,
                         render: function(data, type, row) {
-                            return 'Mulai Rapor : ' + row.tggl_awal_periode + '<br>' +
-                            'Akhir Rapor : ' + row.tggl_akhir_periode +
-                            '<br> Akhir Penilaian : ' + row.tggl_akhir_penilaian;
+                            var tanggal_mulai = new Date(row.tggl_awal_periode);
+                            var tanggal_akhir = new Date(row.tggl_akhir_periode);
+                            var tanggal = new Date(row.tggl_akhir_penilaian);
+                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
+                            var tanggal_mulai_1 = tanggal_mulai.toLocaleDateString('id-ID', options);
+                            var tanggal_akhir_2 = tanggal_akhir.toLocaleDateString('id-ID', options);
+                            var tanggal_formatted = tanggal.toLocaleDateString('id-ID', options);
+                            return 'Mulai Rapor : ' + tanggal_mulai_1 + '<br>' +
+                            'Akhir Rapor : ' + tanggal_akhir_2 +
+                            '<br> Akhir Penilaian : ' + tanggal_formatted;
                         }
 
                     },

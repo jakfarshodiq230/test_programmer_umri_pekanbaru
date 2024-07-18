@@ -254,14 +254,14 @@
         }
 
         function getRating(rata_baru) {
-            if (rata_baru >= 80) {
-                return "sangat baik"; // very good
-            } else if (rata_baru >= 60) {
-                return "baik"; // good
-            } else if (rata_baru >= 40) {
-                return "buruk"; // bad
-            } else {
-                return "sangat buruk"; // very bad
+            if(rata_baru >= 96 && rata_baru <= 100){
+                return "Sangat Baik";
+            }else if(rata_baru >= 86 && rata_baru <=95){
+                return "Baik";
+            }else if(rata_baru >= 80 && rata_baru <= 85){
+                return "Cukup";
+            }else{
+                return "Kurang";
             }
         }
         $(document).ready(function() {

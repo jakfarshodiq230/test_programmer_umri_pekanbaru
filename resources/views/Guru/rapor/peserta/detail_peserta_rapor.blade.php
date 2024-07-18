@@ -195,36 +195,56 @@
                                 </div>
                                 <div class="col-md-4 profile">
                                     <span class="mb-3 d-flex justify-content-center" >NILAI PENGEMBANGAN DIRI</span>
-                                    <div class="profile-item mb-3 d-flex justify-content-between">
-                                        <span class="label text-end" style="flex: 1;">Nilai Keaktifan dan Kedisiplinan</span>
-                                        <span class="separator">:</span>
-                                        <span class="value text-start" id="n_k" style="flex: 1;">-</span>
+                                    <div class="pengmbangan-tahfidz">
+                                        <div class="profile-item mb-3 d-flex justify-content-between" id="n_k_p">
+                                            <span class="label text-end" style="flex: 1;">Nilai Keaktifan dan Kedisiplinan</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_k" style="flex: 1;">-</span>
+                                        </div>
+                                        <div class="profile-item mb-3 d-flex justify-content-between" id="n_m_p">
+                                            <span class="label text-end" style="flex: 1;">Nilai Murojaah Hafalan Mandiri</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_m" style="flex: 1;">-</span>
+                                        </div>
+                                        <div class="profile-item mb-3 d-flex justify-content-between" id="n_t_p">
+                                            <span class="label text-end" style="flex: 1;">Nilai Tilawah Al-Quran Mandiri</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_t" style="flex: 1;">-</span>
+                                        </div>
+                                        <div class="profile-item mb-3 d-flex justify-content-between" id="n_th_p">
+                                            <span class="label text-end" style="flex: 1;">Nilai Tahsin Al-Qur'an</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_th" style="flex: 1;">-</span>
+                                        </div>
+                                        <div class="profile-item mb-3 d-flex justify-content-between" id="n_tf_p">
+                                            <span class="label text-end" style="flex: 1;">Nilai Tarjim / Tafhim Al-Quran</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_tf" style="flex: 1;">-</span>
+                                        </div>
+                                        <div class="profile-item mb-3 d-flex justify-content-between" id="n_jk_p">
+                                            <span class="label text-end" style="flex: 1;">Nilai Jumlah Khatam Al-Qur'an</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_jk" style="flex: 1;">-</span>
+                                        </div>
                                     </div>
-                                    <div class="profile-item mb-3 d-flex justify-content-between">
-                                        <span class="label text-end" style="flex: 1;">Nilai Murojaah Hafalan Mandiri</span>
-                                        <span class="separator">:</span>
-                                        <span class="value text-start" id="n_m" style="flex: 1;">-</span>
+                                    <div class="pengmbangan-tahsin">
+                                        <div class="profile-item mb-3 d-flex justify-content-between">
+                                            <span class="label text-end" style="flex: 1;">Nilai Keaktifan dan Kedisiplinan</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_k_th" style="flex: 1;">-</span>
+                                        </div>
+                                        <div class="profile-item mb-3 d-flex justify-content-between">
+                                            <span class="label text-end" style="flex: 1;">Nilai Tahsin Al-Qur'an</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_th_th" style="flex: 1;">-</span>
+                                        </div>
+                                        <div class="profile-item mb-3 d-flex justify-content-between">
+                                            <span class="label text-end" style="flex: 1;">Nilai Jumlah Khatam Al-Qur'an</span>
+                                            <span class="separator">:</span>
+                                            <span class="value text-start" id="n_jk_th" style="flex: 1;">-</span>
+                                        </div>
                                     </div>
-                                    <div class="profile-item mb-3 d-flex justify-content-between">
-                                        <span class="label text-end" style="flex: 1;">Nilai Tilawah Al-Quran Mandiri</span>
-                                        <span class="separator">:</span>
-                                        <span class="value text-start" id="n_t" style="flex: 1;">-</span>
-                                    </div>
-                                    <div class="profile-item mb-3 d-flex justify-content-between">
-                                        <span class="label text-end" style="flex: 1;">Nilai Tahsin Al-Qur'an</span>
-                                        <span class="separator">:</span>
-                                        <span class="value text-start" id="n_th" style="flex: 1;">-</span>
-                                    </div>
-                                    <div class="profile-item mb-3 d-flex justify-content-between">
-                                        <span class="label text-end" style="flex: 1;">Nilai Tarjim / Tafhim Al-Quran</span>
-                                        <span class="separator">:</span>
-                                        <span class="value text-start" id="n_tf" style="flex: 1;">-</span>
-                                    </div>
-                                    <div class="profile-item mb-3 d-flex justify-content-between">
-                                        <span class="label text-end" style="flex: 1;">Nilai Jumlah Khatam Al-Qur'an</span>
-                                        <span class="separator">:</span>
-                                        <span class="value text-start" id="n_jk" style="flex: 1;">-</span>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -249,19 +269,23 @@
 
         $(".tahsin-view-lama").hide();
         $(".tahfidz-view-lama").hide();
+
+        $(".pengmbangan-tahfidz").hide();
+        $(".pengmbangan-tahsin").hide();
+        
         function capitalizeFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
         function getRating(rata_baru) {
-            if (rata_baru >= 80) {
-                return "sangat baik"; // very good
-            } else if (rata_baru >= 60) {
-                return "baik"; // good
-            } else if (rata_baru >= 40) {
-                return "buruk"; // bad
-            } else {
-                return "sangat buruk"; // very bad
+            if(rata_baru >= 96 && rata_baru <= 100){
+                return "Sangat Baik";
+            }else if(rata_baru >= 86 && rata_baru <=95){
+                return "Baik";
+            }else if(rata_baru >= 80 && rata_baru <= 85){
+                return "Cukup";
+            }else{
+                return "Kurang";
             }
         }
         $(document).ready(function() {
@@ -293,7 +317,8 @@
                         $('#avatarImg').attr('src', fotoSiswaUrl);
                     }
                     
-                    if (jenis_kegiatan == 'tahfidz') {
+                    if (jenis_kegiatan === 'tahfidz') {
+                        $(".pengmbangan-tahfidz").show();
                         // rapor tahfidz baru
                         var n_j_baru = respons.data.n_j_baru || 0;
                         var n_f_baru = respons.data.n_f_baru || 0;
@@ -352,7 +377,37 @@
 
                         $(".tahfidz-view-baru").show();
                         $(".tahfidz-view-lama").show();
+
+                        // nilai pengembangan diri
+
+                        var rating_n_k_p= getRating(respons.data.n_k_p);
+                        var rata_lama_n_k_p = respons.data.n_k_p.toFixed(2) + " ( " + rating_n_k_p + " )";
+
+                        var rating_n_m_p= getRating(respons.data.n_m_p);
+                        var rata_lama_n_m_p = respons.data.n_m_p.toFixed(2) + " ( " + rating_n_m_p + " )";
+
+                        var rating_n_t_p= getRating(respons.data.n_t_p);
+                        var rata_lama_n_t_p= respons.data.n_t_p.toFixed(2) + " ( " + rating_n_t_p + " )";
+
+
+                        var rating_n_th_p= getRating(respons.data.n_th_p);
+                        var rata_lama_n_th_p = respons.data.n_th_p.toFixed(2) + " ( " + rating_n_th_p + " )";
+
+                        var rating_n_tf_p= getRating(respons.data.n_tf_p);
+                        var rata_lama_n_tf_p = respons.data.n_tf_p.toFixed(2) + " ( " + rating_n_tf_p + " )";
+
+                        var rating_n_jk_p = getRating(respons.data.n_jk_p);
+                        var rata_lama_n_jk_p= respons.data.n_jk_p.toFixed(0) + " ( " + rating_n_jk_p + " )";
+
+                        $('#n_k').text(rating_n_k_p !== null ? rata_lama_n_k_p : '00.00');
+                        $('#n_m').text(rating_n_m_p !== null ? rata_lama_n_m_p : '00.00');
+                        $('#n_t').text(rating_n_t_p !== null ? rata_lama_n_t_p : '00.00');
+                        $('#n_th').text(rating_n_th_p !== null ? rata_lama_n_th_p : '00.00');
+                        $('#n_tf').text(rating_n_tf_p !== null ? rata_lama_n_tf_p : '00.00');
+                        $('#n_jk').text(rating_n_jk_p !== null ? rata_lama_n_jk_p : '00.00');
                     } else {
+
+                        $(".pengmbangan-tahsin").show();
                         // rapor tahsin baru
                         var n_g_baru = respons.data.n_g_baru || null;
                         var n_m_baru = respons.data.n_m_baru || null;
@@ -413,39 +468,23 @@
 
                         $(".tahsin-view-baru").show();
                         $(".tahsin-view-lama").show();
+
+                        // nilai pengembangan diri
+
+                        var rating_n_k_p= getRating(respons.data.n_k_p);
+                        var rata_lama_n_k_p = respons.data.n_k_p.toFixed(2) + " ( " + rating_n_k_p + " )";
+
+                        var rating_n_th_p= getRating(respons.data.n_th_p);
+                        var rata_lama_n_th_p = respons.data.n_th_p.toFixed(2) + " ( " + rating_n_th_p + " )";
+
+                        var rating_n_jk_p = getRating(respons.data.n_jk_p);
+                        var rata_lama_n_jk_p= respons.data.n_jk_p.toFixed(0) + " ( " + rating_n_jk_p + " )";
+
+                        $('#n_k_th').text(rating_n_k_p !== null ? rata_lama_n_k_p : '00.00');
+                        $('#n_th_th').text(rating_n_th_p !== null ? rata_lama_n_th_p : '00.00');
+                        $('#n_jk_th').text(rating_n_jk_p !== null ? rata_lama_n_jk_p : '00.00');
                     }
-
-                    
-
-                    // nilai pengembangan diri
-
-                    var rating_n_k_p= getRating(respons.data.n_k_p);
-                    var rata_lama_n_k_p = respons.data.n_k_p.toFixed(2) + " ( " + rating_n_k_p + " )";
-
-                    var rating_n_m_p= getRating(respons.data.n_m_p);
-                    var rata_lama_n_m_p = respons.data.n_m_p.toFixed(2) + " ( " + rating_n_m_p + " )";
-
-                    var rating_n_t_p= getRating(respons.data.n_t_p);
-                    var rata_lama_n_t_p= respons.data.n_t_p.toFixed(2) + " ( " + rating_n_t_p + " )";
-
-
-                    var rating_n_th_p= getRating(respons.data.n_th_p);
-                    var rata_lama_n_th_p = respons.data.n_th_p.toFixed(2) + " ( " + rating_n_th_p + " )";
-
-                    var rating_n_tf_p= getRating(respons.data.n_tf_p);
-                    var rata_lama_n_tf_p = respons.data.n_tf_p.toFixed(2) + " ( " + rating_n_tf_p + " )";
-
-                    var rating_n_jk_p = getRating(respons.data.n_jk_p);
-                    var rata_lama_n_jk_p= respons.data.n_jk_p.toFixed(0) + " ( " + rating_n_jk_p + " )";
-
-                    $('#n_k').text(rating_n_k_p !== null ? rata_lama_n_k_p : '00.00');
-                    $('#n_m').text(rating_n_m_p !== null ? rata_lama_n_m_p : '00.00');
-                    $('#n_t').text(rating_n_t_p !== null ? rata_lama_n_t_p : '00.00');
-                    $('#n_th').text(rating_n_th_p !== null ? rata_lama_n_th_p : '00.00');
-                    $('#n_tf').text(rating_n_tf_p !== null ? rata_lama_n_tf_p : '00.00');
-                    $('#n_jk').text(rating_n_jk_p !== null ? rata_lama_n_jk_p : '00.00');
-
-
+                 
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + status + error);

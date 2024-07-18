@@ -42,7 +42,7 @@
                         </div>
                         <div class="card-body " style="text-align: center;">
                             <div id="loading-indicator" style="display:none;">Loading...</div>
-                            <img id="view-image" src="" alt="Dynamic Image" width="300" height="200" style="display:none;" />
+                            <img id="view-image" src="" alt="Dynamic Image" width="800" height="150" style="display:none;" />
                         </div>
                     </div>
                 </div>
@@ -95,6 +95,7 @@
             processData: false,
             contentType: false,
             success: function(response) {
+                console.log(response);
                 $('#dataForm')[0].reset();
                 loadImage();
                 Swal.fire({
@@ -111,7 +112,6 @@
                     icon: response.success ? 'success' : 'error',
                     confirmButtonText: 'OK'
                 });
-
             }
         });
     });

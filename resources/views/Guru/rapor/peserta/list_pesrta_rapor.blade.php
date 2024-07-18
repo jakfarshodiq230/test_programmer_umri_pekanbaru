@@ -79,44 +79,68 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="card" id="tahfidz">
-                        <div class="card-body">
-                            <table id="datatables-ajax" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
+                            <div class="mt-4" id="tahfidz">
+                                <table id="datatables-ajax-tahfidz" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Nama</th>
+                                            <th>Surah</th>
+                                            <th>Keaktifan dan Kedisiplinan</th>
+                                            <th>Murojaah Hafalan Mandiri</th>
+                                            <th>Tilawah Mandiri</th>
+                                            <th>Tahsin</th>
+                                            <th>Tarjim / Tafhim</th>
+                                            <th>Jumlah Khatam</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
                                         <th>No.</th>
-                                        <th>Nama</th>
-                                        <th>Surah</th>
-                                        <th>Keaktifan dan Kedisiplinan</th>
-                                        <th>Murojaah Hafalan Mandiri</th>
-                                        <th>Tilawah Mandiri</th>
-                                        <th>Tahsin</th>
-                                        <th>Tarjim / Tafhim</th>
-                                        <th>Jumlah Khatam</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                    <th>No.</th>
-                                        <th>Nama</th>
-                                        <th>Surah</th>
-                                        <th>Keaktifan dan Kedisiplinan</th>
-                                        <th>Murojaah Hafalan Mandiri</th>
-                                        <th>Tilawah Mandiri</th>
-                                        <th>Tahsin</th>
-                                        <th>Tarjim / Tafhim</th>
-                                        <th>Jumlah Khatam</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-
+                                            <th>Nama</th>
+                                            <th>Surah</th>
+                                            <th>Keaktifan dan Kedisiplinan</th>
+                                            <th>Murojaah Hafalan Mandiri</th>
+                                            <th>Tilawah Mandiri</th>
+                                            <th>Tahsin</th>
+                                            <th>Tarjim / Tafhim</th>
+                                            <th>Jumlah Khatam</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="mt-4" id="tahsin">
+                                <table id="datatables-ajax-tahsin" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Nama</th>
+                                            <th>Surah</th>
+                                            <th>Keaktifan dan Kedisiplinan</th>
+                                            <th>Tahsin</th>
+                                            <th>Jumlah Khatam</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                        <th>No.</th>
+                                            <th>Nama</th>
+                                            <th>Surah</th>
+                                            <th>Keaktifan dan Kedisiplinan</th>
+                                            <th>Tahsin</th>
+                                            <th>Jumlah Khatam</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
+
+
 
                     {{-- add atau edit guru --}}
                     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true"
@@ -172,7 +196,7 @@
                                                         <option>PILIH</option>
                                                     </select>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_k_p_k">
                                                     <label>NiLai Keaktifan dan Kedisiplinan</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_k_p_k" data-bs-toggle="select2"
@@ -184,7 +208,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_m_p_k">
                                                     <label>Nilai Murojaah Hafalan Mandiri</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_m_p_k" data-bs-toggle="select2"
@@ -196,7 +220,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_t_p_k">
                                                     <label>Nilai Tilawah Al-Quran Mandiri</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_t_p_k" data-bs-toggle="select2"
@@ -208,7 +232,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_th_p_k">
                                                     <label>Nilai Tahsin Al-Qur'an</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_th_p_k" data-bs-toggle="select2"
@@ -220,7 +244,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_tf_p_k">
                                                     <label>Nilai Tarjim / Tafhim Al-Quran</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_tf_p_k" data-bs-toggle="select2"
@@ -232,7 +256,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_jk_p_k">
                                                     <label>Jumlah Khatam Al-Qur'an</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_jk_p_k" data-bs-toggle="select2"
@@ -312,27 +336,27 @@
                                                         <option>PILIH</option>
                                                     </select>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3 " id="n_k_p">
                                                     <label for="n_k_p">NiLai Keaktifan dan Kedisiplinan</label>
                                                     <input type="text" class="form-control" name="n_k_p" readonly>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_m_p">
                                                     <label for="n_m_p">Nilai Murojaah Hafalan Mandiri</label>
                                                     <input type="text" class="form-control" name="n_m_p" readonly>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_t_p">
                                                     <label for="n_t_p">Nilai Tilawah Al-Quran Mandiri</label>
                                                     <input type="text" class="form-control" name="n_t_p" readonly>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_th_p">
                                                     <label for="n_th_p">Nilai Tahsin Al-Qur'an</label>
                                                     <input type="text" class="form-control" name="n_th_p" readonly>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="n_tf_p">Hasil Jumlah Khatam Al-Qur'an</label>
+                                                <div class="mb-3" id="n_tf_p">
+                                                    <label for="n_tf_p">Nilai Tarjim / Tafhim Al-Quran</label>
                                                     <input type="text" class="form-control" name="n_tf_p" readonly>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-3" id="n_jk_p">
                                                     <label for="n_jk_p">Hasil Jumlah Khatam Al-Qur'an</label>
                                                     <input type="text" class="form-control" name="n_jk_p" readonly>
                                                 </div>
@@ -361,11 +385,55 @@
 @section('scripts')
     <!-- Your other content -->
     <script>
+        $('.select2').val(null).trigger('change');
         $('#dataForm')[0].reset();
+
+        $('#n_k_p').hide();
+        $('#n_m_p').hide();
+        $('#n_t_p').hide();
+        $('#n_th_p').hide();
+        $('#n_tf_p').hide();
+        $('#n_jk_p').hide();
+
+        $('#n_k_p_k').hide();
+        $('#n_m_p_k').hide();
+        $('#n_t_p_k').hide();
+        $('#n_th_p_k').hide();
+        $('#n_tf_p_k').hide();
+        $('#n_jk_p_k').hide();
+
+        $('#tahfidz').hide();
+        $('#tahsin').hide();
+
+
         var periode = '{{ $periode }}';
         var jenjang = '{{ $jenjang }}';
         var tahun = '{{ $tahun }}';
         var guru = "GR-230624-3";
+
+        if(jenjang === 'tahfidz'){
+            $('#tahfidz').show();
+            $('#n_k_p').show();
+            $('#n_m_p').show();
+            $('#n_t_p').show();
+            $('#n_th_p').show();
+            $('#n_tf_p').show();
+            $('#n_jk_p').show();
+            $('#n_k_p_k').show();
+            $('#n_m_p_k').show();
+            $('#n_t_p_k').show();
+            $('#n_th_p_k').show();
+            $('#n_tf_p_k').show();
+            $('#n_jk_p_k').show();
+        }else{
+            $('#tahsin').show();
+            $('#n_k_p').show();
+            $('#n_th_p').show();
+            $('#n_jk_p').show();
+            $('#n_k_p_k').show();
+            $('#n_th_p_k').show();
+            $('#n_jk_p_k').show();
+        }
 
         function capitalizeFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
@@ -374,15 +442,14 @@
         function handleNilaiChange(selectElement, inputElement) {
             const selectedValue = parseFloat(selectElement.value);
             let ktr_p;
-
-            if (selectedValue >= 80) {
-                ktr_p = "Sangat Baik"; // very good
-            } else if (selectedValue >= 60) {
-                ktr_p = "Baik"; // good
-            } else if (selectedValue >= 40) {
-                ktr_p = "Buruk"; // bad
-            } else {
-                ktr_p = "Sangat Buruk"; // very bad
+            if(selectedValue >= 96 && selectedValue <= 100){
+                ktr_p = "Sangat Baik";
+            }else if(selectedValue >= 86 && selectedValue <=95){
+                ktr_p = "Baik";
+            }else if(selectedValue >= 80 && selectedValue <= 85){
+                ktr_p = "Cukup";
+            }else{
+                ktr_p = "Kurang";
             }
 
             $(inputElement).val(ktr_p);
@@ -395,7 +462,7 @@
 
             var siswaArray = listSurahBaru.split(',');
             $.each(siswaArray, function(key, value) {
-                if(surahSelected == value){
+                if(surahSelected != null & surahSelected == value){
                     selectSurahBaru.append('<option value="' + value + '" selected>' + 
                     value.trim().toUpperCase() + 
                     '</option>');
@@ -428,7 +495,7 @@
 
             if (surah != null) {
                 for (let index = 0; index <= surah.jumlahAyat; index++) {
-                    if (ayatSelected === index) {
+                    if (ayatSelected != null && ayatSelected == index) {
                         selectAyatAwal.append('<option value="' + index + '" selected>' + 
                         (index ) + // Display verse numbers starting from 1
                         '</option>');
@@ -448,6 +515,7 @@
                 url: '{{ url('guru/penilaian_rapor/ajax_list_peserta') }}/' + tahun + '/' + jenjang + '/' + periode,
                 method: 'GET',
                 success: function(data) {
+                    console.log(data);
                     var select = $('select[name="siswa_penilaian"]');
                     select.empty().append('<option value="">PILIH</option>');
 
@@ -471,11 +539,12 @@
                             $('#id_rapor').val(selectedSiswa.id_rapor);
                             
                             // Update the surah baru select
-                            updateSurahBaru(selectedSiswa.surah_baru, data.surah, 'awal_surah_baru', 'verseCount', 'awal_ayat_baru');
-                            updateSurahBaru(selectedSiswa.surah_baru, data.surah, 'akhir_surah_baru', 'verseCount', 'akhir_ayat_baru');
+                            updateSurahBaru(selectedSiswa.surah_baru, data.surah, selectedSiswa.awal_surah_baru === null ? null : selectedSiswa.awal_surah_baru, selectedSiswa.awal_ayat_baru === null ? null : selectedSiswa.awal_ayat_baru, 'awal_surah_baru', 'verseCount', 'awal_ayat_baru');
+                            updateSurahBaru(selectedSiswa.surah_baru, data.surah, selectedSiswa.akhir_surah_baru === null ? null : selectedSiswa.akhir_surah_baru, selectedSiswa.akhir_ayat_baru === null ? null : selectedSiswa.akhir_ayat_baru, 'akhir_surah_baru', 'verseCount', 'akhir_ayat_baru');
 
-                            updateSurahBaru(selectedSiswa.surah_lama, data.surah, 'awal_surah_lama', 'verseCount', 'awal_ayat_lama');
-                            updateSurahBaru(selectedSiswa.surah_lama, data.surah, 'akhir_surah_lama', 'verseCount', 'akhir_ayat_lama');
+                            updateSurahBaru(selectedSiswa.surah_lama, data.surah, selectedSiswa.awal_surah_lama === null ? null : selectedSiswa.awal_surah_baru, selectedSiswa.awal_ayat_lama === null ? null : selectedSiswa.awal_ayat_lama, 'awal_surah_lama', 'verseCount', 'awal_ayat_lama');
+                            updateSurahBaru(selectedSiswa.surah_lama, data.surah, selectedSiswa.akhir_surah_lama === null ? null : selectedSiswa.akhir_surah_lama, selectedSiswa.akhir_ayat_lama === null ? null : selectedSiswa.akhir_ayat_lama, 'akhir_surah_lama', 'verseCount', 'akhir_ayat_lama');
+
                         } else {
                             $('#kelas').val('');
                             $('#id_kelas').val('');
@@ -525,124 +594,227 @@
             });
 
             // menampilkan data
-            $('#datatables-ajax').DataTable({
-                processing: true,
-                serverSide: false,
-                retrieve: false,
-                destroy: true,
-                responsive: true,
-                ajax: {
-                        url: '{{ url('guru/penilaian_rapor/ajax_list_peserta') }}/' +tahun+'/'+jenjang+'/'+periode,
-                        dataSrc: 'nilai' // Specify the data source as 'nilai'
-                    },
-                columns: [{
-                        "data": null,
-                        "name": "rowNumber",
-                        "render": function(data, type, row, meta) {
-                            return meta.row +
-                                1;
-                        }
-                    },
-                    {
-                        data: 'nama_siswa',
-                        name: 'nama_siswa',
-                        render: function(data, type, row) {
-                            return 'Nama : '+row.nama_siswa.trim().toUpperCase() +
-                            '<br> Kelas : '+ row.nama_kelas.trim().toUpperCase();
-                        }
-                    },
-                    {
-                        data: null,
-                        name: null,
-                        render: function(data, type, row) {
-                            const awal_surah_baru = row.awal_ayat_baru === 0 ? row.awal_surah_baru : row.awal_surah_baru + ' [' + row.awal_ayat_baru + ']';
-                            const akhir_surah_baru = row.akhir_ayat_baru === 0 ? row.akhir_surah_baru : row.akhir_surah_baru + ' [' + row.akhir_ayat_baru + ']';
-
-                            const awal_surah_lama = row.awal_ayat_lama === 0 ? row.awal_surah_lama : row.awal_surah_lama + ' [' + row.awal_ayat_lama + ']';
-                            const akhir_surah_lama = row.akhir_ayat_lama === 0 ? row.akhir_surah_lama : row.akhir_surah_lama + ' [' + row.akhir_ayat_lama + ']';
-
-                            const ktr =  row.awal_surah_baru === null ? '-' : 'Hafalan Baru: ' + awal_surah_baru + ' S/d ' + akhir_surah_baru + '<br>Hafalan Lama: ' + awal_surah_lama + ' S/d ' + akhir_surah_lama;
-
-                            return ktr;
-                        }
-
-                    },
-                    {
-                        data: 'n_k_p',
-                        name: 'n_k_p',
-                        render: function(data, type, row) {
-                            return row.n_k_p || 0;
-                        }
-                    },
-                    {
-                        data: 'n_m_p',
-                        name: 'n_m_p',
-                        render: function(data, type, row) {
-                            return row.n_m_p || 0;
-                        }
-                    },
-                    {
-                        data: 'n_t_p',
-                        name: 'n_t_p',
-                        render: function(data, type, row) {
-                            return row.n_t_p || 0;
-                        }
-                    },
-                    {
-                        data: 'n_th_p',
-                        name: 'n_th_p',
-                        render: function(data, type, row) {
-                            return row.n_th_p || 0;
-                        }
-                    },
-                    {
-                        data: 'n_tf_p',
-                        name: 'n_tf_p',
-                        render: function(data, type, row) {
-                            return row.n_tf_p || 0;
-                        }
-                    },
-                    {
-                        data: 'n_jk_p',
-                        name: 'n_jk_p',
-                        render: function(data, type, row) {
-                            return row.n_jk_p || 0;
-                        }
-                    },
-                    {
-                        data: null,
-                        name: null,
-                        render: function(data, type, row) {
-
-                            let disabel;
-                            if (row.awal_surah_baru === null) {
-                                disabel = 'true';
-                            } else {
-                                disabel = 'false';
+            if(jenjang === 'tahfidz'){
+                $('#datatables-ajax-tahfidz').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    retrieve: false,
+                    destroy: true,
+                    responsive: true,
+                    ajax: {
+                            url: '{{ url('guru/penilaian_rapor/ajax_list_peserta') }}/' +tahun+'/'+jenjang+'/'+periode,
+                            dataSrc: 'nilai' // Specify the data source as 'nilai'
+                        },
+                    columns: [{
+                            "data": null,
+                            "name": "rowNumber",
+                            "render": function(data, type, row, meta) {
+                                return meta.row +
+                                    1;
                             }
-                            
-                                return `
-                                <button class="btn btn-sm btn-danger ${disabel === 'true' ? 'disabled' : ''} deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Penilaian Pengembangan Diri" 
-                                data-id="${row.id_pengembangan_diri}" data-rapor="${row.id_rapor}" data-peserta="${row.id_siswa}" 
-                                data-tahun="${row.id_tahun_ajaran}" data-jenjang="${row.jenis_periode}" 
-                                data-periode="${row.id_periode}"><i class="fas fa-trash"></i></button>
-                                <button class="btn btn-sm btn-primary ${disabel === 'true' ? 'disabled' : ''} lihatBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
-                                data-id="${row.id_rapor}" data-peserta="${row.id_siswa}" 
-                                data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" 
-                                data-periode="${row.id_periode}"><i class="fas fa-eye"></i></button>
-                                <button class="btn btn-sm btn-warning ${disabel === 'true' ? 'disabled' : ''} downloadBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Rapor" 
-                                data-id="${row.id_rapor}" data-peserta="${row.id_siswa}" 
-                                data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" 
-                                data-periode="${row.id_periode}"><i class="fas fa-download"></i></button>
-                                <button class="btn btn-sm btn-secondary ${disabel === 'true' ? 'disabled' : ''} editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Penilaian Pengembangan Diri" 
-                                data-id="${row.id_pengembangan_diri}" data-rapor="${row.id_rapor}" data-peserta="${row.id_siswa}" 
-                                data-tahun="${row.id_tahun_ajaran}" data-jenjang="${row.jenis_periode}" 
-                                data-periode="${row.id_periode}"><i class="fas fa-edit"></i></button>
-                            `;
-                        }
-                    },
-                ]
-            });
+                        },
+                        {
+                            data: 'nama_siswa',
+                            name: 'nama_siswa',
+                            render: function(data, type, row) {
+                                return 'Nama : '+row.nama_siswa.trim().toUpperCase() +
+                                '<br> Kelas : '+ row.nama_kelas.trim().toUpperCase();
+                            }
+                        },
+                        {
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+                                const awal_surah_baru = row.awal_ayat_baru === 0 ? row.awal_surah_baru : row.awal_surah_baru + ' [' + row.awal_ayat_baru + ']';
+                                const akhir_surah_baru = row.akhir_ayat_baru === 0 ? row.akhir_surah_baru : row.akhir_surah_baru + ' [' + row.akhir_ayat_baru + ']';
+
+                                const awal_surah_lama = row.awal_ayat_lama === 0 ? row.awal_surah_lama : row.awal_surah_lama + ' [' + row.awal_ayat_lama + ']';
+                                const akhir_surah_lama = row.akhir_ayat_lama === 0 ? row.akhir_surah_lama : row.akhir_surah_lama + ' [' + row.akhir_ayat_lama + ']';
+
+                                const ktr =  row.awal_surah_baru === null ? '-' : 'Hafalan Baru: ' + awal_surah_baru + ' S/d ' + akhir_surah_baru + '<br>Hafalan Lama: ' + awal_surah_lama + ' S/d ' + akhir_surah_lama;
+
+                                return ktr;
+                            }
+
+                        },
+                        {
+                            data: 'n_k_p',
+                            name: 'n_k_p',
+                            render: function(data, type, row) {
+                                return row.n_k_p || 0;
+                            }
+                        },
+                        {
+                            data: 'n_m_p',
+                            name: 'n_m_p',
+                            render: function(data, type, row) {
+                                return row.n_m_p || 0;
+                            }
+                        },
+                        {
+                            data: 'n_t_p',
+                            name: 'n_t_p',
+                            render: function(data, type, row) {
+                                return row.n_t_p || 0;
+                            }
+                        },
+                        {
+                            data: 'n_th_p',
+                            name: 'n_th_p',
+                            render: function(data, type, row) {
+                                return row.n_th_p || 0;
+                            }
+                        },
+                        {
+                            data: 'n_tf_p',
+                            name: 'n_tf_p',
+                            render: function(data, type, row) {
+                                return row.n_tf_p || 0;
+                            }
+                        },
+                        {
+                            data: 'n_jk_p',
+                            name: 'n_jk_p',
+                            render: function(data, type, row) {
+                                return row.n_jk_p || 0;
+                            }
+                        },
+                        {
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+
+                                let disabel;
+                                if (row.awal_surah_baru === null) {
+                                    disabel = 'true';
+                                } else {
+                                    disabel = 'false';
+                                }
+                                
+                                    return `
+                                    <button class="btn btn-sm btn-danger ${disabel === 'true' ? 'disabled' : ''} deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Penilaian Pengembangan Diri" 
+                                    data-id="${row.id_pengembangan_diri}" data-rapor="${row.id_rapor}" data-peserta="${row.id_siswa}" 
+                                    data-tahun="${row.id_tahun_ajaran}" data-jenjang="${row.jenis_periode}" 
+                                    data-periode="${row.id_periode}"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-primary ${disabel === 'true' ? 'disabled' : ''} lihatBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
+                                    data-id="${row.id_rapor}" data-peserta="${row.id_siswa}" 
+                                    data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" 
+                                    data-periode="${row.id_periode}"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-warning ${disabel === 'true' ? 'disabled' : ''} downloadBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Rapor" 
+                                    data-id="${row.id_pengembangan_diri}" data-rapor="${row.id_rapor}" data-peserta="${row.id_siswa}" 
+                                    data-tahun="${row.id_tahun_ajaran}" data-jenjang="${row.jenis_periode}" 
+                                    data-periode="${row.id_periode}"><i class="fas fa-download"></i></button>
+                                    <button class="btn btn-sm btn-secondary ${disabel === 'true' ? 'disabled' : ''} editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Penilaian Pengembangan Diri" 
+                                    data-id="${row.id_pengembangan_diri}" data-rapor="${row.id_rapor}" data-peserta="${row.id_siswa}" 
+                                    data-tahun="${row.id_tahun_ajaran}" data-jenjang="${row.jenis_periode}" 
+                                    data-periode="${row.id_periode}"><i class="fas fa-edit"></i></button>
+                                `;
+                            }
+                        },
+                    ]
+                });
+            }else{
+                $('#datatables-ajax-tahsin').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    retrieve: false,
+                    destroy: true,
+                    responsive: true,
+                    ajax: {
+                            url: '{{ url('guru/penilaian_rapor/ajax_list_peserta') }}/' +tahun+'/'+jenjang+'/'+periode,
+                            //dataSrc: 'nilai', // Specify the data source as 'nilai'
+                            dataSrc: function (json) {
+                                return json.nilai;
+                            }
+                        },
+                    columns: [{
+                            "data": null,
+                            "name": "rowNumber",
+                            "render": function(data, type, row, meta) {
+                                return meta.row +
+                                    1;
+                            }
+                        },
+                        {
+                            data: 'nama_siswa',
+                            name: 'nama_siswa',
+                            render: function(data, type, row) {
+                                return 'Nama : '+row.nama_siswa.trim().toUpperCase() +
+                                '<br> Kelas : '+ row.nama_kelas.trim().toUpperCase();
+                            }
+                        },
+                        {
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+                                const awal_surah_baru = row.awal_ayat_baru === 0 ? row.awal_surah_baru : row.awal_surah_baru + ' [' + row.awal_ayat_baru + ']';
+                                const akhir_surah_baru = row.akhir_ayat_baru === 0 ? row.akhir_surah_baru : row.akhir_surah_baru + ' [' + row.akhir_ayat_baru + ']';
+
+                                const awal_surah_lama = row.awal_ayat_lama === 0 ? row.awal_surah_lama : row.awal_surah_lama + ' [' + row.awal_ayat_lama + ']';
+                                const akhir_surah_lama = row.akhir_ayat_lama === 0 ? row.akhir_surah_lama : row.akhir_surah_lama + ' [' + row.akhir_ayat_lama + ']';
+
+                                const ktr =  row.awal_surah_baru === null ? '-' : 'Hafalan Baru: ' + awal_surah_baru + ' S/d ' + akhir_surah_baru + '<br>Hafalan Lama: ' + awal_surah_lama + ' S/d ' + akhir_surah_lama;
+
+                                return ktr;
+                            }
+
+                        },
+                        {
+                            data: 'n_k_p',
+                            name: 'n_k_p',
+                            render: function(data, type, row) {
+                                return row.n_k_p || 0;
+                            }
+                        },
+                        {
+                            data: 'n_th_p',
+                            name: 'n_th_p',
+                            render: function(data, type, row) {
+                                return row.n_th_p || 0;
+                            }
+                        },
+                        {
+                            data: 'n_jk_p',
+                            name: 'n_jk_p',
+                            render: function(data, type, row) {
+                                return row.n_jk_p || 0;
+                            }
+                        },
+                        {
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+
+                                let disabel;
+                                if (row.awal_surah_baru === null) {
+                                    disabel = 'true';
+                                } else {
+                                    disabel = 'false';
+                                }
+                                
+                                    return `
+                                    <button class="btn btn-sm btn-danger ${disabel === 'true' ? 'disabled' : ''} deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Penilaian Pengembangan Diri" 
+                                    data-id="${row.id_pengembangan_diri}" data-rapor="${row.id_rapor}" data-peserta="${row.id_siswa}" 
+                                    data-tahun="${row.id_tahun_ajaran}" data-jenjang="${row.jenis_periode}" 
+                                    data-periode="${row.id_periode}"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-primary ${disabel === 'true' ? 'disabled' : ''} lihatBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
+                                    data-id="${row.id_rapor}" data-peserta="${row.id_siswa}" 
+                                    data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" 
+                                    data-periode="${row.id_periode}"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-warning ${disabel === 'true' ? 'disabled' : ''} downloadBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Rapor" 
+                                    data-id="${row.id_pengembangan_diri}" data-rapor="${row.id_rapor}" data-peserta="${row.id_siswa}" 
+                                    data-tahun="${row.id_tahun_ajaran}" data-jenjang="${row.jenis_periode}" 
+                                    data-periode="${row.id_periode}"><i class="fas fa-download"></i></button>
+                                    <button class="btn btn-sm btn-secondary ${disabel === 'true' ? 'disabled' : ''} editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Penilaian Pengembangan Diri" 
+                                    data-id="${row.id_pengembangan_diri}" data-rapor="${row.id_rapor}" data-peserta="${row.id_siswa}" 
+                                    data-tahun="${row.id_tahun_ajaran}" data-jenjang="${row.jenis_periode}" 
+                                    data-periode="${row.id_periode}"><i class="fas fa-edit"></i></button>
+                                `;
+                            }
+                        },
+                    ]
+                });
+            }
         });
 
         // lihat data
@@ -685,8 +857,13 @@
                 success: function(response) {
                     $('#dataForm')[0].reset();
                     $('#formModal').modal('hide');
-                    $('#datatables-ajax').DataTable().ajax.reload();
+                    $('.select2').val(null).trigger('change');
 
+                    if(jenjang === 'tahfidz'){
+                        $('#datatables-ajax-tahfidz').DataTable().ajax.reload();
+                    }else{
+                        $('#datatables-ajax-tahsin').DataTable().ajax.reload();
+                    }
                     Swal.fire({
                         title: response.success ? 'Success' : 'Error',
                         text: response.message,
@@ -863,6 +1040,18 @@
                     });
                 }
             });
+        });
+
+        // cetak rapor
+        $(document).on('click', '.downloadBtn', function() {
+            var id = $(this).data('id');
+            var idRapor = $(this).data('rapor');
+            var peserta = $(this).data('peserta');
+            var tahun = $(this).data('tahun');
+            var jenjang = $(this).data('jenjang');
+            var periode = $(this).data('periode');
+            var url= '{{ url('guru/penilaian_rapor/cetak_rapor') }}/'+ id + '/'+ idRapor + '/'+ peserta + '/'+ tahun + '/' + jenjang + '/' + periode;
+            window.location.href = url;
         });
 
 

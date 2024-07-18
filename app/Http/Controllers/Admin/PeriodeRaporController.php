@@ -205,7 +205,6 @@ class PeriodeRaporController extends Controller
             ->where('id_tahun_ajaran', $tahun)
             ->first();
             $DataPesertaPeriode = PesertaKegiatan::DataPesertaRapor($tahun, $jenisRapor, $dataPeriode->tggl_awal_periode, $dataPeriode->tggl_akhir_periode);
-            dd($DataPesertaPeriode);
             // Convert stdClass objects to arrays
             $DataPesertaPeriode = json_decode(json_encode($DataPesertaPeriode), true);
     
