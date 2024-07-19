@@ -54,7 +54,7 @@ class KelasController extends Controller
                 'id_kelas' => $id,
                 'nama_kelas' => $validatedData['nama_kelas'],
                 'status_kelas' => '0',
-                'id_user' => 1,
+                'id_user' => session('user')['id_user'],
             ];
 
     

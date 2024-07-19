@@ -29,7 +29,7 @@ class SendEmailPendaftaran extends Mailable
     public function build()
     {
         return $this->subject('AKTIFASI AKUN')
-                    ->view('Admin.user.email') // Sesuaikan dengan path template email Anda
+                    ->view('Admin.users.users_email') // Sesuaikan dengan path template email Anda
                     ->with(['data' => $this->data]); // Mengirimkan data ke view
     }
 

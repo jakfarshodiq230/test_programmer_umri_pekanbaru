@@ -9,7 +9,7 @@
     <meta name="description" content="APKIS merupakan sistem manajemen sederhana dalam memajemen pemebelian, penjualan dan pengeluaran pengepul sawit untuk UKM menengah ke bawah">
     <meta name="author" content="Bootlab">
 
-    <title>APKIS</title>
+    <title>MY TAHFIDZ</title>
     <style>
         body {
             opacity: 0;
@@ -35,7 +35,6 @@
 <!-- SET YOUR THEME -->
 
 <body class="theme-warnig">
-    @include('sweetalert::alert')
     <div class="splash active">
         <div class="splash-icon"></div>
     </div>
@@ -49,36 +48,34 @@
                             <div class="card-body">
                                 <div class="m-sm-4">
                                     <div class="text-center">
-                                        <img src="{{ asset('assets/admin/img/icon_apkis.png') }}" alt="apkis"
-                                            class="img-fluid rounded-circle" width="132" height="132" />
+                                        <img src="{{ asset('assets/admin/img/avatars/logo.png') }}" alt="apkis"
+                                            class="img-fluid rounded-circle" width="100" height="100" />
                                     </div>
                                     <div class="text-center mt-2">
-                                        <h1 class="h2">APKIS</h1>
+                                        <h1 class="h2">MY TAHFIDZ</h1>
                                         <p class="lead">
                                             SILAHKAN MASUKAN USERNAME & PASSWORD
                                         </p>
                                     </div>
-                                    <form action="{{ url('action_login') }}" method="POST">
+                                    <form  method="POST" id="formLogin">
                                         @csrf
                                         <div class="mb-3">
                                             <label>Username</label>
-                                            <input class="form-control form-control-lg" type="text" name="email"
-                                                placeholder="Email" required />
+                                            <input class="form-control form-control-lg" type="text" name="username"
+                                                placeholder="NIK / NISN " required />
                                         </div>
                                         <div class="mb-3">
                                             <label>Password</label>
                                             <div class="input-group date" id="password-view"
                                                 data-target-input="nearest">
                                                 <input type="password" class="form-control " id="password" name="password"
-                                                    data-target="#password-view" placeholder="Password" required/>
+                                                    data-target="#password-view" placeholder="PASSWORD" required/>
                                                 <div class="input-group-text" onclick="togglePasswordVisibility()"><i class="fas fa-eye" id="toggle-icon"></i></div>
                                             </div>
                                         </div>
                                         <a href='{{ url('lupa_password') }}'>Lupa Password</a>
                                         <div class="text-center mt-3 mb-2">
-                                            <a class='btn btn-lg btn-secondary'
-                                                href='{{ url('daftar_pelanggan') }}'>Daftar</a>
-                                            <button type="submit" class="btn btn-lg btn-primary">Masuk</button>
+                                            <button type="submit" class="btn btn-lg btn-primary masukBtn" id="masukBtn">Masuk</button>
                                         </div>
                                         
                                     </form>
@@ -103,20 +100,54 @@
     </svg>
     <script src=" {{ asset('assets/admin/js/app.js') }}"></script>
     <script>
-        function togglePasswordVisibility() {
-            var passwordInput = document.getElementById('password');
-            var toggleIcon = document.getElementById('toggle-icon');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
+        $(document).ready(function() {
+            $('#formLogin').on('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Serialize form data
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: '{{ route("cek_login") }}', // Replace with your login route
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // Handle success response
+                        if (response.redirect) {
+                            window.location.href = '{{ url("") }}'+response.redirect; // Redirect on successful login
+                        } else {
+                            // Show error message
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        // Handle error response
+                        alert('Login failed. Please try again.');
+                    }
+                });
+            });
+
+            // Function to toggle password visibility
+            function togglePasswordVisibility() {
+                var passwordField = document.getElementById("password");
+                var toggleIcon = document.getElementById("toggle-icon");
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    toggleIcon.classList.remove("fa-eye");
+                    toggleIcon.classList.add("fa-eye-slash");
+                } else {
+                    passwordField.type = "password";
+                    toggleIcon.classList.remove("fa-eye-slash");
+                    toggleIcon.classList.add("fa-eye");
+                }
             }
-        }
+
+            // Bind the toggle function to the click event
+            $('#toggle-icon').on('click', togglePasswordVisibility);
+        });
+
     </script>
+
 </body>
 
 </html>

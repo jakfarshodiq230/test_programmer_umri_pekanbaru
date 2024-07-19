@@ -123,7 +123,7 @@ class PesertaKegiatanController extends Controller
                     'id_kelas' => $validatedData['kelas'],
                     'id_guru' => $validatedData['guru'],
                     'status_peserta_kegiatan' => '0',
-                    'id_user' => 1,
+                    'id_user' => session('user')['id_user'],
                 ];
     
                 // Store data into database

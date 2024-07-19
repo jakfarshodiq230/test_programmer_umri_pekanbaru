@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use App\Imports\SiswaImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Admin\SiswaModel;
@@ -70,6 +71,9 @@ class SiswaController extends Controller
             }
 
             // Prepare data for insertion
+            $date = new DateTime($validatedData['tanggal_lahir_siswa']);
+            $formatTanggal = $date->format('dmy');
+
             $data = [
                 'id_siswa' => $id,
                 'nisn_siswa' => $validatedData['nisn_siswa'],
@@ -82,7 +86,8 @@ class SiswaController extends Controller
                 'tahun_masuk_siswa' => $validatedData['tahun_masuk_siswa'],
                 'foto_siswa' => 'siswa/' . $customFileName,
                 'status_siswa' => '0',
-                'id_user' => 1,
+                'password' =>  Hash::make($formatTanggal),
+                'id_user' => session('user')['id_user'],
             ];
 
     

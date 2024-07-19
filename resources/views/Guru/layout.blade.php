@@ -23,36 +23,22 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <div class="splash active">
         <div class="splash-icon"></div>
     </div>
 
     <div class="wrapper">
         <nav id="sidebar" class="sidebar">
-            <a class='sidebar-brand' href='#'>
+            <a class='sidebar-brand' href='{{ url('/') }}'>
                 MY TAHFIDZ
             </a>
             <div class="sidebar-content">
                 <div class="sidebar-user">
                     <img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" class="img-fluid rounded-circle mb-2"
                         alt="Linda Miller" />
-                    <div class="fw-bold">{{ ucfirst(strtolower(session('user')['nama_user'])) }}</div>
-                    @php
-                        $levelUser = session('user')['level_user'];
-                    @endphp
-
-                    <small>
-                        @switch($levelUser)
-                            @case(1)
-                                Admin
-                                @break
-                            @case(2)
-                                Superadmin
-                                @break
-                            @default
-                                {{ ucfirst(strtolower($levelUser)) }}
-                        @endswitch
-                    </small>
+                    <div class="fw-bold">ADMIN/SUPERADMIN</div>
+                    <small>ADMIN/SUPERADMIN</small>
                 </div>
 
                 <ul class="sidebar-nav">
@@ -67,40 +53,10 @@
                         </a>
                         <ul id="main" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                             <li class="sidebar-item {{ $submenu == 'home' ? 'active' : null }}"><a class='sidebar-link'
-                                    href='{{ url('admin/dashboard') }}'>Default</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'statistik' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('home/statistik') }}'>Statistik</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'log_akses' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('log_akses') }}'>Akses Login</a>
+                                    href='{{ url('home') }}'>Default</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="sidebar-header">
-                        Master
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'master' ? 'active' : null }}">
-                        <a data-bs-target="#ui" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
-                                class="align-middle">Master</span>
-                        </a>
-                        <ul id="ui" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-
-                            <li class="sidebar-item {{ $submenu == 'siswa' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('siswa') }}'>Siswa</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'guru' ? 'active' : null }}"><a class='sidebar-link'
-                                    href='{{ url('guru') }}'>Guru</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'tahun_ajaran' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('tahun_ajaran') }}'>Tahun Ajaran</a>
-                            <li class="sidebar-item {{ $submenu == 'kelas' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('kelas') }}'>Kelas</a>
-                            </li>
-                        </ul>
-                    </li>
-
                     <li class="sidebar-header">
                         Kegiatan
                     </li>
@@ -110,15 +66,6 @@
                                 class="align-middle">Kegiatan</span>
                         </a>
                         <ul id="ui-tahfidz" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'periode' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('periode') }}'>Periode</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'peserta' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('peserta') }}'>Peserta</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
-                                class='sidebar-link' href='{{ url('penilaian_kegiatan') }}'>Penilaian</a>
-                            </li>
                             <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
                                 class='sidebar-link' href='{{ url('guru/penilaian_kegiatan') }}'>Penilaian</a>
                             </li>
@@ -134,47 +81,8 @@
                                 class="align-middle">Rapor</span>
                         </a>
                         <ul id="ui-rapor" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'periode-rapor' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('periode_rapor') }}'>Periode</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'peserta-rapor' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('peserta_rapor') }}'>Peserta</a>
-                            </li>
                             <li class="sidebar-item {{ $submenu == 'penilaian-rapor' ? 'active' : null }}"><a
                                     class='sidebar-link' href='{{ url('guru/penilaian_rapor') }}'>Penilaian</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Seting
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'seting' ? 'active' : null }}">
-                        <a data-bs-target="#ui-seting" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-cog"></i> <span
-                                class="align-middle">Seting</span>
-                        </a>
-                        <ul id="ui-seting" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'kop' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/kop') }}'>Kop</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'email' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/mail') }}'>Mail</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Users
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'user' ? 'active' : null }}">
-                        <a data-bs-target="#ui-user" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-users"></i> <span
-                                class="align-middle">Users</span>
-                        </a>
-                        <ul id="ui-user" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'user' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/users') }}'>Users</a>
                             </li>
                         </ul>
                     </li>
@@ -183,7 +91,8 @@
                         Logout
                     </li>
                     <li class="sidebar-item">
-                        <div class="d-flex justify-content-center"><a class='btn btn-outline-primary' id="logoutBtn">LOGOUT</a></div>
+                        <div class="d-flex justify-content-center"><a class='btn btn-outline-primary'
+                                href='{{ url('actionlogout') }}'>LOGOUT</a></div>
 
                     </li>
                 </ul>
@@ -201,12 +110,11 @@
                             <a class="nav-link dropdown-toggle position-relative" href="#" id="userDropdown"
                                 data-bs-toggle="dropdown">
                                 <i class="align-middle fas fa-user"></i>
-                                {{ ucfirst(session('user')['nama_user']) }}
+                                okey
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" id="logoutBtn2">
-                                    <i class="align-middle me-1 fas fa-fw fa-arrow-alt-circle-right"></i> Sign out
-                                </a>
+                                <a class="dropdown-item" href="{{ url('actionlogout') }}"><i
+                                        class="align-middle me-1 fas fa-fw fa-arrow-alt-circle-right"></i> Sign out</a>
                             </div>
                         </li>
                     </ul>
@@ -280,27 +188,11 @@
             });
 
         });
-
-        // logout
-        $(document).ready(function() {
-            $('#logoutBtn, #logoutBtn2').on('click', function() {
-                $.ajax({
-                    url: '{{ url('admin/login/logout') }}',
-                    type: 'GET',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        window.location.href = '{{ url('') }}' + response.redirect; 
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Logout failed: ', error);
-                    }
-                });
-            });
-        });
-
+    </script>
+    <script>
+        function handleClick() {
+            alert('Button clicked!');
+        }
     </script>
 </body>
 

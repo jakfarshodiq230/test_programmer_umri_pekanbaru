@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Imports\GuruImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -69,6 +70,8 @@ class GuruController extends Controller
             }
 
             // Prepare data for insertion
+            $date = new DateTime($validatedData['tanggal_lahir_guru']);
+            $formatTanggal = $date->format('dmy');
             $data = [
                 'id_guru' => $id,
                 'nik_guru' => $validatedData['nik_guru'],
@@ -80,7 +83,8 @@ class GuruController extends Controller
                 'email_guru' => $validatedData['email_guru'],
                 'foto_guru' => 'guru/' . $customFileName,
                 'status_guru' => '0',
-                'id_user' => 1,
+                'password' =>  Hash::make($formatTanggal),
+                'id_user' => session('user')['id_user'],
             ];
 
     

@@ -97,7 +97,7 @@ class PeriodeRaporController extends Controller
                     'pesan_periode' => $validatedData['pesan_periode'],
                     'judul_periode' => 'rapor',
                     'status_periode' => '0',
-                    'id_user' => 1,
+                    'id_user' => session('user')['id_user'],
                 ];
     
                 // Store data into database
@@ -236,7 +236,7 @@ class PeriodeRaporController extends Controller
                     'n_g_lama' => $value['nilai_ghunnah_lama'] ?? null,
                     'n_m_lama' => $value['nilai_mad_lama'] ?? null,
                     'n_w_lama' => $value['nilai_waqof_lama'] ?? null,
-                    'id_user' => 1,
+                    'id_user' => session('user')['id_user'],
                 ];
             
                 // Ensure necessary keys are present and valid before processing

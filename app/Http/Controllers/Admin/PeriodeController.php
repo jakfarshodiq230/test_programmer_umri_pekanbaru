@@ -77,7 +77,7 @@ class PeriodeController extends Controller
                     'jenis_periode' => $validatedData['kegiatan'],
                     'judul_periode' => 'setoran',
                     'status_periode' => '0',
-                    'id_user' => 1,
+                    'id_user' => session('user')['id_user'],
                 ];
     
                 // Store data into database

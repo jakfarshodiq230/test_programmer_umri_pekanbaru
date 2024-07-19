@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id_pelanggan', 'email', 'email_verified_at', 'password', 'nama_user', 'no_hp_user', 'alamat_user', 'level_user', 'status_user', 'remember_token',
+        'id', 'email', 'email_verified_at', 'password', 'nama_user', 'no_hp_user', 'alamat_user', 'level_user', 'status_user', 'remember_token',
     ];
 
     /**
@@ -46,17 +46,6 @@ class User extends Authenticatable
         $data = DB::table('users')
         ->select('users.*') 
         ->orderBy('users.created_at','DESC')
-        ->get();
-        return $data;
-    }
-
-    public static function DataAllId($id_pelanggan)
-    {
-        $data = DB::table('users')
-        ->join('pelanggan', 'users.id_pelanggan', '=', 'pelanggan.id_pelanggan')
-        ->select('pelanggan.*', 'users.*') 
-        ->orderBy('users.created_at','DESC')
-        ->where('pelanggan.id_pelanggan',$id_pelanggan)
         ->get();
         return $data;
     }

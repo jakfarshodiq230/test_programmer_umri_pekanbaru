@@ -286,7 +286,7 @@
                         render: function(data, type, row) {
                             return data == null ?
                                 `<img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" width="42" height="42" class="rounded-circle my-n1 ${row.status_siswa == 1 ? 'border border-success border-3' : 'border border-danger border-3'}" alt="Avatar">` :
-                                `<img src="{{ url('storage') }}/${row.foto_siswa}" width="52" height="52"  class="rounded-circle my-n1 ${row.status_siswa == 1 ? 'border border-success border-3' : 'border border-danger border-3'}" alt="Avatar">`;
+                                `<img src="{{ url('storage/siswa') }}/${row.foto_siswa}" width="52" height="52"  class="rounded-circle my-n1 ${row.status_siswa == 1 ? 'border border-success border-3' : 'border border-danger border-3'}" alt="Avatar">`;
                         }
                     },
                     {

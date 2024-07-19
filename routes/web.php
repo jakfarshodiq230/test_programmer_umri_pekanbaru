@@ -1,21 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\SiswaController;
-use App\Http\Controllers\Admin\GuruController;
-use App\Http\Controllers\Admin\KelasController;
-use App\Http\Controllers\Admin\PeriodeController;
-use App\Http\Controllers\Admin\PesertaKegiatanController;
-use App\Http\Controllers\Admin\PenilaianKegiatanController;
-use App\Http\Controllers\Admin\TahunAjaranController;
-use App\Http\Controllers\Admin\SetingEmailController;
-use App\Http\Controllers\Admin\PeriodeRaporController;
-use App\Http\Controllers\Admin\PesertaRaporController;
-use App\Http\Controllers\Admin\KopController;
+
+use App\Http\Controllers\LoginController;
+
+
 
 // guru
-use App\Http\Controllers\Guru\PenilaianKegiatanGuruController;
-use App\Http\Controllers\Guru\PenilaianRaporGuruController;
+// use App\Http\Controllers\Guru\PenilaianKegiatanGuruController;
+// use App\Http\Controllers\Guru\PenilaianRaporGuruController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,161 +20,16 @@ use App\Http\Controllers\Guru\PenilaianRaporGuruController;
 |
 */
 
+// Import routes siswa dan guru
+require base_path('routes/admin.php');
+require base_path('routes/guru.php');
 
-// admin
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/', 'index')->name('login')->middleware('guest');
+    Route::post('cek_login', 'authenticate')->name("cek_login");
+});
+
 
 //Route::middleware('auth')->group(function () {
-
-// halaman admin
-Route::controller(SetingEmailController::class)->group(function () {
-    Route::get('email', 'index');
-    Route::get('email/data_email', 'AjaxData');
-    Route::post('email/update_email/{id}', 'updateData');
-});
-
-Route::controller(SiswaController::class)->group(function () {
-    Route::get('siswa', 'index');
-    Route::get('siswa/data_siswa', 'AjaxData');
-    Route::get('siswa/edit_siswa/{id}', 'editData');
-    Route::post('siswa/store_siswa', 'storeData');
-    Route::post('siswa/update_siswa/{id}', 'updateData');
-    Route::delete('siswa/delete_siswa/{id}', 'deleteData');
-    Route::put('siswa/status_siswa/{id}/{status}', 'statusData');
-    Route::post('siswa/import_siswa', 'importExcel');
-    Route::post('siswa/seting_siswa', 'setingData');
-});
-
-Route::controller(GuruController::class)->group(function () {
-    Route::get('guru', 'index');
-    Route::get('guru/data_guru', 'AjaxData');
-    Route::get('guru/edit_guru/{id}', 'editData');
-    Route::post('guru/store_guru', 'storeData');
-    Route::post('guru/update_guru/{id}', 'updateData');
-    Route::delete('guru/delete_guru/{id}', 'deleteData');
-    Route::put('guru/status_guru/{id}/{status}', 'statusData');
-    Route::post('guru/import_guru', 'importExcel');
-    Route::post('guru/seting_guru', 'setingData');
-});
-
-Route::controller(KelasController::class)->group(function () {
-    Route::get('kelas', 'index');
-    Route::get('kelas/data_kelas', 'AjaxData');
-    Route::get('kelas/edit_kelas/{id}', 'editData');
-    Route::post('kelas/store_kelas', 'storeData');
-    Route::post('kelas/update_kelas/{id}', 'updateData');
-    Route::delete('kelas/delete_kelas/{id}', 'deleteData');
-    Route::put('kelas/status_kelas/{id}/{status}', 'statusData');
-});
-
-Route::controller(TahunAjaranController::class)->group(function () {
-    Route::get('tahun_ajaran', 'index');
-    Route::get('tahun_ajaran/data_tahun_ajaran', 'AjaxData');
-    Route::get('tahun_ajaran/edit_tahun_ajaran/{id}', 'editData');
-    Route::post('tahun_ajaran/store_tahun_ajaran', 'storeData');
-    Route::post('tahun_ajaran/update_tahun_ajaran/{id}', 'updateData');
-    Route::delete('tahun_ajaran/delete_tahun_ajaran/{id}', 'deleteData');
-    Route::put('tahun_ajaran/status_tahun_ajaran/{id}/{status}', 'statusData');
-});
-
-Route::controller(PeriodeController::class)->group(function () {
-    Route::get('periode', 'index');
-    Route::get('periode/data_tahun', 'AjaxDataTahun');
-    Route::get('periode/data_periode', 'AjaxData');
-    Route::get('periode/edit_periode/{id}', 'editData');
-    Route::post('periode/store_periode', 'storeData');
-    Route::post('periode/update_periode/{id}', 'updateData');
-    Route::delete('periode/delete_periode/{id}', 'deleteData');
-    Route::put('periode/status_periode/{id}/{status}', 'statusData');
-});
-
-Route::controller(PesertaKegiatanController::class)->group(function () {
-    Route::get('peserta', 'index');
-    Route::get('peserta/data_periode_peserta', 'AjaxDataPeriode');
-    Route::get('peserta/data_list_periode_peserta/{periode}/{tahun}', 'DataListPesertaKegiatan');
-    Route::get('peserta/data_peserta/{periode}/{tahun}', 'AjaxData');
-    Route::get('peserta/data_siswa/{tahun}/{periode}', 'AjaxDataSiswa');
-    Route::get('peserta/edit_peserta/{id}', 'editData');
-    Route::post('peserta/store_peserta', 'storeData');
-    Route::post('peserta/update_peserta/{id}', 'updateData');
-    Route::delete('peserta/delete_peserta/{id}', 'deleteData');
-    Route::put('peserta/status_peserta/{id}/{status}', 'statusData');
-    Route::put('peserta/status_peserta_all/{tahun}/{periode}/{status}', 'statusDataAll');
-});
-
-Route::controller(PenilaianKegiatanController::class)->group(function () {
-    Route::get('penilaian_kegiatan', 'index');
-    Route::get('penilaian_kegiatan/data_periode_penilaian_kegiatan', 'AjaxDataPeriode');
-    Route::get('penilaian_kegiatan/data_list_periode_penilaian_kegiatan/{periode}/{tahun}', 'DataListPenilaianKegiatan');
-    Route::get('penilaian_kegiatan/data_penilaian_kegiatan/{periode}/{tahun}', 'AjaxData');
-    Route::get('penilaian_kegiatan/data_detail_periode_penilaian_kegiatan/{tahun}/{periode}/{siswa}/{guru}/{kelas}', 'DataDetailPenilaianKegiatan');
-    Route::get('penilaian_kegiatan/data_penilaian_kegiatan_all/{tahun}/{periode}/{siswa}/{guru}/{kelas}', 'AjaxDataDetailPenilaianKegiatan');
-});
-
-// rapor
-Route::controller(PeriodeRaporController::class)->group(function () {
-    Route::get('periode_rapor', 'index');
-    Route::get('periode_rapor/data_tahun', 'AjaxDataTahun');
-    Route::get('periode_rapor/data_periode_rapor', 'AjaxData');
-    Route::get('periode_rapor/edit_periode_rapor/{id}', 'editData');
-    Route::post('periode_rapor/store_periode_rapor', 'storeData');
-    Route::post('periode_rapor/update_periode_rapor/{id}', 'updateData');
-    Route::delete('periode_rapor/delete_periode_rapor/{id}', 'deleteData');
-    Route::put('periode_rapor/status_periode_rapor/{id}/{status}', 'statusData');
-    Route::get('periode_rapor/peserta_periode_rapor/{tahun}/{rapor}/{periode}', 'PesertaRaport');
-});
-
-Route::controller(PesertaRaporController::class)->group(function () {
-    Route::get('peserta_rapor', 'index');
-    Route::get('peserta_rapor/data_peserta_rapor', 'AjaxData');
-    Route::get('peserta_rapor/sync/{tahun}/{rapor}/{peserta}', 'SyncRapor');
-    Route::get('peserta_rapor/list_peserta/{tahun}/{rapor}/{periode}', 'DataPeserta');
-    Route::get('peserta_rapor/ajax_list_peserta/{tahun}/{rapor}/{periode}', 'AjaxDataPesertaRapor');
-    Route::get('peserta_rapor/detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'DataDetailPeserta');
-    Route::get('peserta_rapor/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'AjaxDataDetailPesertaRapor');
-});
-
-Route::prefix('admin/kop')->group(function () {
-    Route::get('/', [KopController::class, 'index'])->name('admin.kop.index');
-    Route::post('/ajax_upload_kop', [KopController::class, 'storeData'])->name('admin.kop.storeData');
-    Route::get('/ajax_view_kop', [KopController::class, 'AjaxData'])->name('admin.kop.AjaxData');
-});
-
-
-// guru
-Route::prefix('guru/penilaian_kegiatan')->group(function () {
-    Route::get('/', [PenilaianKegiatanGuruController::class, 'index'])->name('guru.penilaian_kegiatan.index');
-    Route::get('/data_periode_penilaian_kegiatan/{guru}', [PenilaianKegiatanGuruController::class, 'AjaxDataPeriode'])->name('guru.penilaian_kegiatan.data_periode');
-    Route::get('/data_list_periode_penilaian_kegiatan/{periode}/{tahun}', [PenilaianKegiatanGuruController::class, 'DataListPenilaianKegiatan'])->name('guru.penilaian_kegiatan.data_list_periode');
-    Route::get('/data_penilaian_kegiatan/{periode}/{tahun}/{guru}', [PenilaianKegiatanGuruController::class, 'AjaxData'])->name('guru.penilaian_kegiatan.data_penilaian');
-    Route::get('/data_detail_periode_penilaian_kegiatan/{tahun}/{periode}/{siswa}/{guru}/{kelas}', [PenilaianKegiatanGuruController::class, 'DataDetailPenilaianKegiatan'])->name('guru.penilaian_kegiatan.data_detail_periode');
-    Route::get('/data_penilaian_kegiatan_all/{tahun}/{periode}/{siswa}/{guru}/{kelas}', [PenilaianKegiatanGuruController::class, 'AjaxDataDetailPenilaianKegiatan'])->name('guru.penilaian_kegiatan.data_penilaian_all');
-
-    Route::get('/add_penilaian_kegiatan/{periode}/{tahun}', [PenilaianKegiatanGuruController::class, 'addPenilaianKegiatan'])->name('add_penialain');
-    Route::get('/data_siswa/{periode}/{tahun}/{guru}', [PenilaianKegiatanGuruController::class, 'AjaxDataPesertaPenilaian'])->name('Ajax_Peserta');
-    Route::post('/store_penilaian', [PenilaianKegiatanGuruController::class, 'storeData'])->name('storeData');
-    Route::get('/data_penilaian_kegiatan_sm/{periode}/{guru}/{kegiatan}', [PenilaianKegiatanGuruController::class, 'AjaxDataPesertaPenilaianSm'])->name('AjaxDataPesertaPenilaianSm');
-    Route::delete('/hapus_data_penilaian_kegiatan/{id}', [PenilaianKegiatanGuruController::class, 'deleteData'])->name('deleteData');
-    Route::get('/kirim_data_penilaian_kegiatan/{periode}/{guru}/{kegiatan}', [PenilaianKegiatanGuruController::class, 'kirimData'])->name('kirimData');
-    Route::delete('/hapus_penilaian_kegiatan/{id}', [PenilaianKegiatanGuruController::class, 'deleteDataPenilaian'])->name('deleteDataPenilaian');
-    Route::get('/edit_penilaian_kegiatan/{id}', [PenilaianKegiatanGuruController::class, 'editDataPenilaian'])->name('editDataPenilaian');
-    Route::post('/update_penilaian/{id}', [PenilaianKegiatanGuruController::class, 'updateData'])->name('updateData');
-});
-
-Route::prefix('guru/penilaian_rapor')->group(function () {
-    Route::get('/', [PenilaianRaporGuruController::class, 'index'])->name('guru.penilaian_rapor.index');
-    Route::get('/data_peserta_rapor', [PenilaianRaporGuruController::class, 'AjaxData'])->name('guru.penilaian_rapor.AjaxData');
-    Route::get('/list_peserta/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'DataPeserta'])->name('guru.penilaian_rapor.DataPeserta');
-    Route::get('/ajax_list_peserta/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxDataPesertaRapor'])->name('guru.penilaian_rapor.AjaxDataPesertaRapor');
-    Route::post('/ajax_store_peserta', [PenilaianRaporGuruController::class, 'storeData'])->name('guru.penilaian_rapor.storeData');
-    Route::get('/detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'DataDetailPeserta'])->name('guru.penilaian_rapor.DataDetailPeserta');
-    Route::get('/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxDataDetailPesertaRapor'])->name('guru.penilaian_rapor.AjaxDataDetailPesertaRapor');
-    Route::delete('/ajax_delete_penilaian_pengembangan/{id}/{idrapor}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxHapusPenilaianPengembanganDiriPesertaRapor'])->name('guru.penilaian_rapor.AjaxHapusPenilaianPengembanganDiriPesertaRapor');
-    Route::get('/ajax_edit_penilaian_pengembangan/{id}/{idrapor}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'AjaxEditPenilaianPengembanganDiriPesertaRapor'])->name('guru.penilaian_rapor.AjaxEditPenilaianPengembanganDiriPesertaRapor');
-    Route::post('/ajax_update_penilaian_pengembangan/{id}', [PenilaianRaporGuruController::class, 'updateData'])->name('guru.penilaian_rapor.updateData');
-    Route::get('/cetak_rapor/{id}/{idrapor}/{peserta}/{tahun}/{rapor}/{periode}', [PenilaianRaporGuruController::class, 'CetakRapor'])->name('admin.penilaian_rapor.CetakRapor');
-});
-
-
-
 
 //});

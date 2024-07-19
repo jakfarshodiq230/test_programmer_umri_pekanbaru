@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Log;
-use App\Models\MailModel;
+use App\Models\Admin\MailModel;
 
 class AppServiceProvider extends ServiceProvider
 {

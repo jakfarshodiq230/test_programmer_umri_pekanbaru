@@ -24,7 +24,7 @@ class SiswaImport implements ToModel, WithHeadingRow
             'email_siswa' => $row['email_siswa'],
             'tahun_masuk_siswa' => $row['tahun_masuk_siswa'],
             'status_siswa' => '0',
-            'id_user' => 1,
+            'id_user' => session('user')['id_user'],
         ]);
     }
 }

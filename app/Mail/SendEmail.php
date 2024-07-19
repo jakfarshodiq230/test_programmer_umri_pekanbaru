@@ -28,7 +28,7 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('PENDAFTARAN AKUN APKIS')
+        return $this->subject('SETING MAIL')
                     ->view('Admin.email.email') // Sesuaikan dengan path template email Anda
                     ->with(['data' => $this->data]); // Mengirimkan data ke view
     }

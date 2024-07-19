@@ -70,7 +70,7 @@ class PesertaRaporController extends Controller
                     'n_g_lama' => $value['nilai_ghunnah_lama'] ?? null,
                     'n_m_lama' => $value['nilai_mad_lama'] ?? null,
                     'n_w_lama' => $value['nilai_waqof_lama'] ?? null,
-                    'id_user' => 1,
+                    'id_user' => session('user')['id_user'],
                 ];
             
                 // Ensure necessary keys are present and valid before processing

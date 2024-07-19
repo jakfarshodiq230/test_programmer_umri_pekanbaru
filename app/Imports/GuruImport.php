@@ -23,7 +23,7 @@ class GuruImport implements ToModel, WithHeadingRow
             'no_hp_guru' => $row['no_hp_guru'],
             'email_guru' => $row['email_guru'],
             'status_guru' => '0',
-            'id_user' => 1,
+            'id_user' => session('user')['id_user'],
         ]);
     }
 }

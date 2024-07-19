@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use RealRashid\SweetAlert\Facades\Alert;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendEmailPendaftaran;
@@ -14,22 +13,32 @@ use App\Mail\SendEmailVerifikasi;
 use Carbon\Carbon;
 
 use App\Models\User;
-use App\Models\Admin\PelangganModel;
 
 class UserController extends Controller
 {
+    // send email
+    private function createMessageData($request, $judul, $title, $password = null, $link = null)
+    {
+        return [
+            'judul' => $judul,
+            'title' => $title,
+            'nama_user' => $request->nama_user,
+            'email_user' => $request->email,
+            'alamat_user' => $request->alamat_user,
+            'no_hp_user' => $request->no_hp_user,
+            'password_user' => $password,
+            'tanggal_daftar' => Carbon::now(),
+            'link' => $link,
+        ];
+    }
+
     public function index(){
-        $menu = 'pelanggan';
+        $menu = 'user';
         $submenu= 'user';
-        return view ('Admin/user/data_user',compact('menu','submenu'));
+        return view ('Admin/users/data_users',compact('menu','submenu'));
     }
     public function AjaxData(Request $request) {
-        if(Auth::User()->level_user == 'superadmin'){
-            $DataUser = User::DataAll();
-        }else if(Auth::User()->level_user == 'admin'){
-            $DataUser = User::DataAllId(Auth::User()->id_pelanggan);
-        }
-        
+        $DataUser = User::DataAll();
         if ($DataUser == true) {
             return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data' => $DataUser]);
         }else{
@@ -37,7 +46,7 @@ class UserController extends Controller
         }
     }
 
-    public function editData($id)
+    public function AjaxEditData($id)
     {
         $DataUser = User::where('id',$id)->first();
         if ($DataUser == true) {
@@ -47,44 +56,90 @@ class UserController extends Controller
         }
     }
 
-    public function storeData(Request $request)
+    public function AjaxStoreData(Request $request)
     {
-       $data = [
-           'id_pelanggan' =>  $request->pelanggan,
-           'email' => $request->email_user,
-           'password' => Hash::make($request->password),
-           'nama_user' => $request->nama_user,
-           'no_hp_user' => $request->no_hp_user,
-           'alamat_user' => $request->alamat_user,
-           'level_user' => $request->level_user,
-           'status_user' => 1,
-           
-       ];
+        try {
+            $validatedData = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string|max:255',
+                'nama_user' => 'required|string',
+                'no_hp_user' => 'required|string|max:15', 
+                'alamat_user' => 'required|string|max:255',
+                'level_user' => 'required|integer', 
+            ]);          
 
-        //kirim email
-        $data_pesan = [
-            'title' => 'AKUN APKIS',
-            'id_pelanggan' => $request->pelanggan,
-            'nama_pelanggan' => $request->nama_user,
-            'email_pelanggan' => $request->email_user,
-            'nama_usaha' => $request->nama_usaha,
-            'alamat_usaha' => $request->alamat_user,
-            'no_hp_usaha' => $request->no_hp_user,
-            'password' => $request->password,
-            'tanggal_aktifasi' => Carbon::now(),
-            'link' => 'verivikasi_akun/'.$request->email_user
-        ];
-        Mail::to($request->email_user)->send(new SendEmailPendaftaran($data_pesan));
-        $DataUser = User::create($data);
-        if ($DataUser == true) {
-            return response()->json(['success' => true, 'message' => 'Berhasil Tambah Data']);
-        }else{
-            return response()->json(['error' => true, 'message' => 'Gagal Tambah Data']);
+            $data = [
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+                'nama_user' => $validatedData['nama_user'],
+                'no_hp_user' => $validatedData['no_hp_user'],
+                'alamat_user' => $validatedData['alamat_user'],
+                'level_user' => $validatedData['level_user'],
+                'status_user' => session('user')['id_user'],
+            ];
+
+            $link = 'link';
+
+            $data_pesan = $this->createMessageData($request,'daftar', 'PENDAFTARAN AKUN MY TAHFIDZ', $request->password,$link);
+            $sendEmail = Mail::to($request->email)->send(new SendEmailPendaftaran($data_pesan));
+
+            if ($sendEmail) {
+                User::create($data);
+                return response()->json(['success' => true, 'message' => 'Berhasil Tambah Data']);
+            } else {
+                return response()->json(['error' => true, 'message' => 'Email Tidak Aktif']);
+            }
+            
+        } catch (\Exception $e) {
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }
     }
 
+    public function AjaxUpdateData($id, Request $request)
+    {
+        try {
+            //Validate the request
+            if ($request->password != null || $request->password != '') { 
+                $validatedData = $request->validate([
+                    'password' => 'required|string|max:255',
+                ]);
+            }
+    
+            $validatedData = $request->validate([
+                'email' => 'required|email',
+                'nama_user' => 'required|string',
+                'no_hp_user' => 'required|string|max:15', 
+                'alamat_user' => 'required|string|max:255',
+                'level_user' => 'required|integer', 
+            ]);          
 
-    public function deleteData($id)
+            $data = [
+                'email' => $validatedData['email'],
+                'nama_user' => $validatedData['nama_user'],
+                'no_hp_user' => $validatedData['no_hp_user'],
+                'alamat_user' => $validatedData['alamat_user'],
+                'level_user' => $validatedData['level_user'],
+            ];
+    
+            if (isset($validatedData['password'])) {
+                $data['password'] = Hash::make($validatedData['password']);
+                $data_pesan = $this->createMessageData($request,'update', "PASSWORD BARU AKUN MY TAHFIDZ", $request->password);
+            } else {
+                $data_pesan = $this->createMessageData($request,'update', 'PEMBARUI AKUN MY TAHFIDZ');
+            }
+    
+            //Send the email
+            Mail::to($request->email)->send(new SendEmailPendaftaran($data_pesan));
+    
+            User::where('id', $id)->update($data);
+            return response()->json(['success' => true, 'message' => 'Berhasil Update Data']);
+            
+        } catch (\Exception $e) {
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
+    }
+    
+    public function AjaxDeleteData($id)
     {
         $DataUser = User::where('id',$id)->first();
         if ($DataUser == true) {
@@ -95,7 +150,7 @@ class UserController extends Controller
         }
     }
 
-    public function statusData($id, $status)
+    public function AjaxStatusData($id, $status)
     {
         $DataUser = User::where('id',$id)->first();
         if ($DataUser == true) {
@@ -112,149 +167,6 @@ class UserController extends Controller
             
         }else{
             return response()->json(['error' => true, 'message' => 'Gagal Proses Data']);
-        }
-    }
-
-    public function AjaxDataPelanggan(Request $request) {
-        $DataPelanggan = PelangganModel::all();
-        if ($DataPelanggan->isNotEmpty()) {
-            return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data' => $DataPelanggan]);
-        } else {
-            return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
-        }
-    }
-
-    public function AjaxDataPelangganID($id) {
-        $DataPelanggan = PelangganModel::where('id_pelanggan', $id)->first();
-        if ($DataPelanggan == true) {
-            return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data' => $DataPelanggan]);
-        } else {
-            return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
-        }
-    }
-
-
-    // admin
-    public function storeDataAkun(Request $request)
-    {
-       $data = [
-           'id_pelanggan' =>  Auth::User()->id_pelanggan,
-           'email' => $request->email_user_akun,
-           'password' => Hash::make($request->password_user_akun),
-           'nama_user' => $request->nama_user_akun,
-           'no_hp_user' => $request->no_hp_user_akun,
-           'alamat_user' => $request->alamat_user_akun,
-           'level_user' => $request->level_user_akun,
-           'status_user' => 0,
-           
-       ];
-       $DataPelanggan = PelangganModel::where('id_pelanggan', Auth::User()->id_pelanggan)->first();
-       //kirim email
-       $data_pesan = [
-            'title' => 'AKUN APKIS',
-            'id_pelanggan' => Auth::User()->id_pelanggan,
-            'nama_pelanggan' => $request->nama_user_akun,
-            'email_pelanggan' => $request->email_user_akun,
-            'nama_usaha' => $DataPelanggan->nama_usaha,
-            'alamat_usaha' => $request->alamat_user_akun,
-            'no_hp_usaha' => $request->no_hp_user_akun,
-            'password' => $request->password_user_akun,
-            'tanggal_aktifasi' => Carbon::now(),
-            'link' => 'verivikasi_akun/'.$request->email_user_akun
-        ];
-        Mail::to($request->email_user_akun)->send(new SendEmailPendaftaran($data_pesan));
-        $DataUser = User::create($data);
-        if ($DataUser == true) {
-            return response()->json(['success' => true, 'message' => 'Berhasil Tambah Data']);
-        }else{
-            return response()->json(['error' => true, 'message' => 'Gagal Tambah Data']);
-        }
-    }
-
-    public function editDataAkun($id)
-    {
-        $DataUser = User::where('id',$id)->first();
-        if ($DataUser == true) {
-            return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data' => $DataUser]);
-        }else{
-            return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
-        }
-    }
-
-    public function updateDataAkun($id,Request $request)
-    {
-        $cekData = User::where('id',$id)->first();
-        if ( $cekData == true) {
-            $data = [
-                'email' => $request->email_user_akun,
-                'nama_user' => $request->nama_user_akun,
-                'no_hp_user' => $request->no_hp_user_akun,
-                'alamat_user' => $request->alamat_user_akun                
-            ];
-            $DataUser = User::where('id',$id)->update($data);
-             if ($DataUser == true) {
-                 return response()->json(['success' => true, 'message' => 'Berhasil Tambah Data']);
-             }else{
-                 return response()->json(['error' => true, 'message' => 'Gagal Tambah Data']);
-             }
-        } else {
-            return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
-        }
-        
-        
-    }
-
-    public function updatePasswordAkun($id,Request $request)
-    {
-        $cekData = User::where('id',$id)->first();
-        if ( $cekData == true) {
-            $data = [
-                'password' => Hash::make($request->password_user_akun),              
-            ];
-            $DataUser = User::where('id',$id)->update($data);
-             if ($DataUser == true) {
-                 return response()->json(['success' => true, 'message' => 'Berhasil Upadate Password']);
-             }else{
-                 return response()->json(['error' => true, 'message' => 'Gagal Upadate Password']);
-             }
-        } else {
-            return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
-        }
-        
-        
-    }    
-
-    public function kirimEmailVerifikasi($email)
-    {
-        $user = User::where('email',$email)->first();
-       //kirim email
-       $data_pesan = [
-            'title' => 'AKUN APKIS',
-            'link' => 'verivikasi_akun/'.$email
-        ];
-        
-        Mail::to($email)->send(new SendEmailVerifikasi($data_pesan));
-    }
-
-    public function verifikasi_akun($id)
-    {
-        $cekData = User::where('email',$id)->first();
-        if ( $cekData == true) {
-            $data = [
-                'email_verified_at' => Carbon::now(), 
-                'status_user' => 1             
-            ];
-            $DataUser = User::where('id',$cekData->id)->update($data);
-             if ($DataUser == true) {
-                Alert::success('Success!', 'Berhasil Aktifasi Akun');
-                return redirect()->intended('/');
-             }else{
-                Alert::error('Errorr!', 'Gagal Aktifasi Akun');
-                return redirect()->intended('/');
-             }
-        } else {
-            Alert::error('Errorr!', 'Gagal Aktifasi Akun');
-            return redirect()->intended('/');
         }
     }
 }

@@ -63,7 +63,7 @@ class TahunAjaranController extends Controller
                     'id_tahun_ajaran' => $id,
                     'nama_tahun_ajaran' => $tahun_ajaran,
                     'status_tahun_ajaran' => '0',
-                    'id_user' => 1,
+                    'id_user' => session('user')['id_user'],
                 ];
     
                 // Store data into database
