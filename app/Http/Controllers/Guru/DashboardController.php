@@ -19,10 +19,14 @@ use App\Models\Admin\SurahModel;
 
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:guru');
+    }
     public function index(){
-        $menu = 'home';
-        $submenu= 'home';
-        return view ('Guru/home/dashboard',compact('menu','submenu'));
+            $menu = 'home';
+            $submenu= 'home';
+            return view ('Guru/home/dashboard',compact('menu','submenu'));
     }
 
     public function AjaxDataPeriode($guru) {

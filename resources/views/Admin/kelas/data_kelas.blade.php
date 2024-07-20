@@ -25,11 +25,14 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="col-12">
-                                            <label class="visually-hidden" for="inlineFormInputName2">Name</label>
-                                            <input type="text" name="nama_kelas" id="nama_kelas"
-                                                class="form-control mb-2 me-sm-2" placeholder="A.12">
-                                            <input type="text" name="id_kelas" id="id_kelas"
-                                                class="form-control mb-2 me-sm-2" placeholder="id_kelas" hidden>
+                                            <div class="input-group mb-2 me-sm-2">
+                                                <div class="input-group-text">Kelas</div>
+                                                <input type="text" name="nama_kelas" id="nama_kelas"
+                                                    class="form-control me-sm-2" placeholder="A.12">
+                                                <input type="text" name="id_kelas" id="id_kelas"
+                                                    class="form-control mb-4 me-sm-2" placeholder="id_kelas" hidden>
+                                                <input type="text" name="id_periode" id="id_periode" hidden>
+                                            </div>
                                         </div>
                                         <div class="col-12">
                                             <button type="button" id="saveBtn" class="btn btn-primary mb-2">Tambah
@@ -72,7 +75,21 @@
     <!-- Your other content -->
     <script>
         $('#dataForm')[0].reset();
+        document.addEventListener('DOMContentLoaded', function () {
+            const saveBtn = document.getElementById('saveBtn');
+            const namaKelas = document.getElementById('nama_kelas');
 
+            function checkInputs() {
+                if (namaKelas.value.trim() === '') {
+                    saveBtn.disabled = true;
+                } else {
+                    saveBtn.disabled = false;
+                }
+            }
+
+            namaKelas.addEventListener('input', checkInputs);
+            checkInputs();
+        });
         $(document).ready(function() {
             // menampilkan data
             $('#datatables-ajax').DataTable({
@@ -151,6 +168,7 @@
                 url: '{{ url('kelas/edit_kelas') }}/' + id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
+                    saveBtn.disabled = false;
                     // Populate the modal fields with the data
                     $('#dataForm input[name="id_kelas"]').val(data.data.id_kelas);
                     $('#dataForm input[name="nama_kelas"]').val(data.data.nama_kelas);

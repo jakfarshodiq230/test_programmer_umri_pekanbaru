@@ -10,6 +10,9 @@ class PesertaKegiatan extends Model
 {
     use HasFactory;
     protected $table ="peserta_kegiatan";
+    protected $primaryKey = 'id_peserta_kegiatan';
+    public $incrementing = false; 
+    protected $keyType = 'string';
     protected $fillable = [
         'id_peserta_kegiatan', 'id_tahun_ajaran', 'id_periode', 'id_siswa', 'id_kelas', 'id_guru', 'status_peserta_kegiatan', 'deleted_at', 'id_user'
     ];
@@ -117,8 +120,7 @@ class PesertaKegiatan extends Model
         ->where('peserta_kegiatan.id_periode', $periode)
         ->where('peserta_kegiatan.id_guru', $guru)
         ->get();
-
-    return $data; // Return the result set
+        return $data; // Return the result set
     }
 
     public static function DataPesertaKegiatanGuru($id_periode,$id_tahun_ajaran,$guru)

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse as IlluminateJsonResponse;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -26,38 +25,7 @@ class LoginController extends Controller
     	return view ('login');
     }
 
-    public function lupa_password(){
-    	return view ('lupa_password');
-    }
-
-    public function lupa_passwordInput($id,$id_pelanggan){
-    	return view ('lupa_password_form', compact('id','id_pelanggan'));
-    }
-
-    public function update_password(Request $request)
-    {
-        $CekAkun = User::where('id',$request->id)->where('id_pelanggan',$request->id_pelanggan)->first();
-        if ($CekAkun == true) {
-            $data_pesan = [
-                'title' => 'DATA AKUN APKIS',
-                'id_pelanggan' => $CekAkun->id_pelanggan,
-                'nama_pelanggan' => $CekAkun->nama_user,
-                'email_pelanggan' => $CekAkun->email,
-                'no_hp_usaha' => $CekAkun->no_hp_user,
-                'password' => $request->password
-            ];
-            Mail::to($CekAkun->email)->send(new SendEmailUpdatePass($data_pesan));
-            $data = [
-                'password' =>$request->password
-            ];
-            User::where('id',$request->id)->where('id_pelanggan',$request->id_pelanggan)->update($data);
-            return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data' => $CekAkun]);
-        }else{
-            return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
-        }
-    }
-
-    public function authenticate(Request $request): IlluminateJsonResponse
+    public function authenticate(Request $request)
     {
         $credentials_user = ['email' => $request->input('username'), 'password' => $request->input('password')];
         $credentials_guru = ['nik_guru' => $request->input('username'), 'password' => $request->input('password')];
@@ -74,7 +42,8 @@ class LoginController extends Controller
                 $request->session()->put('user', [
                     'id' => $user->id,
                     'nama_user' => $user->nama_user,
-                    'level_user' => $user->level_user,
+                    'level_user' => 'admin',
+                    'user_level' => $user->level_user,
                 ]);
                 return response()->json(['redirect' => '/admin/dashboard']);
             }else{
@@ -85,13 +54,13 @@ class LoginController extends Controller
         // Attempt authentication for guru guard
         if (Auth::guard('guru')->attempt($credentials_guru)) {
             $user = Auth::guard('guru')->user();
-            if ($user->status_guru !== 0) {
+            if ($user->status_guru === 1) {
                 $request->session()->regenerate();
                 $this->storeAccessInfo($request);
                 $request->session()->put('user', [
                     'id' => $user->id_guru,
                     'nama_user' => $user->nama_guru,
-                    'level_user' => 'Guru',
+                    'level_user' => 'guru',
                 ]);
                 return response()->json(['redirect' => '/guru/dashboard']);
             }else{
@@ -108,7 +77,7 @@ class LoginController extends Controller
                 $request->session()->put('user', [
                     'id' => $user->id_guru,
                     'nama_user' => $user->nama_siswa,
-                    'level_user' => 'Siswa',
+                    'level_user' => 'siswa',
                 ]);
             return response()->json(['redirect' => '/siswa/dashboard']);
         }else{
@@ -158,13 +127,14 @@ class LoginController extends Controller
         LogAksesModel::create($data);
     }
 
-    public function AjakLogout(Request $request): IlluminateJsonResponse
+    public function logout($guard,Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        $request->session()->flush(); 
-        return response()->json(['redirect' => '/']);
+        if (in_array($guard, ['users', 'guru']) && Auth::guard($guard)->check()) {
+            Auth::guard($guard)->logout();
+            $request->session()->flush();
+            return response()->json(['redirect' => '/']);
+        }
+    
+        return response()->json(['error' => 'Invalid guard or not authenticated'], 400);
     }
-
 }

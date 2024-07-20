@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+
 use App\Imports\SiswaImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Admin\SiswaModel;
 
+
 class SiswaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'master';
         $submenu= 'siswa';
@@ -50,9 +56,10 @@ class SiswaController extends Controller
                 'jenis_kelamin_siswa' => 'required|in:L,P',
                 'no_hp_siswa' => 'required|numeric|digits_between:10,15',
                 'email_siswa' => 'required|email|max:255|unique:siswa,email_siswa,NULL,id',
-                'tahun_masuk_siswa' => 'required|numeric|digits:4|min:2000|max:' . date('Y'),
-                'foto_siswa' => 'required|file|mimes:jpg|max:2048'
+                'tahun_masuk_siswa' => 'required|numeric|digits:4|between:2000,' . date('Y'),
+                'foto_siswa' => 'required|file|mimes:jpg,jpeg|max:2048'
             ]);
+                     
 
             // Generate unique ID based on current date and count
             $tanggal = now()->format('dmy');
@@ -71,7 +78,7 @@ class SiswaController extends Controller
             }
 
             // Prepare data for insertion
-            $date = new DateTime($validatedData['tanggal_lahir_siswa']);
+            $date = new \DateTime($validatedData['tanggal_lahir_siswa']);
             $formatTanggal = $date->format('dmy');
 
             $data = [
@@ -87,7 +94,7 @@ class SiswaController extends Controller
                 'foto_siswa' => 'siswa/' . $customFileName,
                 'status_siswa' => '0',
                 'password' =>  Hash::make($formatTanggal),
-                'id_user' => session('user')['id_user'],
+                'id_user' => session('user')['id'],
             ];
 
     
@@ -101,16 +108,17 @@ class SiswaController extends Controller
                 return response()->json(['error' => true, 'message' => 'Gagal Tambah Data']);
             }
     
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
         } catch (\Exception $e) {
             // Handle any exceptions that occur during validation or data insertion
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
-        }
+        }      
     }
 
     public function updateData($id,Request $request)
     {
         try {
-            // Validate incoming request data
             $validatedData = $request->validate([
                 'nisn_siswa' => 'required|numeric|digits:10',
                 'nama_siswa' => 'required|string|max:255',
@@ -119,8 +127,8 @@ class SiswaController extends Controller
                 'jenis_kelamin_siswa' => 'required|in:L,P',
                 'no_hp_siswa' => 'required|numeric|digits_between:10,15',
                 'email_siswa' => 'required|email|max:255',
-                'tahun_masuk_siswa' => 'required|numeric|digits:4|min:2000|max:' . date('Y'),
-                'foto_siswa' => 'nullable|file|mimes:jpg|max:2048' // nullable karena tidak selalu ada saat update
+                'tahun_masuk_siswa' => 'required|numeric|digits:4|between:2000,' . date('Y'),
+                'foto_siswa' => 'nullable|file|mimes:jpg,jpeg|max:2048'
             ]);
 
             $siswaCek = SiswaModel::where('id_siswa',$request->id_siswa)->first();
@@ -177,7 +185,9 @@ class SiswaController extends Controller
                 return response()->json(['error' => true, 'message' => 'Gagal Edit Data']);
             }
     
-        } catch (\Exception $e) {
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        }catch (\Exception $e) {
             // Handle any exceptions that occur during validation or data insertion
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }        

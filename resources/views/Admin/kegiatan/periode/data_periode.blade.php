@@ -28,8 +28,8 @@
                                                 <div class="input-group mb-2 me-sm-2">
                                                     <div class="input-group-text">Tahun Ajaran</div>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="tahun_ajaran" data-bs-toggle="select2" required>
-                                                        <option>PILIH</option>
+                                                        name="tahun_ajaran" data-bs-toggle="select2" required style="width: 150px;">
+                                                        <option value="PILIH">PILIH</option>
                                                     </select>
                                                     <input type="text" name="id_periode" id="id_periode" hidden>
                                                 </div>
@@ -39,8 +39,8 @@
                                                 <div class="input-group mb-2 me-sm-2">
                                                     <div class="input-group-text">Kegiatan</div>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0 " name="kegiatan"
-                                                        data-bs-toggle="select2" required>
-                                                        <option selected>PILIH</option>
+                                                        data-bs-toggle="select2" required style="width: 150px;">
+                                                        <option value="PILIH" selected>PILIH</option>
                                                         <option value="tahfidz">TAHFIDZ</option>
                                                         <option value="tahsin">TAHSIN</option>
                                                     </select>
@@ -88,9 +88,13 @@
     <!-- Your other content -->
     <script>
         $('.select2').val(null).trigger('change');
+        $('#dataForm')[0].reset();
         // tahun ajaran
         document.addEventListener('DOMContentLoaded', function() {
             const selectElement = document.querySelector('select[name="tahun_ajaran"]');
+            const selectElement2 = document.querySelector('select[name="kegiatan"]');
+            const saveBtn = document.getElementById('saveBtn');
+
             $.ajax({
                 url: '{{ url('periode/data_tahun') }}',
                 type: 'GET',
@@ -117,7 +121,22 @@
                     });
                 }
             });
+
+            function checkInputs() {
+                if (selectElement.value.trim() === 'PILIH' || selectElement2.value.trim() === 'PILIH' || selectElement.value.trim() === '' || selectElement2.value.trim() === '') {
+                    saveBtn.disabled = true;
+                } else {
+                    saveBtn.disabled = false;
+                }
+            }
+
+            // Use 'change' event for select elements
+            $(selectElement).on('change', checkInputs);
+            $(selectElement2).on('change', checkInputs);
+
+            checkInputs(); // Initial check
         });
+
 
 
         $(document).ready(function() {
@@ -199,6 +218,7 @@
                     id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
+                    saveBtn.disabled = false;
                     // Populate the modal fields with the data
                     $('#dataForm input[name="id_periode"]').val(data.data.id_periode);
                     $('select[name="tahun_ajaran"] option').each(function() {
@@ -247,6 +267,7 @@
                 contentType: false,
                 success: function(response) {
                     $('.select2').val(null).trigger('change');
+                    $('#dataForm')[0].reset();
                     $('#datatables-ajax').DataTable().ajax.reload();
                     Swal.fire({
                         title: response.success ? 'Success' : 'Error',

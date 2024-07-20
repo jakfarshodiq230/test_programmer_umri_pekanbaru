@@ -37,7 +37,7 @@ class RaporKegiatanModel extends Model
         ->where('rapor_kegiatan.jenis_penilaian_kegiatan', $jenjang)
         ->where('rapor_kegiatan.id_periode', $periode)
         ->whereNotIn('rapor_kegiatan.id_siswa', $selectedIds)
-        ->where('rapor_kegiatan.id_guru', 'GR-230624-3') // ganti dengan session nantinya
+        ->where('rapor_kegiatan.id_guru', session('user')['id']) // ganti dengan session nantinya
         ->get();
         return $data; // Return the result set
     }
@@ -63,7 +63,7 @@ class RaporKegiatanModel extends Model
         ->where('rapor_kegiatan.id_tahun_ajaran', $tahun)
         ->where('rapor_kegiatan.jenis_penilaian_kegiatan', $jenjang)
         ->where('rapor_kegiatan.id_periode', $periode)
-        ->where('rapor_kegiatan.id_guru', 'GR-230624-3') // ganti dengan session nantinya
+        ->where('rapor_kegiatan.id_guru', session('user')['id']) // ganti dengan session nantinya
         ->get();
 
         return $data; // Return the result set

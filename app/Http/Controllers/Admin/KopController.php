@@ -12,6 +12,10 @@ use TCPDF;
 use App\Models\Admin\KopModel;
 class KopController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'seting';
         $submenu= 'kop';

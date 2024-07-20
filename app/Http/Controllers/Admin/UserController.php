@@ -16,6 +16,10 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     // send email
     private function createMessageData($request, $judul, $title, $password = null, $link = null)
     {
@@ -75,7 +79,7 @@ class UserController extends Controller
                 'no_hp_user' => $validatedData['no_hp_user'],
                 'alamat_user' => $validatedData['alamat_user'],
                 'level_user' => $validatedData['level_user'],
-                'status_user' => session('user')['id_user'],
+                'status_user' => session('user')['id'],
             ];
 
             $link = 'link';

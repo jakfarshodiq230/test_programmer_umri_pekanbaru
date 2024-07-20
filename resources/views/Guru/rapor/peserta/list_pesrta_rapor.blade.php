@@ -139,10 +139,7 @@
                             </div>
                         </div>
                     </div>
-
-
-
-                    {{-- add atau edit guru --}}
+                    {{-- add atau edit  --}}
                     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true"
                         data-bs-keyboard="false" data-bs-backdrop="static">
                         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -160,94 +157,103 @@
                                                 <div class="mb-3">
                                                     <label>Siswa</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="siswa_penilaian" data-bs-toggle="select2" required>
-                                                        <option>PILIH</option>
+                                                        name="siswa_penilaian" id="siswa_penilaian" data-bs-toggle="select2" required>
+                                                        <option value="PILIH">PILIH</option>
                                                     </select>
+                                                    <div id="siswa_penilaian-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Surah Awal Hafalan Baru</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="awal_surah_baru" data-bs-toggle="select2"
+                                                        name="awal_surah_baru" id="awal_surah_baru" data-bs-toggle="select2"
                                                         required>
-                                                        <option>PILIH</option>
+                                                        <option value="PILIH">PILIH</option>
                                                     </select>
+                                                    <div id="awal_surah_baru-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Surah Akhir Hafalan Baru</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="akhir_surah_baru" data-bs-toggle="select2"
+                                                        name="akhir_surah_baru" id="akhir_surah_baru" data-bs-toggle="select2"
                                                         required>
-                                                        <option>PILIH</option>
+                                                        <option value="PILIH">PILIH</option>
                                                     </select>
+                                                    <div id="akhir_surah_baru-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Surah Awal Hafalan Lama</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="awal_surah_lama" data-bs-toggle="select2"
+                                                        name="awal_surah_lama" id="awal_surah_lama" data-bs-toggle="select2"
                                                         required>
-                                                        <option>PILIH</option>
+                                                        <option value="PILIH">PILIH</option>
                                                     </select>
+                                                    <div id="awal_surah_lama-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Surah Akhir Hafalan Lama</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="akhir_surah_lama" data-bs-toggle="select2"
+                                                        name="akhir_surah_lama" id="akhir_surah_lama" data-bs-toggle="select2"
                                                         required>
-                                                        <option>PILIH</option>
+                                                        <option value="PILIH">PILIH</option>
                                                     </select>
+                                                    <div id="akhir_surah_lama-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_k_p_k">
+                                                <div class="mb-3" id="n_k_p_k_n">
                                                     <label>NiLai Keaktifan dan Kedisiplinan</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="n_k_p_k" data-bs-toggle="select2"
+                                                        name="n_k_p_k" id="n_k_p_k" data-bs-toggle="select2"
                                                         onchange="handleNilaiChange(this, $('input[name=\'n_k_p\']'))"
                                                         required>
-                                                        <option>PILIH</option>
+                                                        <option value="PILIH">PILIH</option>
                                                         @foreach (range(1, 100) as $angka)
                                                             <option value="{{ $angka }}">{{ $angka }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <div id="n_k_p_k-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_m_p_k">
+                                                <div class="mb-3" id="n_m_p_k_n">
                                                     <label>Nilai Murojaah Hafalan Mandiri</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_m_p_k" data-bs-toggle="select2"
                                                         onchange="handleNilaiChange(this, $('input[name=\'n_m_p\']'))"
                                                         required>
-                                                        <option>PILIH</option>
+                                                        <option value="PILIH">PILIH</option>
                                                         @foreach (range(1, 100) as $angka)
                                                             <option value="{{ $angka }}">{{ $angka }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <div id="n_m_p_k-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_t_p_k">
+                                                <div class="mb-3" id="n_t_p_k_n">
                                                     <label>Nilai Tilawah Al-Quran Mandiri</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="n_t_p_k" data-bs-toggle="select2"
+                                                        name="n_t_p_k"  data-bs-toggle="select2"
                                                         onchange="handleNilaiChange(this, $('input[name=\'n_t_p\']'))"
-                                                        required>
-                                                        <option>PILIH</option>
+                                                        required id="n_t_p_k">
+                                                        <option value="PILIH">PILIH</option>
                                                         @foreach (range(1, 100) as $angka)
                                                             <option value="{{ $angka }}">{{ $angka }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <div id="n_t_p_k-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_th_p_k">
+                                                <div class="mb-3" id="n_th_p_k_n">
                                                     <label>Nilai Tahsin Al-Qur'an</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_th_p_k" data-bs-toggle="select2"
                                                         onchange="handleNilaiChange(this, $('input[name=\'n_th_p\']'))"
-                                                        required>
-                                                        <option>PILIH</option>
+                                                        required id="n_th_p_k">
+                                                        <option value="PILIH">PILIH</option>
                                                         @foreach (range(1, 100) as $angka)
                                                             <option value="{{ $angka }}">{{ $angka }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <div id="n_th_p_k-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_tf_p_k">
+                                                <div class="mb-3" id="n_tf_p_k_n">
                                                     <label>Nilai Tarjim / Tafhim Al-Quran</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="n_tf_p_k" data-bs-toggle="select2"
+                                                        name="n_tf_p_k" id="n_tf_p_k" data-bs-toggle="select2"
                                                         onchange="handleNilaiChange(this, $('input[name=\'n_tf_p\']'))"
                                                         required>
                                                         <option>PILIH</option>
@@ -255,23 +261,26 @@
                                                             <option value="{{ $angka }}">{{ $angka }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <div id="n_tf_p_k-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_jk_p_k">
+                                                <div class="mb-3" id="n_jk_p_k_n">
                                                     <label>Jumlah Khatam Al-Qur'an</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="n_jk_p_k" data-bs-toggle="select2"
-                                                        onchange="handleNilaiChange(this, $('input[name=\'n_jk_p\']'))"
+                                                        onchange="handleNilaiChange(this, $('input[name=\'n_jk_p\']'))" id="n_jk_p_k"
                                                         required>
                                                         <option>PILIH</option>
                                                         @foreach (range(1, 100) as $angka)
                                                             <option value="{{ $angka }}">{{ $angka }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <div id="n_jk_p_k-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Tanggal Penilaian</label>
-                                                    <input type="date" name="tggl_penilaian_p"
+                                                    <input type="date" name="tggl_penilaian_p" id="tggl_penilaian_p"
                                                         class="form-control" placeholder="Tanggal Penilaian" required>
+                                                    <div id="tggl_penilaian_p-error" class="invalid-feedback"></div>
                                                 </div>
                                             </div>
                                             <div class="col-6 col-lg-6">
@@ -302,67 +311,79 @@
                                                     <input type="text" name="id_pengembangan_diri"
                                                         id="id_pengembangan_diri" class="form-control"
                                                         placeholder="id_pengembangan_diri" hidden>
+                                                    <div id="kelas-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Ayat Awal Hafalan Baru</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="awal_ayat_baru" data-bs-toggle="select2"
+                                                        name="awal_ayat_baru" id="awal_ayat_baru" data-bs-toggle="select2"
                                                         required>
                                                         <option>PILIH</option>
                                                     </select>
+                                                    <div id="awal_ayat_baru-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Ayat Akhir Hafalan Baru</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
                                                         name="akhir_ayat_baru" data-bs-toggle="select2"
-                                                        required>
+                                                        required id="akhir_ayat_baru">
                                                         <option>PILIH</option>
                                                     </select>
+                                                    <div id="akhir_ayat_baru-error" class="invalid-feedback"></div>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label>Ayat Awal Hafalan Lama</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="awal_ayat_lama" data-bs-toggle="select2"
+                                                        name="awal_ayat_lama" id="awal_ayat_lama" data-bs-toggle="select2"
                                                         required>
                                                         <option>PILIH</option>
                                                     </select>
+                                                    <div id="awal_ayat_lama-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Ayat Akhir Hafalan Lama</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                        name="akhir_ayat_lama" data-bs-toggle="select2"
+                                                        name="akhir_ayat_lama" id="akhir_ayat_lama" data-bs-toggle="select2"
                                                         required>
                                                         <option>PILIH</option>
                                                     </select>
+                                                    <div id="akhir_ayat_lama-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3 " id="n_k_p">
+                                                <div class="mb-3 " id="n_k_p_n">
                                                     <label for="n_k_p">NiLai Keaktifan dan Kedisiplinan</label>
-                                                    <input type="text" class="form-control" name="n_k_p" readonly>
+                                                    <input type="text" class="form-control" id="n_k_p" name="n_k_p" readonly>
+                                                    <div id="n_k_p-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_m_p">
+                                                <div class="mb-3" id="n_m_p_n">
                                                     <label for="n_m_p">Nilai Murojaah Hafalan Mandiri</label>
-                                                    <input type="text" class="form-control" name="n_m_p" readonly>
+                                                    <input type="text" class="form-control" id="n_m_p" name="n_m_p" readonly>
+                                                    <div id="n_m_p-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_t_p">
+                                                <div class="mb-3" id="n_t_p_n">
                                                     <label for="n_t_p">Nilai Tilawah Al-Quran Mandiri</label>
-                                                    <input type="text" class="form-control" name="n_t_p" readonly>
+                                                    <input type="text" class="form-control" id="n_t_p" name="n_t_p" readonly>
+                                                    <div id="n_t_p-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_th_p">
+                                                <div class="mb-3" id="n_th_p_n">
                                                     <label for="n_th_p">Nilai Tahsin Al-Qur'an</label>
-                                                    <input type="text" class="form-control" name="n_th_p" readonly>
+                                                    <input type="text" class="form-control" id="n_th_p" name="n_th_p" readonly>
+                                                    <div id="n_th_p-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_tf_p">
+                                                <div class="mb-3" id="n_tf_p_n">
                                                     <label for="n_tf_p">Nilai Tarjim / Tafhim Al-Quran</label>
-                                                    <input type="text" class="form-control" name="n_tf_p" readonly>
+                                                    <input type="text" class="form-control" id="n_tf_p" name="n_tf_p" readonly>
+                                                    <div id="n_tf_p-error" class="invalid-feedback"></div>
                                                 </div>
-                                                <div class="mb-3" id="n_jk_p">
+                                                <div class="mb-3" id="n_jk_p_n">
                                                     <label for="n_jk_p">Hasil Jumlah Khatam Al-Qur'an</label>
-                                                    <input type="text" class="form-control" name="n_jk_p" readonly>
+                                                    <input type="text" class="form-control" id="n_jk_p" name="n_jk_p" readonly>
+                                                    <div id="n_jk_p-error" class="invalid-feedback"></div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Keterangan</label>
-                                                    <textarea name="ketrangan_p" class="form-control" placeholder="Keterangan" required></textarea>
+                                                    <textarea name="ketrangan_p" class="form-control" id="ketrangan_p" placeholder="Keterangan" required></textarea>
+                                                    <div id="ketrangan_p-error" class="invalid-feedback"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -385,22 +406,22 @@
 @section('scripts')
     <!-- Your other content -->
     <script>
-        $('.select2').val(null).trigger('change');
         $('#dataForm')[0].reset();
+        $('.select2').val(null).trigger('change');
 
-        $('#n_k_p').hide();
-        $('#n_m_p').hide();
-        $('#n_t_p').hide();
-        $('#n_th_p').hide();
-        $('#n_tf_p').hide();
-        $('#n_jk_p').hide();
+        $('#n_k_p_n').hide();
+        $('#n_m_p_n').hide();
+        $('#n_t_p_n').hide();
+        $('#n_th_p_n').hide();
+        $('#n_tf_p_n').hide();
+        $('#n_jk_p_n').hide();
 
-        $('#n_k_p_k').hide();
-        $('#n_m_p_k').hide();
-        $('#n_t_p_k').hide();
-        $('#n_th_p_k').hide();
-        $('#n_tf_p_k').hide();
-        $('#n_jk_p_k').hide();
+        $('#n_k_p_k_n').hide();
+        $('#n_m_p_k_n').hide();
+        $('#n_t_p_k_n').hide();
+        $('#n_th_p_k_n').hide();
+        $('#n_tf_p_k_n').hide();
+        $('#n_jk_p_k_n').hide();
 
         $('#tahfidz').hide();
         $('#tahsin').hide();
@@ -413,26 +434,26 @@
 
         if(jenjang === 'tahfidz'){
             $('#tahfidz').show();
-            $('#n_k_p').show();
-            $('#n_m_p').show();
-            $('#n_t_p').show();
-            $('#n_th_p').show();
-            $('#n_tf_p').show();
-            $('#n_jk_p').show();
-            $('#n_k_p_k').show();
-            $('#n_m_p_k').show();
-            $('#n_t_p_k').show();
-            $('#n_th_p_k').show();
-            $('#n_tf_p_k').show();
-            $('#n_jk_p_k').show();
+            $('#n_k_p_n').show();
+            $('#n_m_p_n').show();
+            $('#n_t_p_n').show();
+            $('#n_th_p_n').show();
+            $('#n_tf_p_n').show();
+            $('#n_jk_p_n').show();
+            $('#n_k_p_k_n').show();
+            $('#n_m_p_k_n').show();
+            $('#n_t_p_k_n').show();
+            $('#n_th_p_k_n').show();
+            $('#n_tf_p_k_n').show();
+            $('#n_jk_p_k_n').show();
         }else{
             $('#tahsin').show();
-            $('#n_k_p').show();
-            $('#n_th_p').show();
-            $('#n_jk_p').show();
-            $('#n_k_p_k').show();
-            $('#n_th_p_k').show();
-            $('#n_jk_p_k').show();
+            $('#n_k_p_n').show();
+            $('#n_th_p_n').show();
+            $('#n_jk_p_n').show();
+            $('#n_k_p_k_n').show();
+            $('#n_th_p_k_n').show();
+            $('#n_jk_p_k_n').show();
         }
 
         function capitalizeFirstLetter(string) {
@@ -459,8 +480,9 @@
         {
             var selectSurahBaru = $('select[name="' + selectSurahBaruName + '"]');
             selectSurahBaru.empty().append('<option value="">PILIH</option>');
-
-            var siswaArray = listSurahBaru.split(',');
+            if (listSurahBaru !== null) {
+                var siswaArray = listSurahBaru.split(',');
+            }
             $.each(siswaArray, function(key, value) {
                 if(surahSelected != null & surahSelected == value){
                     selectSurahBaru.append('<option value="' + value + '" selected>' + 
@@ -872,15 +894,26 @@
                     });
 
                 },
-                error: function(response) {
-                    $('#dataForm')[0].reset();
-                    Swal.fire({
-                        title: response.success ? 'Success' : 'Error',
-                        text: response.message,
-                        icon: response.success ? 'success' : 'error',
-                        confirmButtonText: 'OK'
-                    });
+                error: function(xhr) {
+                    let response = xhr.responseJSON;
+                    if (response) {
+                        let errors = response; // Use the response directly, which contains the errors
+                        $('.form-control').removeClass('is-invalid').removeClass('is-valid');
+                        $('.invalid-feedback').empty();
 
+                        Object.keys(errors).forEach(function(key) {
+                            console.log(key);
+                            let input = $("#" + key);
+                            let errorDiv = $("#" + key + "-error");
+
+                            input.addClass("is-invalid");
+                            errorDiv.html('<strong>' + errors[key][0] + '</strong>'); 
+
+                            if (input.hasClass("select2-hidden-accessible")) {
+                                input.parent().addClass("is-invalid");
+                            }
+                        });
+                    }
                 }
             });
         });

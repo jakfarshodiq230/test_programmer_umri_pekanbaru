@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\GuruController;
@@ -8,7 +7,6 @@ use App\Http\Controllers\Admin\PeriodeController;
 use App\Http\Controllers\Admin\PesertaKegiatanController;
 use App\Http\Controllers\Admin\PenilaianKegiatanController;
 use App\Http\Controllers\Admin\TahunAjaranController;
-use App\Http\Controllers\Admin\SetingEmailController;
 use App\Http\Controllers\Admin\PeriodeRaporController;
 use App\Http\Controllers\Admin\PesertaRaporController;
 use App\Http\Controllers\Admin\KopController;
@@ -17,17 +15,18 @@ use App\Http\Controllers\Admin\SetingMailController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\LoginController;
 
-Route::group(['middleware' => ['auth:users']], function () {
 
-    Route::prefix('admin/login')->group(function () {
-        Route::get('/logout', [LoginController::class, 'AjakLogout'])->name('admin.AjakLogout.AjakLogout');
-    });
+Route::group(['middleware' => ['auth:users']], function () {
 
     Route::prefix('admin/dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('home');
     });
 
-    Route::controller(SetingEmailController::class)->group(function () {
+    Route::prefix('guru/dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('home2');
+    });
+
+    Route::controller(SetingMailController::class)->group(function () {
         Route::get('email', 'index');
         Route::get('email/data_email', 'AjaxData');
         Route::post('email/update_email/{id}', 'updateData');

@@ -52,7 +52,7 @@
     <script>
         var periode = "{{ $periode }}";
         var tahun_ajaran = "{{ $tahun_ajaran }}";
-        var guru = "GR-230624-3";
+        var guru = "{{ session('user')['id']}}";
 
         $(document).ready(function() {
             // menampilkan data
@@ -62,7 +62,9 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: "{{ url('guru/penilaian_kegiatan/data_penilaian_kegiatan') }}/" + periode + "/" + tahun_ajaran +'/'+guru,
+                ajax: {
+                    url: "{{ url('guru/penilaian_kegiatan/data_penilaian_kegiatan') }}/" + periode + "/" + tahun_ajaran + '/' + guru,
+                },
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -98,7 +100,7 @@
                         name: 'status_peserta_kegiatan',
                         render: function(data, type, row) {
                                 return `
-                                <button class="btn btn-sm btn-info detalBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
+                                <button class="btn btn-sm btn-info detailBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
                                 data-id_tahun="${row.id_tahun_ajaran}"
                                 data-id_periode="${row.id_periode}"
                                 data-id_siswa="${row.id_siswa}"
@@ -106,12 +108,11 @@
                                 data-id_kelas="${row.id_kelas}"
                                 >
                                 <i class="fas fa-eye"></i></button>
-                                 <button class="btn btn-sm btn-secondary printBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Cettak Kartu Kegiatan" 
-                                data-id_tahun="${row.id_tahun_ajaran}"
-                                data-id_periode="${row.id_periode}"
-                                data-id_siswa="${row.id_siswa}"
-                                data-id_guru="${row.id_guru}"
-                                data-id_kelas="${row.id_kelas}"
+                                <button class="btn btn-sm btn-secondary printBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Cettak Kartu Kegiatan" 
+                                data-peserta="${row.id_siswa}" 
+                                data-tahun="${row.id_tahun_ajaran}" 
+                                data-jenjang="${row.jenis_periode}" 
+                                data-periode="${row.id_periode}"
                                 >
                                 <i class="fas fa-print"></i></button>
                             `;
@@ -122,7 +123,7 @@
         });
 
         // detail nilai
-        $(document).on('click', '.detalBtn', function() {
+        $(document).on('click', '.detailBtn', function() {
             var id_tahun = $(this).data('id_tahun');
             var id_periode = $(this).data('id_periode');
             var id_siswa = $(this).data('id_siswa');
@@ -148,6 +149,16 @@
                     window.location.href = url;
                 }
             });
+        });
+
+                // cetak rapor
+        $(document).on('click', '.printBtn', function() {
+            var peserta = $(this).data('peserta');
+            var tahun = $(this).data('tahun');
+            var jenjang = $(this).data('jenjang');
+            var periode = $(this).data('periode');
+            var url= '{{ url('guru/penilaian_kegiatan/cetak_kartu') }}/'+ peserta + '/'+ tahun + '/' + jenjang + '/' + periode;
+            window.location.href = url;
         });
     </script>
 @endsection

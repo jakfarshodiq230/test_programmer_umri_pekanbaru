@@ -48,7 +48,7 @@
     <!-- Your other content -->
     <script>
         $('.select2').val(null).trigger('change');
-        var guru = "GR-230624-3";
+        var guru = "{{ session('user')['id'] }}";
         $(document).ready(function() {
             // menampilkan data
             $('#datatables-ajax').DataTable({

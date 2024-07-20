@@ -852,7 +852,7 @@
                     // tahsin
                     const keterangan_gunah = getRange(data.data
                         .nilai_ghunnah_penilaian_kegiatan);
-                    $('#formModal select[name="keterangan_gunah"]').val(keterangan_gunah)
+                    $('#formModal select[name="keterangan_ghunnah"]').val(keterangan_gunah)
                         .change();
                     $('#formModal select[name="nilai_ghunnah_penilaian_kegiatan"]').val(data.data
                         .nilai_ghunnah_penilaian_kegiatan).change();

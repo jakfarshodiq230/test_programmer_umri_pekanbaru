@@ -112,12 +112,12 @@
 
                     },
                     {
-                        data: 'status_periode',
-                        name: 'status_periode',
+                        data: 'siswa_count',
+                        name: 'siswa_count',
                         render: function(data, type, row) {
                             
                                 return `
-                                <button class="btn btn-sm btn-primary pesertaBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
+                                <button class="btn btn-sm btn-primary pesertaBtn me-1 ${row.siswa_count === 0 ? 'disabled' : ''} " data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
                                 data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" data-periode="${row.id_periode}"><i class="fas fa-users"></i></button>
                             `;
                         }

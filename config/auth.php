@@ -40,17 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+        ],
         'users' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
         'guru' => [
             'driver' => 'session',
-            'provider' => 'guru',
+            'provider' => 'gurus',
         ],
         'siswa' => [
             'driver' => 'session',
-            'provider' => 'siswa',
+            'provider' => 'siswas',
         ],
     ],
 

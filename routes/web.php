@@ -4,11 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
 
-
-
-// guru
-// use App\Http\Controllers\Guru\PenilaianKegiatanGuruController;
-// use App\Http\Controllers\Guru\PenilaianRaporGuruController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,15 +16,14 @@ use App\Http\Controllers\LoginController;
 */
 
 // Import routes siswa dan guru
-require base_path('routes/admin.php');
-require base_path('routes/guru.php');
+require __DIR__.'/admin.php';
+require __DIR__.'/guru.php';
 
 Route::controller(LoginController::class)->group(function () {
     Route::get('/', 'index')->name('login')->middleware('guest');
-    Route::post('cek_login', 'authenticate')->name("cek_login");
+    Route::post('/cek_login', 'authenticate')->name("cek_login");
 });
 
-
-//Route::middleware('auth')->group(function () {
-
-//});
+Route::controller(LoginController::class)->group(function () {
+    Route::post('/cek_logout/{guard}', 'logout')->name('cek_logout');
+});

@@ -68,7 +68,7 @@ class PenilaianPengembanganDiriModel extends Model
         ->where('rapor_pengembangan_diri.id_tahun_ajaran', $tahun)
         ->where('rapor_pengembangan_diri.jenis_penilaian_kegiatan', $jenjang)
         ->where('rapor_pengembangan_diri.id_periode', $periode)
-        ->where('rapor_pengembangan_diri.id_guru', 'GR-230624-3') // ganti dengan session nantinya
+        ->where('rapor_pengembangan_diri.id_guru', session('user')['id']) // ganti dengan session nantinya
         ->first();
 
         return $data; // Return the result set
@@ -100,10 +100,11 @@ class PenilaianPengembanganDiriModel extends Model
         ->where('rapor_pengembangan_diri.id_tahun_ajaran', $tahun)
         ->where('rapor_pengembangan_diri.jenis_penilaian_kegiatan', $jenjang)
         ->where('rapor_pengembangan_diri.id_periode', $periode)
-        ->where('rapor_pengembangan_diri.id_guru', 'GR-230624-3') // ganti dengan session nantinya
+        ->where('rapor_pengembangan_diri.id_guru', session('user')['id']) // ganti dengan session nantinya
         ->first();
 
         return $data; // Return the result set
     }
+
 
 }

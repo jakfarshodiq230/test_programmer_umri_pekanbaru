@@ -15,6 +15,10 @@ use App\Models\Admin\GuruModel;
 use App\Models\Admin\KelasModel;
 class PesertaKegiatanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'kegiatan';
         $submenu= 'peserta';
@@ -36,7 +40,7 @@ class PesertaKegiatanController extends Controller
         $periode = $id_periode;
         $tahun_ajaran = $id_tahun_ajaran;
         $judul_1 = PeriodeModel::where('id_periode', $id_periode)->whereNull('deleted_at')->first();
-        $judul_2 = TahunAjaranModel::where('id_tahun_ajaran', 'TA-280624-5')->whereNull('deleted_at')->first();
+        $judul_2 = TahunAjaranModel::where('id_tahun_ajaran', $id_tahun_ajaran)->whereNull('deleted_at')->first();
         $judul_3 = ucfirst($judul_1->jenis_periode).' '. $judul_2->nama_tahun_ajaran;
         return view ('Admin/kegiatan/peserta/data_list_peserta_kegiatan',compact('menu','submenu','periode','tahun_ajaran','judul_1','judul_2','judul_3'));
     }
@@ -123,7 +127,7 @@ class PesertaKegiatanController extends Controller
                     'id_kelas' => $validatedData['kelas'],
                     'id_guru' => $validatedData['guru'],
                     'status_peserta_kegiatan' => '0',
-                    'id_user' => session('user')['id_user'],
+                    'id_user' => session('user')['id'],
                 ];
     
                 // Store data into database

@@ -11,6 +11,10 @@ use App\Models\Admin\KelasModel;
 
 class KelasController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'master';
         $submenu= 'kelas';
@@ -48,13 +52,13 @@ class KelasController extends Controller
             $tanggal = now()->format('dmy');
             $nomorUrut = KelasModel::whereDate('created_at', now()->toDateString())->count() + 1;
             $id = 'KLS' . '-' . $tanggal . '-' . $nomorUrut;
-
+            
             // Prepare data for insertion
             $data = [
                 'id_kelas' => $id,
                 'nama_kelas' => $validatedData['nama_kelas'],
                 'status_kelas' => '0',
-                'id_user' => session('user')['id_user'],
+                'id_user' => session('user')['id'] ?? null,
             ];
 
     

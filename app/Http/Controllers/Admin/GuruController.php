@@ -13,6 +13,10 @@ use App\Models\Admin\GuruModel;
 
 class GuruController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'master';
         $submenu= 'guru';
@@ -43,7 +47,7 @@ class GuruController extends Controller
         try {
             // Validate incoming request data
             $validatedData = $request->validate([
-                'nik_guru' => 'required|numeric|digits:10|unique:guru,nik_guru',
+                'nik_guru' => 'required|numeric|digits_between:5,15|unique:guru,nik_guru',
                 'nama_guru' => 'required|string|max:255',
                 'tanggal_lahir_guru' => 'required|date',
                 'tempat_lahir_guru' => 'required|string|max:255',
@@ -52,6 +56,7 @@ class GuruController extends Controller
                 'email_guru' => 'required|email|max:255|unique:guru,email_guru,NULL,id',
                 'foto_guru' => 'required|file|mimes:jpeg,png,jpg|max:2048'
             ]);
+            
     
             // Generate unique ID based on current date and count
             $tanggal = now()->format('dmy');
@@ -70,8 +75,8 @@ class GuruController extends Controller
             }
 
             // Prepare data for insertion
-            $date = new DateTime($validatedData['tanggal_lahir_guru']);
-            $formatTanggal = $date->format('dmy');
+            $date = new \DateTime($validatedData['tanggal_lahir_guru']);
+            $formatTanggal = $date->format('dmY');
             $data = [
                 'id_guru' => $id,
                 'nik_guru' => $validatedData['nik_guru'],
@@ -84,7 +89,7 @@ class GuruController extends Controller
                 'foto_guru' => 'guru/' . $customFileName,
                 'status_guru' => '0',
                 'password' =>  Hash::make($formatTanggal),
-                'id_user' => session('user')['id_user'],
+                'id_user' => session('user')['id'],
             ];
 
     
@@ -98,9 +103,11 @@ class GuruController extends Controller
                 return response()->json(['error' => true, 'message' => 'Gagal Tambah Data']);
             }
     
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
         } catch (\Exception $e) {
             // Handle any exceptions that occur during validation or data insertion
-            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+            return response()->json(['error' => true, 'message' => $e->getMessage()],500);
         }
     }
 
@@ -109,14 +116,14 @@ class GuruController extends Controller
         try {
             // Validate incoming request data
             $validatedData = $request->validate([
-                'nik_guru' => 'required|numeric|digits:10',
+                'nik_guru' => 'required|numeric|digits_between:5,15',
                 'nama_guru' => 'required|string|max:255',
                 'tanggal_lahir_guru' => 'required|date',
                 'tempat_lahir_guru' => 'required|string|max:255',
                 'jenis_kelamin_guru' => 'required|in:L,P',
                 'no_hp_guru' => 'required|numeric|digits_between:10,15',
                 'email_guru' => 'required|email|max:255',
-                'foto_guru' => 'nullable|file|mimes:jpeg,png,jpg|max:2048' // nullable karena tidak selalu ada saat update
+                'foto_guru' => 'nullable|file|mimes:jpeg,png,jpg|max:2048'
             ]);
 
             $guruCek = guruModel::where('id_guru',$request->id_guru)->first();
@@ -150,7 +157,8 @@ class GuruController extends Controller
                     $guru = guruModel::where('id_guru',$request->id_guru)->update($data);
                 }
             }
-    
+            $date = new \DateTime($validatedData['tanggal_lahir_guru']);
+            $formatTanggal = $date->format('dmY');
             // Prepare data for insertion
             $data = [
                 'nik_guru' => $validatedData['nik_guru'],
@@ -160,6 +168,7 @@ class GuruController extends Controller
                 'jenis_kelamin_guru' => $validatedData['jenis_kelamin_guru'],
                 'no_hp_guru' => $validatedData['no_hp_guru'],
                 'email_guru' => $validatedData['email_guru'],
+                'password' =>  Hash::make($formatTanggal),
             ];
 
             // Store data into database
@@ -172,7 +181,9 @@ class GuruController extends Controller
                 return response()->json(['error' => true, 'message' => 'Gagal Edit Data']);
             }
     
-        } catch (\Exception $e) {
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        }catch (\Exception $e) {
             // Handle any exceptions that occur during validation or data insertion
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }        

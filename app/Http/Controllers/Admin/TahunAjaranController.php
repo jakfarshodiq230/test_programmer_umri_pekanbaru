@@ -11,6 +11,10 @@ use App\Models\Admin\TahunAjaranModel;
 
 class TahunAjaranController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'master';
         $submenu= 'tahun_ajaran';
@@ -63,7 +67,7 @@ class TahunAjaranController extends Controller
                     'id_tahun_ajaran' => $id,
                     'nama_tahun_ajaran' => $tahun_ajaran,
                     'status_tahun_ajaran' => '0',
-                    'id_user' => session('user')['id_user'],
+                    'id_user' => session('user')['id'],
                 ];
     
                 // Store data into database

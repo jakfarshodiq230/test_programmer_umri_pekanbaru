@@ -17,6 +17,10 @@ use App\Models\Guru\PenilaianPengembanganDiriModel;
 
 class PenilaianRaporGuruController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:guru');
+    }
     public function index(){
         $menu = 'rapor';
         $submenu= 'penilaian-rapor';
@@ -77,10 +81,10 @@ class PenilaianRaporGuruController extends Controller
                     'akhir_surah_baru' => 'required',
                     'awal_ayat_baru' => 'required',
                     'akhir_ayat_baru' => 'required',
-                    'awal_surah_lama' => 'required',
-                    'akhir_surah_lama' => 'required',
-                    'awal_ayat_lama' => 'required',
-                    'akhir_ayat_lama' => 'required',
+                    'awal_surah_lama' => 'nullable',
+                    'akhir_surah_lama' => 'nullable',
+                    'awal_ayat_lama' => 'nullable',
+                    'akhir_ayat_lama' => 'nullable',
                     'n_k_p_k' => 'required',
                     'n_m_p_k' => 'required',
                     'n_t_p_k' => 'required',
@@ -103,10 +107,10 @@ class PenilaianRaporGuruController extends Controller
                     'akhir_surah_baru' => 'required',
                     'awal_ayat_baru' => 'required',
                     'akhir_ayat_baru' => 'required',
-                    'awal_surah_lama' => 'required',
-                    'akhir_surah_lama' => 'required',
-                    'awal_ayat_lama' => 'required',
-                    'akhir_ayat_lama' => 'required',
+                    'awal_surah_lama' => 'nullable',
+                    'akhir_surah_lama' => 'nullable',
+                    'awal_ayat_lama' => 'nullable',
+                    'akhir_ayat_lama' => 'nullable',
                     'n_k_p_k' => 'required',
                     'n_th_p_k' => 'required',
                     'n_jk_p_k' => 'required',
@@ -149,7 +153,7 @@ class PenilaianRaporGuruController extends Controller
                     'n_jk_p' => $validatedData['n_jk_p_k'],
                     'tggl_penilaian_p' => $validatedData['tggl_penilaian_p'],
                     'ketrangan_p' => $validatedData['ketrangan_p'],
-                    'id_user' => 'GR-230624-3',
+                    'id_user' => session('user')['id'],
                 ];
             } else {
                 $data = [
@@ -174,7 +178,7 @@ class PenilaianRaporGuruController extends Controller
                     'n_jk_p' => $validatedData['n_jk_p_k'],
                     'tggl_penilaian_p' => $validatedData['tggl_penilaian_p'],
                     'ketrangan_p' => $validatedData['ketrangan_p'],
-                    'id_user' => 'GR-230624-3',
+                    'id_user' => session('user')['id'],
                 ];
             }
             
@@ -190,7 +194,9 @@ class PenilaianRaporGuruController extends Controller
                 return response()->json(['error' => true, 'message' => 'Gagal Tambah Data']);
             }
     
-        } catch (\Exception $e) {
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        }catch (\Exception $e) {
             // Handle any exceptions that occur during validation or data insertion
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }
@@ -251,14 +257,14 @@ class PenilaianRaporGuruController extends Controller
             // Validate incoming request data
             if ($request->jenis_penilaian_kegiatan === 'tahfidz') {
                 $validatedData = $request->validate([
-                    'awal_surah_baru' => 'required',
-                    'akhir_surah_baru' => 'required',
-                    'awal_ayat_baru' => 'required',
-                    'akhir_ayat_baru' => 'required',
-                    'awal_surah_lama' => 'required',
-                    'akhir_surah_lama' => 'required',
-                    'awal_ayat_lama' => 'required',
-                    'akhir_ayat_lama' => 'required',
+                    'awal_surah_baru' => 'required |not_in:PILIH,other',
+                    'akhir_surah_baru' => 'required |not_in:PILIH,other',
+                    'awal_ayat_baru' => 'required|not_in:PILIH,other',
+                    'akhir_ayat_baru' => 'required|not_in:PILIH,other',
+                    'awal_surah_lama' => 'nullable|not_in:PILIH,other',
+                    'akhir_surah_lama' => 'nullable|not_in:PILIH,other',
+                    'awal_ayat_lama' => 'nullable|not_in:PILIH,other',
+                    'akhir_ayat_lama' => 'nullable|not_in:PILIH,other',
                     'n_k_p_k' => 'required',
                     'n_m_p_k' => 'required',
                     'n_t_p_k' => 'required',
@@ -270,14 +276,14 @@ class PenilaianRaporGuruController extends Controller
                 ]);
             } else {
                 $validatedData = $request->validate([
-                    'awal_surah_baru' => 'required',
-                    'akhir_surah_baru' => 'required',
-                    'awal_ayat_baru' => 'required',
-                    'akhir_ayat_baru' => 'required',
-                    'awal_surah_lama' => 'required',
-                    'akhir_surah_lama' => 'required',
-                    'awal_ayat_lama' => 'required',
-                    'akhir_ayat_lama' => 'required',
+                    'awal_surah_baru' => 'required|not_in:PILIH,other',
+                    'akhir_surah_baru' => 'required|not_in:PILIH,other',
+                    'awal_ayat_baru' => 'required|not_in:PILIH,other',
+                    'akhir_ayat_baru' => 'required|not_in:PILIH,other',
+                    'awal_surah_lama' => 'nullable|not_in:PILIH,other',
+                    'akhir_surah_lama' => 'nullable|not_in:PILIH,other',
+                    'awal_ayat_lama' => 'nullable|not_in:PILIH,other',
+                    'akhir_ayat_lama' => 'nullable|not_in:PILIH,other',
                     'n_k_p_k' => 'required',
                     'n_th_p_k' => 'required',
                     'n_jk_p_k' => 'required',
@@ -336,7 +342,9 @@ class PenilaianRaporGuruController extends Controller
                 return response()->json(['error' => true, 'message' => 'Gagal Edit Data']);
             }
     
-        } catch (\Exception $e) {
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        }catch (\Exception $e) {
             // Handle any exceptions that occur during validation or data insertion
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }

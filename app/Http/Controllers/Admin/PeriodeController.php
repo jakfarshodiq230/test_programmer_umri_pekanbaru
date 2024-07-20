@@ -11,6 +11,10 @@ use App\Models\Admin\PeriodeModel;
 use App\Models\Admin\TahunAjaranModel;
 class PeriodeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'kegiatan';
         $submenu= 'periode';
@@ -77,7 +81,7 @@ class PeriodeController extends Controller
                     'jenis_periode' => $validatedData['kegiatan'],
                     'judul_periode' => 'setoran',
                     'status_periode' => '0',
-                    'id_user' => session('user')['id_user'],
+                    'id_user' => session('user')['id'],
                 ];
     
                 // Store data into database

@@ -9,6 +9,10 @@ use App\Models\Admin\MailModel;
 use App\Mail\SendEmail;
 class SetingMailController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
 
     //seting email
     public function index(){

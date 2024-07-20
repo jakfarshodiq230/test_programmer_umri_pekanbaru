@@ -77,36 +77,41 @@
                                                             placeholder="Nomor Induk Nasional">
                                                         <input type="text" name="id_siswa" id="id_siswa"
                                                             class="form-control" placeholder="id_siswa" hidden>
+                                                            <div id="nisn_siswa-error" class="invalid-feedback"></div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Nama</label>
-                                                        <input type="text" name="nama_siswa" class="form-control"
+                                                        <input type="text" name="nama_siswa" id="nama_siswa" class="form-control"
                                                             placeholder="Nama" required>
+                                                            <div id="nama_siswa-error" class="invalid-feedback"></div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Tempat Lahir</label>
-                                                        <input type="text" name="tempat_lahir_siswa" class="form-control"
+                                                        <input type="text" name="tempat_lahir_siswa" id="tempat_lahir_siswa" class="form-control"
                                                             placeholder="Tempat Lahir" required>
+                                                            <div id="tempat_lahir_siswa-error" class="invalid-feedback"></div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Tanggal Lahir</label>
                                                         <input type="date" name="tanggal_lahir_siswa"
                                                             id="tanggal_lahir_siswa" class="form-control"
-                                                            placeholder="Tanggal Lahir">
+                                                            placeholder="Tanggal Lahir" >
+                                                            <div id="tanggal_lahir_siswa-error" class="invalid-feedback"></div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Foto</label>
-                                                        <input type="file" name="foto_siswa" class="form-control"
+                                                        <input type="file" name="foto_siswa" id="foto_siswa" class="form-control"
                                                             placeholder="Foto" required>
+                                                            <div id="foto_siswa-error" class="invalid-feedback"></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-6 col-lg-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-3 error-placeholder">
                                                         <label>Jenis Kelamin</label>
                                                         <br>
                                                         <label class="form-check form-check-inline">
                                                             <input class="form-check-input" type="radio"
-                                                                name="jenis_kelamin_siswa" value="L">
+                                                                name="jenis_kelamin_siswa" value="L" checked>
                                                             <span class="form-check-label">
                                                                 Laki-Laki
                                                             </span>
@@ -121,20 +126,23 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>No HP</label>
-                                                        <input type="text" name="no_hp_siswa" class="form-control"
+                                                        <input type="text" name="no_hp_siswa" id="no_hp_siswa" class="form-control"
                                                             placeholder="Nomor HP" onkeypress="return hanyaAngka(event)"
                                                             required>
+                                                            <div id="no_hp_siswa-error" class="invalid-feedback"></div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Email</label>
-                                                        <input type="email" name="email_siswa" class="form-control"
+                                                        <input type="email" name="email_siswa" id="email_siswa" class="form-control"
                                                             placeholder="Email" required>
+                                                            <div id="email_siswa-error" class="invalid-feedback"></div>
                                                     </div>
-                                                    <div class="mb-3">
+                                                    <div class="mb-3 error-placeholder">
                                                         <label>Tahun Masuk</label>
-                                                        <select class="form-control select2" name="tahun_masuk_siswa"
+                                                        <select class="form-control select2" name="tahun_masuk_siswa" id="tahun_masuk_siswa"
                                                             data-bs-toggle="select2" required>
                                                         </select>
+                                                        <div id="tahun_masuk_siswa-error" class="invalid-feedback"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -171,6 +179,7 @@
                                                         <input type="file" name="file_siswa" class="form-control"
                                                             placeholder="File Excel" required>
                                                     </div>
+                                                    <span>Format upload menggunakan Excel <a href="{{ asset('excel/format_import_siswa_new.xlsx') }}" download>Download Disini</a></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -286,7 +295,7 @@
                         render: function(data, type, row) {
                             return data == null ?
                                 `<img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" width="42" height="42" class="rounded-circle my-n1 ${row.status_siswa == 1 ? 'border border-success border-3' : 'border border-danger border-3'}" alt="Avatar">` :
-                                `<img src="{{ url('storage/siswa') }}/${row.foto_siswa}" width="52" height="52"  class="rounded-circle my-n1 ${row.status_siswa == 1 ? 'border border-success border-3' : 'border border-danger border-3'}" alt="Avatar">`;
+                                `<img src="{{ url('storage/') }}/${row.foto_siswa}" width="52" height="52"  class="rounded-circle my-n1 ${row.status_siswa == 1 ? 'border border-success border-3' : 'border border-danger border-3'}" alt="Avatar">`;
                         }
                     },
                     {
@@ -439,8 +448,15 @@
             if (id) {
                 url = '{{ url('siswa/update_siswa') }}/' + id;
             }
+            
             var form = $('#dataForm')[0];
             var formData = new FormData(form);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             $.ajax({
                 url: url,
@@ -450,28 +466,40 @@
                 contentType: false,
                 success: function(response) {
                     $('#formModal').modal('hide');
-                    $('#dataForm')[0].reset();
-                    $('#datatables-ajax').DataTable().ajax.reload();
+                    if (response.success) {
+                        $('#dataForm')[0].reset();
+                        $('#datatables-ajax').DataTable().ajax.reload();
+                    }
                     Swal.fire({
                         title: response.success ? 'Success' : 'Error',
                         text: response.message,
                         icon: response.success ? 'success' : 'error',
                         confirmButtonText: 'OK'
                     });
-
                 },
-                error: function(response) {
-                    $('#formModal').modal('hide');
-                    Swal.fire({
-                        title: response.success ? 'Success' : 'Error',
-                        text: response.message,
-                        icon: response.success ? 'success' : 'error',
-                        confirmButtonText: 'OK'
-                    });
+                error: function(xhr) {
+                    let response = xhr.responseJSON;
+                    if (response) {
+                        let errors = response; // Use the response directly, which contains the errors
+                        $('.form-control').removeClass('is-invalid').removeClass('is-valid');
+                        $('.invalid-feedback').empty();
 
+                        Object.keys(errors).forEach(function(key) {
+                            let input = $("#" + key);
+                            let errorDiv = $("#" + key + "-error");
+                            
+                            input.addClass("is-invalid");
+                            errorDiv.html('<strong>' + errors[key][0] + '</strong>'); 
+
+                            if (input.hasClass("select2-hidden-accessible")) {
+                                input.parent().addClass("is-invalid");
+                            }
+                        });
+                    }
                 }
             });
         });
+
 
         // delete 
         $(document).on('click', '.deleteBtn', function() {
@@ -630,7 +658,7 @@
             $('#formModalSeting').modal('show');
         });
 
-        // prosess imprt excel
+        // prosess seting
         $('#saveBtnSeting').on('click', function() {
             var url = '{{ url('siswa/seting_siswa') }}';
             // Tambahkan progres bar

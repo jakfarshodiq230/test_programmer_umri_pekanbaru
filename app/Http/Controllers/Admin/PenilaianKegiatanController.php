@@ -17,6 +17,10 @@ use App\Models\Admin\PenilaianModel;
 
 class PenilaianKegiatanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'kegiatan';
         $submenu= 'penilaian';

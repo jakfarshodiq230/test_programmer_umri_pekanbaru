@@ -92,7 +92,7 @@
                                                                 id="id_peserta_kegiatan" class="form-control"
                                                                 placeholder="id_peserta_kegiatan" hidden>
                                                         </div>
-                                                        <div class="mb-3">
+                                                        <div class="mb-3 error-placeholder">
                                                             <label>Guru</label>
                                                             <select class="form-control select2 " name="guru"
                                                                 data-bs-toggle="select2" required>
@@ -142,6 +142,8 @@
     <script>
         var periode = "{{ $periode }}";
         var tahun_ajaran = "{{ $tahun_ajaran }}";
+        $('.select2').val(null).trigger('change');
+        $('#dataForm')[0].reset();
 
         $(document).ready(function() {
             $.ajax({
@@ -292,7 +294,6 @@
                     id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
-                    console.log(data);
                     $('#formModal').modal('show');
                     // Populate the modal fields with the data
                     $('#dataForm input[name="id_peserta_kegiatan"]').val(data.data.id_peserta_kegiatan);
@@ -379,6 +380,8 @@
                 success: function(response) {
                     $('#formModal').modal('hide');
                     $('#datatables-ajax').DataTable().ajax.reload();
+                    $('.select2').val(null).trigger('change');
+                    $('#dataForm')[0].reset();
                     Swal.fire({
                         title: response.success ? 'Success' : 'Error',
                         text: response.message,

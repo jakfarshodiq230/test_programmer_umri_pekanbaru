@@ -122,22 +122,38 @@
         $('#dataForm')[0].reset();
         // tahun ajaran
         document.addEventListener('DOMContentLoaded', function() {
-            const selectElement = document.querySelector('select[name="tahun_ajaran"]');
+            const selectElements = [
+                document.querySelector('select[name="tahun_ajaran"]'),
+                document.querySelector('select[name="kegiatan"]'),
+                document.querySelector('select[name="jenis_kegiatan"]')
+            ];
+
+            const inputElements = [
+                document.querySelector('input[name="tggl_awal_periode"]'),
+                document.querySelector('input[name="tggl_akhir_periode"]'),
+                document.querySelector('input[name="tggl_akhir_penilaian"]'),
+                document.querySelector('input[name="tanggungjawab_periode"]')
+            ];
+
+            const textareaElement = document.querySelector('textarea[name="pesan_periode"]');
+            const saveBtn = document.querySelector('#saveBtn'); // Adjust the selector as needed
+
             $.ajax({
                 url: '{{ url('periode/data_tahun') }}',
                 type: 'GET',
                 dataType: 'json', // Ensure response is treated as JSON
                 success: function(response) {
                     const data = response.data; // Assuming response has a 'data' array
+                    const tahun_list = document.querySelector('select[name="tahun_ajaran"]');
                     data.forEach(item => {
                         const option = document.createElement('option');
                         option.value = item.id_tahun_ajaran;
                         option.textContent = item.nama_tahun_ajaran;
-                        selectElement.appendChild(option);
+                        tahun_list.appendChild(option);
                     });
 
                     // Initialize Select2 after appending options
-                    $(selectElement).select2();
+                    $(tahun_list).select2();
                 },
                 error: function(xhr, status, error) {
                     // Handle error
@@ -149,6 +165,22 @@
                     });
                 }
             });
+
+            function checkInputs() {
+                const allInputsFilled = [
+                    ...selectElements,
+                    ...inputElements,
+                    textareaElement
+                ].every(el => el.value.trim() !== '' && el.value.trim() !== 'PILIH');
+
+                saveBtn.disabled = !allInputsFilled;
+            }
+
+            [...selectElements, ...inputElements, textareaElement].forEach(element => {
+                element.addEventListener('input', checkInputs);
+            });
+
+            checkInputs(); // Initial check
         });
 
 
@@ -265,6 +297,7 @@
                         id, // URL to fetch data for the selected row
                     type: 'GET',
                     success: function(data) {
+                        saveBtn.disabled  = false;
                         // Populate the modal fields with the data
                         $('#dataForm input[name="id_periode"]').val(data.data.id_periode);
                         $('select[name="tahun_ajaran"] option').each(function() {

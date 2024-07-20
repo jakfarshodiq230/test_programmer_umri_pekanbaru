@@ -13,6 +13,10 @@ use App\Models\Admin\RaporKegiatanModel;
 use App\Models\Admin\PesertaKegiatan;
 class PeriodeRaporController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'rapor';
         $submenu= 'periode-rapor';
@@ -97,7 +101,7 @@ class PeriodeRaporController extends Controller
                     'pesan_periode' => $validatedData['pesan_periode'],
                     'judul_periode' => 'rapor',
                     'status_periode' => '0',
-                    'id_user' => session('user')['id_user'],
+                    'id_user' => session('user')['id'],
                 ];
     
                 // Store data into database
@@ -236,7 +240,7 @@ class PeriodeRaporController extends Controller
                     'n_g_lama' => $value['nilai_ghunnah_lama'] ?? null,
                     'n_m_lama' => $value['nilai_mad_lama'] ?? null,
                     'n_w_lama' => $value['nilai_waqof_lama'] ?? null,
-                    'id_user' => session('user')['id_user'],
+                    'id_user' => session('user')['id'],
                 ];
             
                 // Ensure necessary keys are present and valid before processing

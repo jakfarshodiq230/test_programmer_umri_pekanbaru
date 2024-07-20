@@ -21,26 +21,28 @@
                         <div class="card-header">
                             <div class="card">
                                 <div class="card-body border-navy">
-                                    <form class="row row-cols-md-6 align-items-center" id="dataForm"
+                                    <form class="row row-cols-md-auto align-items-center" id="dataForm"
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="col-12">
-                                            <label class="visually-hidden" for="inlineFormInputName2">Awal Tahun
-                                                Ajaran</label>
-                                            <select class="form-control select2 mb-4 me-sm-2" name="awal_nama_tahun_ajaran"
-                                                data-bs-toggle="select2" required>
-                                                <option>PILIH</option>
-                                            </select>
-                                            <input type="text" name="id_tahun_ajaran" id="id_tahun_ajaran"
-                                                class="form-control mb-4 me-sm-2" placeholder="id_tahun_ajaran" hidden>
+                                            <div class="input-group mb-2 me-sm-2">
+                                                <div class="input-group-text">Mulai Tahun Ajaran</div>
+                                                <select class="form-control select2  me-sm-2" name="awal_nama_tahun_ajaran"
+                                                    data-bs-toggle="select2" required style="width: 100px;">
+                                                    <option value="PILIH">PILIH</option>
+                                                </select>
+                                                <input type="text" name="id_tahun_ajaran" id="id_tahun_ajaran"
+                                                    class="form-control mb-4 me-sm-2" placeholder="id_tahun_ajaran" hidden>
+                                            </div>                                            
                                         </div>
                                         <div class="col-12">
-                                            <label class="visually-hidden" for="inlineFormInputName2">Akhir Tahun
-                                                Ajaran</label>
-                                            <select class="form-control select2 mb-4 me-sm-2" name="akhir_nama_tahun_ajaran"
-                                                data-bs-toggle="select2" required>
-                                                <option>PILIH</option>
-                                            </select>
+                                            <div class="input-group mb-2 me-sm-2">
+                                                <div class="input-group-text">Akhir Tahun Ajaran</div>
+                                                <select class="form-control select2 mb-4 me-sm-2" name="akhir_nama_tahun_ajaran"
+                                                    data-bs-toggle="select2" required style="width: 100px;">
+                                                    <option value="PILIH">PILIH</option>
+                                                </select>
+                                                </div>     
                                         </div>
                                         <div class="col-12">
                                             <button type="button" id="saveBtn"
@@ -91,14 +93,11 @@
             const startYear = 2000;
 
             for (let year = currentYear; year >= startYear; year--) {
-
                 const option = document.createElement('option');
                 option.value = year;
                 option.textContent = year;
                 selectElement.appendChild(option);
 
-
-                // Create options for selectElement2
                 const option2 = document.createElement('option');
                 option2.value = year;
                 option2.textContent = year;
@@ -110,6 +109,24 @@
                 $(selectElement).select2();
                 $(selectElement2).select2();
             }
+
+            // Disable save button based on selection
+            const saveBtn = document.getElementById('saveBtn');
+
+            function checkInputs() {
+                if (selectElement.value.trim() === 'PILIH' || selectElement2.value.trim() === 'PILIH') {
+                    saveBtn.disabled = true;
+                } else {
+                    console.log('ok');
+                    saveBtn.disabled = false;
+                }
+            }
+
+            // Use 'change' event for select elements
+            $(selectElement).on('change', checkInputs);
+            $(selectElement2).on('change', checkInputs);
+
+            checkInputs(); // Initial check
         });
 
         $(document).ready(function() {
@@ -191,6 +208,7 @@
                     id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
+                    saveBtn.disabled = false;
                     // Populate the modal fields with the data
                     let str = data.data.nama_tahun_ajaran;
                     let parts = str.split("/"); // ["2023", "2024"]

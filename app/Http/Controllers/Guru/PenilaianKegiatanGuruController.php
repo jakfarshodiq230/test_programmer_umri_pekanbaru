@@ -17,8 +17,14 @@ use App\Models\Admin\PenilaianModel;
 use App\Models\Admin\PenilaianSmModel;
 use App\Models\Admin\SurahModel;
 
+use App\Pdf\CustomPdf;
+
 class PenilaianKegiatanGuruController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:guru');
+    }
     public function index(){
         $menu = 'kegiatan';
         $submenu= 'penilaian';
@@ -127,28 +133,31 @@ class PenilaianKegiatanGuruController extends Controller
     public function storeData(Request $request)
     {
         try {
+            
             // Validate incoming request data
             if ($request->jenis_penilaian_kegiatan === 'tahfidz' || $request->jenis_penilaian_kegiatan === 'murajaah') {
                 $validatedData = $request->validate([
-                    'id_peserta_kegiatan' => 'required',
+                    'siswa' => 'required|not_in:PILIH,other',
                     'id_periode' => 'required',
+                    'id_peserta_kegiatan' => 'required',
                     'tanggal_penilaian_kegiatan' => 'required|date',
-                    'jenis_penilaian_kegiatan' => 'required|string|max:255',
+                    'jenis_penilaian_kegiatan' => 'required|string|max:255|not_in:PILIH,other',
                     'surah_awal_penilaian_kegiatan' => 'required|string',
                     'surah_akhir_penilaian_kegiatan' => 'required|string',
                     'ayat_awal_penilaian_kegiatan' => 'required|numeric',
                     'ayat_akhir_penilaian_kegiatan' => 'required|numeric',
                     'nilai_tajwid_penilaian_kegiatan' => 'required|numeric',
                     'nilai_fasohah_penilaian_kegiatan' => 'required|numeric',
-                    'nilai_kelancaran_penilaian_kegiatan' => 'required|numeric',
+                    'nilai_kelancaran_penilaian_kegiatan_tahfidz' => 'required|numeric',
                     'keterangan_penilaian_kegiatan' => 'required|string',
                 ]);
             } else {
                 $validatedData = $request->validate([
-                    'id_peserta_kegiatan' => 'required',
+                    'siswa' => 'required',
                     'id_periode' => 'required',
+                    'id_peserta_kegiatan' => 'required',
                     'tanggal_penilaian_kegiatan' => 'required|date',
-                    'jenis_penilaian_kegiatan' => 'required|string|max:255',
+                    'jenis_penilaian_kegiatan' => 'required|string|max:255|not_in:PILIH,other',
                     'surah_awal_penilaian_kegiatan' => 'required|string',
                     'surah_akhir_penilaian_kegiatan' => 'required|string',
                     'ayat_awal_penilaian_kegiatan' => 'required|numeric',
@@ -156,7 +165,7 @@ class PenilaianKegiatanGuruController extends Controller
                     'nilai_ghunnah_penilaian_kegiatan' => 'required|numeric',
                     'nilai_mad_penilaian_tahsin' => 'required|numeric',
                     'nilai_waqof_penilaian_tahsin' => 'required|numeric',
-                    'nilai_kelancaran_penilaian_kegiatan' => 'required|numeric',
+                    'nilai_kelancaran_penilaian_kegiatan_tahsin' => 'required|numeric',
                     'keterangan_penilaian_kegiatan' => 'required|string',
                 ]);
             }
@@ -182,9 +191,9 @@ class PenilaianKegiatanGuruController extends Controller
                     'ayat_akhir_penilaian_kegiatan' => $validatedData['ayat_akhir_penilaian_kegiatan'],
                     'nilai_tajwid_penilaian_kegiatan' => $validatedData['nilai_tajwid_penilaian_kegiatan'],
                     'nilai_fasohah_penilaian_kegiatan' => $validatedData['nilai_fasohah_penilaian_kegiatan'],
-                    'nilai_kelancaran_penilaian_kegiatan' => $validatedData['nilai_kelancaran_penilaian_kegiatan'],
+                    'nilai_kelancaran_penilaian_kegiatan' => $validatedData['nilai_kelancaran_penilaian_kegiatan_tahfidz'],
                     'keterangan_penilaian_kegiatan' => $validatedData['keterangan_penilaian_kegiatan'],
-                    'id_user' => 'GR-230624-3',
+                    'id_user' => session('user')['id'],
                 ];
             } else {
                 $data = [
@@ -200,14 +209,11 @@ class PenilaianKegiatanGuruController extends Controller
                     'nilai_ghunnah_penilaian_kegiatan' => $validatedData['nilai_ghunnah_penilaian_kegiatan'],
                     'nilai_mad_penilaian_tahsin' => $validatedData['nilai_mad_penilaian_tahsin'],
                     'nilai_waqof_penilaian_tahsin' => $validatedData['nilai_waqof_penilaian_tahsin'],
-                    'nilai_kelancaran_penilaian_kegiatan' => $validatedData['nilai_kelancaran_penilaian_kegiatan'],
+                    'nilai_kelancaran_penilaian_kegiatan' => $validatedData['nilai_kelancaran_penilaian_kegiatan_tahsin'],
                     'keterangan_penilaian_kegiatan' => $validatedData['keterangan_penilaian_kegiatan'],
-                    'id_user' => 'GR-230624-3',
+                    'id_user' => session('user')['id'],
                 ];
             }
-            
-
-    
             // Store data into database
             $PenialaiSM = PenilaianSmModel::create($data);
     
@@ -218,7 +224,9 @@ class PenilaianKegiatanGuruController extends Controller
                 return response()->json(['error' => true, 'message' => 'Gagal Tambah Data']);
             }
     
-        } catch (\Exception $e) {
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        }catch (\Exception $e) {
             // Handle any exceptions that occur during validation or data insertion
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }
@@ -381,7 +389,6 @@ class PenilaianKegiatanGuruController extends Controller
                     'nilai_fasohah_penilaian_kegiatan' => $validatedData['nilai_fasohah_penilaian_kegiatan'],
                     'nilai_kelancaran_penilaian_kegiatan' => $validatedData['nilai_kelancaran_penilaian_kegiatan'],
                     'keterangan_penilaian_kegiatan' => $validatedData['keterangan_penilaian_kegiatan'],
-                    'id_user' => 'GR-230624-3',
                 ];
             } else {
                 $data = [
@@ -395,7 +402,6 @@ class PenilaianKegiatanGuruController extends Controller
                     'nilai_mad_penilaian_tahsin' => $validatedData['nilai_mad_penilaian_tahsin'],
                     'nilai_waqof_penilaian_tahsin' => $validatedData['nilai_waqof_penilaian_tahsin'],
                     'keterangan_penilaian_kegiatan' => $validatedData['keterangan_penilaian_kegiatan'],
-                    'id_user' => 'GR-230624-3',
                 ];
             }
             
@@ -411,10 +417,69 @@ class PenilaianKegiatanGuruController extends Controller
                 return response()->json(['error' => true, 'message' => 'Gagal Edit Data']);
             }
     
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
         } catch (\Exception $e) {
             // Handle any exceptions that occur during validation or data insertion
             return response()->json(['error' => true, 'message' => $e->getMessage()]);
         }
+    }
+
+    public function CetakKartu($peserta,$tahun,$jenjang,$periode){
+        $pdf = new CustomPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        // Set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetTitle('Bukti Pembelian');
+
+        // Remove default header/footer
+        $pdf->setPrintHeader(true); // Enable custom header
+        $pdf->setPrintFooter(true); // Enable custom footer
+
+        // Set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // Set margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // Set auto page breaks
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // Set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        $pdf->SetFont('dejavusans', '', 14, '', true);
+        $pdf->AddPage('P', 'A4');
+
+        $pdf->SetY(30);
+        // Add content
+        $nilai = PenilaianModel::DataAjaxNilaiPenilaianKartu($peserta, $tahun, $jenjang, $periode);
+        $identitas = PenilaianModel::DataAjaxIdentitasPenilaianKartu($peserta, $tahun, $jenjang, $periode);
+        $viewName = ($jenjang === 'tahfidz') ? 'Guru/kegiatan/penilaian/cetak_kartu_tahfidz' : 'Guru/kegiatan/penilaian/cetak_kartu_tahsin';
+        $html = view($viewName, compact('identitas'));
+
+        
+        // Print text using writeHTMLCell()
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Center the image
+        if (file_exists(public_path('storage/siswa/' . $identitas->foto_siswa))) {
+            $imagePath = public_path('storage/siswa/' . $identitas->foto_siswa);
+        } else {
+            $imagePath = public_path('assets/admin/img/avatars/pas_foto.jpg');
+        }        
+         // Correctly define the image path
+        $imageWidth = 30; // Set image width (3 cm)
+        $imageHeight = 40; // Set image height (4 cm)
+        $x = ($pdf->getPageWidth() - $imageWidth) / 2; // Calculate X position for centering
+        $y = 230; // Set a fixed Y position from the top
+        
+        // Place the image
+        $pdf->Image($imagePath, $x, $y, $imageWidth, $imageHeight, '', '', '', false, 300, '', false, false, 0, false, false, false);
+           
+
+        // Close and output PDF document
+        $pdf->Output($identitas->nama_siswa.'.pdf', 'I'); // 'I' for inline display or 'D' for download
     }
         
 }

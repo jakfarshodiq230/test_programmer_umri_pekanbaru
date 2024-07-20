@@ -38,7 +38,7 @@
                         alt="Linda Miller" />
                     <div class="fw-bold">{{ ucfirst(strtolower(session('user')['nama_user'])) }}</div>
                     @php
-                        $levelUser = session('user')['level_user'];
+                        $levelUser = session('user')['user_level'];
                     @endphp
 
                     <small>
@@ -119,9 +119,6 @@
                             <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
                                 class='sidebar-link' href='{{ url('penilaian_kegiatan') }}'>Penilaian</a>
                             </li>
-                            <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
-                                class='sidebar-link' href='{{ url('guru/penilaian_kegiatan') }}'>Penilaian</a>
-                            </li>
                         </ul>
                     </li>
 
@@ -139,9 +136,6 @@
                             </li>
                             <li class="sidebar-item {{ $submenu == 'peserta-rapor' ? 'active' : null }}"><a
                                     class='sidebar-link' href='{{ url('peserta_rapor') }}'>Peserta</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'penilaian-rapor' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('guru/penilaian_rapor') }}'>Penilaian</a>
                             </li>
                         </ul>
                     </li>
@@ -183,7 +177,7 @@
                         Logout
                     </li>
                     <li class="sidebar-item">
-                        <div class="d-flex justify-content-center"><a class='btn btn-outline-primary' id="logoutBtn">LOGOUT</a></div>
+                        <div class="d-flex justify-content-center" id="logoutBtn" data-guard="users"><a class='btn btn-outline-primary' >LOGOUT</a></div>
 
                     </li>
                 </ul>
@@ -204,7 +198,7 @@
                                 {{ ucfirst(session('user')['nama_user']) }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" id="logoutBtn2">
+                                <a class="dropdown-item" id="logoutBtn2" data-guard="users">
                                     <i class="align-middle me-1 fas fa-fw fa-arrow-alt-circle-right"></i> Sign out
                                 </a>
                             </div>
@@ -284,15 +278,16 @@
         // logout
         $(document).ready(function() {
             $('#logoutBtn, #logoutBtn2').on('click', function() {
+                var guard = $(this).data('guard'); // Make sure the buttons have data-guard attributes
+                console.log(guard);
                 $.ajax({
-                    url: '{{ url('admin/login/logout') }}',
-                    type: 'GET',
+                    url: '{{ url('cek_logout') }}/' + guard,
+                    type: 'post',
                     data: {
-                        _token: '{{ csrf_token() }}'
+                        _token: '{{ csrf_token() }}' // Include the CSRF token
                     },
                     success: function(response) {
-                        console.log(response);
-                        window.location.href = '{{ url('') }}' + response.redirect; 
+                        window.location.href = '{{ url('') }}' + response.redirect + '/'+guard;
                     },
                     error: function(xhr, status, error) {
                         console.error('Logout failed: ', error);

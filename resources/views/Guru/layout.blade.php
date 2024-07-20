@@ -23,7 +23,6 @@
 </head>
 
 <body>
-    @include('sweetalert::alert')
     <div class="splash active">
         <div class="splash-icon"></div>
     </div>
@@ -37,8 +36,10 @@
                 <div class="sidebar-user">
                     <img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" class="img-fluid rounded-circle mb-2"
                         alt="Linda Miller" />
-                    <div class="fw-bold">ADMIN/SUPERADMIN</div>
-                    <small>ADMIN/SUPERADMIN</small>
+                        <div class="fw-bold">{{ ucfirst(strtolower(session('user')['nama_user'])) }}</div>
+                        <small>
+                        {{ ucfirst(strtolower(session('user')['level_user'])) }}
+                        </small>
                 </div>
 
                 <ul class="sidebar-nav">
@@ -91,9 +92,7 @@
                         Logout
                     </li>
                     <li class="sidebar-item">
-                        <div class="d-flex justify-content-center"><a class='btn btn-outline-primary'
-                                href='{{ url('actionlogout') }}'>LOGOUT</a></div>
-
+                        <div class="d-flex justify-content-center"><a class='btn btn-outline-primary' id="logoutBtn">LOGOUT</a></div>
                     </li>
                 </ul>
             </div>
@@ -113,7 +112,7 @@
                                 okey
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ url('actionlogout') }}"><i
+                                <a class="dropdown-item" id="logoutBtn2"><i
                                         class="align-middle me-1 fas fa-fw fa-arrow-alt-circle-right"></i> Sign out</a>
                             </div>
                         </li>
@@ -188,11 +187,20 @@
             });
 
         });
-    </script>
-    <script>
-        function handleClick() {
-            alert('Button clicked!');
-        }
+        $(document).ready(function() {
+            $('#logoutBtn, #logoutBtn2').on('click', function() {
+                $.ajax({
+                    url: '{{ url('cek_logout') }}',
+                    type: 'GET',
+                    success: function(response) {
+                        window.location.href = '{{ url('') }}' + response.redirect; 
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Logout failed: ', error);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

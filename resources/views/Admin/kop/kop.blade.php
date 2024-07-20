@@ -27,13 +27,13 @@
                                             <div class="col-12">
                                                 <div class="input-group mb-2 me-sm-2">
                                                     <div class="input-group-text">File Kop</div>
-                                                    <input type="file" class="form-control" name="file_kop" id="file_kop" >
+                                                    <input type="file" class="form-control" name="file_kop" id="file_kop" onchange="toggleSaveButton()">
                                                 </div>
 
                                             </div>
                                             <div class="col-12">
                                                 <button type="button" id="saveBtn"
-                                                    class="btn btn-primary mb-2 me-sm-2">Simpan</button>
+                                                    class="btn btn-primary mb-2 me-sm-2" disabled>Simpan</button>
                                             </div>
                                     </form>
                                 </div>
@@ -53,6 +53,16 @@
 @section('scripts')
     <!-- Your other content -->
     <script>
+        function toggleSaveButton() {
+            const fileInput = document.getElementById('file_kop');
+            const saveButton = document.getElementById('saveBtn');
+
+            if (fileInput.files.length > 0) {
+                saveButton.disabled = false;
+            } else {
+                saveButton.disabled = true;
+            }
+        }
     function loadImage() {
         const loadingIndicator = $('#loading-indicator');
         const viewImage = $('#view-image');

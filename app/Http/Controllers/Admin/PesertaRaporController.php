@@ -14,6 +14,10 @@ use App\Models\Admin\PesertaKegiatan;
 
 class PesertaRaporController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    }
     public function index(){
         $menu = 'rapor';
         $submenu= 'peserta-rapor';
@@ -70,7 +74,7 @@ class PesertaRaporController extends Controller
                     'n_g_lama' => $value['nilai_ghunnah_lama'] ?? null,
                     'n_m_lama' => $value['nilai_mad_lama'] ?? null,
                     'n_w_lama' => $value['nilai_waqof_lama'] ?? null,
-                    'id_user' => session('user')['id_user'],
+                    'id_user' => session('user')['id'],
                 ];
             
                 // Ensure necessary keys are present and valid before processing
