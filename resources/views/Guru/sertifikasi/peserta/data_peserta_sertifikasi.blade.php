@@ -1,4 +1,4 @@
-@extends('Admin.layout')
+@extends('Guru.layout')
 @section('content')
     <style>
         .border-navy {
@@ -12,19 +12,19 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Data Peserta Kegiatan
+                    Data Peserta Sertifikasi
                 </h1>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="card ">
+                    <div class="card">
                         <div class="card-body">
                             <table id="datatables-ajax" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
                                         <th>Periode</th>
-                                        <th>Jumlah Peserta</th>
+                                        <th>Peserta</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -32,7 +32,7 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Periode</th>
-                                        <th>Jumlah Peserta</th>
+                                        <th>Peserta</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
@@ -47,7 +47,6 @@
 @section('scripts')
     <!-- Your other content -->
     <script>
-        $('.select2').val(null).trigger('change');
 
         $(document).ready(function() {
             // menampilkan data
@@ -57,7 +56,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('admin/peserta/data_periode_peserta') }}',
+                ajax: '{{ url('guru/daftar_sertifikasi/data_periode_sertifikasi') }}',
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -73,24 +72,33 @@
                             var nama_tahun_ajaran = row.nama_tahun_ajaran.charAt(0).toUpperCase() +
                                 row.nama_tahun_ajaran.slice(1);
                             var jenis_periode = row.jenis_periode.trim().toUpperCase();
-                            var formatted_string = nama_tahun_ajaran + ' [ ' + jenis_periode + ' ]';
-                            return formatted_string;
-                        }
+                            
+                            return `Periode : ${nama_tahun_ajaran} <br>
+                            Sertifikasi : ${jenis_periode} JUZ ${row.juz_periode}
+                            <br> <span class="badge ${row.status_periode === 0 ? 'bg-danger' : 'bg-success'}">
+                                ${row.status_periode === 0 ? 'TUTUP PENDAFTARAN' : 'BUKA PENDAFTARAN'}
+                            </span>`;
 
+                        }
                     },
                     {
-                        data: 'total_peserta_kegiatan',
-                        name: 'total_peserta_kegiatan',
+                        data: 'siswa_count',
+                        name: 'siswa_count',
                         render: function(data, type, row) {
-                            return row.total_peserta_kegiatan + ' Orang';
+                            return  row.siswa_count + ' Orang';
                         }
+
                     },
                     {
                         data: null,
                         name: null,
                         render: function(data, type, row) {
-                            return `
-                                <button class="btn btn-sm btn-secondary addBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Peserta" data-id_periode="${row.id_periode}" data-tahun_ajaran="${row.id_tahun_ajaran}"><i class="fas fa-eye"></i></button>
+                            
+                                return `
+                                <button class="btn btn-sm btn-primary pesertaBtn me-1 " data-bs-toggle="tooltip" data-bs-placement="top" title="Daftar Sertifikasi" 
+                                data-tahun="${row.id_tahun_ajaran}" 
+                                data-sertifikasi="${row.jenis_periode}" 
+                                data-periode="${row.id_periode}"><i class="fas fa-users"> </i></button>
                             `;
                         }
                     },
@@ -98,26 +106,13 @@
             });
         });
 
-        // delete 
-        $(document).on('click', '.addBtn', function() {
-            var id_periode = $(this).data('id_periode');
-            var tahun_ajaran = $(this).data('tahun_ajaran');
-            // Make an Ajax call to delete the record
-            Swal.fire({
-                title: 'Penilaian',
-                text: 'Apakah Anda Ingin Melihat Penilaian?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, saya akan melihat data penilaian'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var url = "{{ url('admin/penilaian_kegiatan/data_list_periode_penilaian_kegiatan') }}/" + id_periode + "/" +
-                        tahun_ajaran;
-                    window.location.href = url;
-                }
-            });
+        // lihat data
+        $(document).on('click', '.pesertaBtn', function() {
+            var tahun = $(this).data('tahun');
+            var sertifikasi = $(this).data('sertifikasi');
+            var periode = $(this).data('periode');
+            var url= '{{ url('guru/daftar_sertifikasi/list_daftar_sertifikasi') }}/' + tahun + '/' + sertifikasi + '/' + periode;
+            window.location.href = url;
         });
     </script>
 @endsection

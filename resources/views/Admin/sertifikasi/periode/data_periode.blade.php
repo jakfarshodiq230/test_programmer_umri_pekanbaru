@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Data Periode Rapor
+                    Data Periode Sertifikasi
                 </h1>
             </div>
             <div class="row">
@@ -33,54 +33,60 @@
                                                     </select>
                                                     <input type="text" name="id_periode" id="id_periode" hidden>
 											</div>
-											<div class="mb-3 col-md-4">
-												<label for="inputPassword4">Rapor</label>
-                                                <select class="form-control select2 mb-4 me-sm-2 mt-0 " name="kegiatan"
-                                                data-bs-toggle="select2" required>
-                                                <option selected>PILIH</option>
-                                                <option value="tahfidz">TAHFIDZ</option>
-                                                <option value="tahsin">TAHSIN</option>
-                                            </select>
-											</div>
                                             <div class="mb-3 col-md-4">
-												<label for="inputPassword4">Jenis Rapor</label>
-                                                <select class="form-control select2 mb-4 me-sm-2 mt-0 " name="jenis_kegiatan"
-                                                data-bs-toggle="select2" required>
-                                                <option selected>PILIH</option>
-                                                <option value="ganjil">GANJIL</option>
-                                                <option value="genap">GENAP</option>
-                                            </select>
-											</div>
-										</div>
-                                        <div class="row">
-											<div class="mb-3 col-md-4">
-												<label for="inputEmail4">Taggal Mulai Rapor</label>
-												<input type="date" class="form-control" name="tggl_awal_periode" id="tggl_awal_periode" placeholder="Email">
-											</div>
-											<div class="mb-3 col-md-4">
-												<label for="inputEmail4">Taggal Akhir Rapor</label>
-												<input type="date" class="form-control" name="tggl_akhir_periode" id="tggl_akhir_periode" placeholder="Password">
-											</div>
-                                            <div class="mb-3 col-md-4">
-												<label for="inputEmail4">Taggal Akhir Penilaian Rapor</label>
+												<label for="inputEmail4">Taggal Akhir Penilaian Sertifikasi</label>
 												<input type="datetime-local" class="form-control" name="tggl_akhir_penilaian" id="tggl_akhir_penilaian" placeholder="Password">
 											</div>
                                             <div class="mb-3 col-md-4">
-												<label for="inputEmail4">Taggal Rapor</label>
-												<input type="date" class="form-control" name="tggl_periode" id="tggl_periode" placeholder="Password">
-											</div>
-                                            <div class="mb-3 col-md-4">
-												<label for="inputEmail4">Penanggung Jawab Rapor</label>
-												<input type="text" class="form-control" name="tanggungjawab_periode" id="tanggungjawab_periode" placeholder="Penanggung Jawab Rapor">
-											</div>
-                                            <div class="mb-3 col-md-4">
-												<label for="inputEmail4">Pesan Rapor</label>
-												<textarea class="form-control" name="pesan_periode" id="pesan_periode" rows="1" cols="10" placeholder="Pesan Rapor Untuk Peserta" maxlength="100"></textarea>
+												<label for="inputEmail4">Taggal Terbit Sertifikasi</label>
+												<input type="date" class="form-control" name="tggl_sertifikasi" id="tggl_sertifikasi" placeholder="Password">
 											</div>
 										</div>
-										<div class="text-end">
-                                            <button type="button" class="btn btn-primary saveBtn" id="saveBtn">Simpan</button>
-                                        </div>
+                                        <div class="row">
+                                            <div class="mb-3 col-md-4">
+												<label for="inputPassword4">Sertifikasi</label>
+                                                    <select class="form-control select2 mb-4 me-sm-2 mt-0 " name="sertifikasi"
+                                                    data-bs-toggle="select2" required>
+                                                    <option selected>PILIH</option>
+                                                    <option value="tahfidz">TAHFIDZ</option>
+                                                    <option value="tahsin">TAHSIN</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 col-md-4">
+												<label for="inputPassword4">Juz</label>
+                                                    <select class="form-control select2 mb-4 me-sm-2 mt-0 " name="juz_sertifikasi"
+                                                    data-bs-toggle="select2" required>
+                                                    <option selected>PILIH</option>
+                                                    @for ($i = 1; $i <= 30; $i++)
+                                                    <option value="{{$i}}">{{$i}}</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 col-md-4">
+												<label for="inputEmail4">Sesi Penilaian Sertifikat</label>
+                                                <select class="form-control select2 mb-4 me-sm-2 mt-0 " name="sesi_sertifikasi"
+                                                    data-bs-toggle="select2" required>
+                                                    <option selected>PILIH</option>
+                                                    @for ($i = 1; $i <= 10; $i++)
+                                                    <option value="{{$i}}">{{$i}}</option>
+                                                    @endfor
+                                                </select>
+											</div>
+										</div>
+                                        <div class="row">
+                                            <div class="mb-3 col-md-4">
+												<label for="inputEmail4">file Sertifikat</label>
+												<input type="file" class="form-control" name="file_sertifikat" id="file_sertifikat" placeholder="Password">
+                                                <span class="text-danger text-sm">File upload jpg</span>
+											</div>
+                                            <div class="mb-3 col-md-4">
+												<label for="inputEmail4">Penanggung Jawab Sertifikasi</label>
+												<input type="text" class="form-control" name="tanggungjawab_sertifikasi" id="tanggungjawab_sertifikasi" placeholder="Penanggung Jawab sertifikat">
+											</div>
+                                            <div class="mb-3 col-md-4 mt-4 text-center">
+                                                <button type="button" class="btn btn-primary saveBtn" id="saveBtn">Simpan</button>
+                                            </div>
+										</div>
 									</form>
                                 </div>
                             </div>
@@ -92,7 +98,6 @@
                                         <th>No.</th>
                                         <th>Periode</th>
                                         <th>Tanggal</th>
-                                        <th>Pesan</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -102,12 +107,39 @@
                                         <th>No.</th>
                                         <th>Periode</th>
                                         <th>Tanggal</th>
-                                        <th>Pesan</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
                             </table>
+                        </div>
+
+                        <!-- view sertifikat -->
+                        <div class="modal fade" id="viewSertifikat" tabindex="-1" role="dialog" aria-hidden="true"
+                            data-bs-keyboard="false" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalLabelUpload">Edit Harga</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body m-3">
+                                            <div class="row">
+                                                <div class="col-12 col-lg-12">
+                                                    <div id="loading-indicator" style="display:none;">Loading...</div>
+                                                    <img id="view-image" src="" alt="Dynamic Image" width="800" height="150" style="display:none;" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Batal</button>
+                                            <button type="button" id="downloadPdf"
+                                                class="btn btn-primary">Download PDF</button>
+                                        </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,18 +156,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             const selectElements = [
                 document.querySelector('select[name="tahun_ajaran"]'),
-                document.querySelector('select[name="kegiatan"]'),
-                document.querySelector('select[name="jenis_kegiatan"]')
+                document.querySelector('select[name="sertifikasi"]'),
+                document.querySelector('select[name="juz_sertifikasi"]'),
+                document.querySelector('select[name="sesi_sertifikasi"]'),
             ];
 
             const inputElements = [
-                document.querySelector('input[name="tggl_awal_periode"]'),
-                document.querySelector('input[name="tggl_akhir_periode"]'),
                 document.querySelector('input[name="tggl_akhir_penilaian"]'),
-                document.querySelector('input[name="tanggungjawab_periode"]')
+                document.querySelector('input[name="tanggungjawab_sertifikasi"]')
             ];
-
-            const textareaElement = document.querySelector('textarea[name="pesan_periode"]');
             const saveBtn = document.querySelector('#saveBtn'); // Adjust the selector as needed
 
             $.ajax({
@@ -169,14 +198,13 @@
             function checkInputs() {
                 const allInputsFilled = [
                     ...selectElements,
-                    ...inputElements,
-                    textareaElement
+                    ...inputElements
                 ].every(el => el.value.trim() !== '' && el.value.trim() !== 'PILIH');
 
                 saveBtn.disabled = !allInputsFilled;
             }
 
-            [...selectElements, ...inputElements, textareaElement].forEach(element => {
+            [...selectElements, ...inputElements].forEach(element => {
                 element.addEventListener('input', checkInputs);
             });
 
@@ -192,7 +220,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('admin/periode_rapor/data_periode_rapor') }}',
+                ajax: '{{ url('admin/periode_sertifikasi/data_periode_sertifikasi') }}',
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -208,14 +236,10 @@
                             var nama_tahun_ajaran = row.nama_tahun_ajaran.charAt(0).toUpperCase() +
                                 row.nama_tahun_ajaran.slice(1);
                             var jenis_periode = row.jenis_periode.trim().toUpperCase();
-                            var jenis_kegiatan = row.jenis_kegiatan.trim().toUpperCase();
-                            var tanggal = new Date(row.tggl_periode);
-                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
-                            var tanggal_formatted = tanggal.toLocaleDateString('id-ID', options);
+                            var juz_periode =  row.juz_periode === null ? 0 : row.juz_periode;                           
                             return 'Periode : ' + nama_tahun_ajaran + '<br>' +
-                            'Rapor : ' +  jenis_periode +' '+ jenis_kegiatan +
-                            '<br> Penanggung Jawab : ' + row.tanggungjawab_periode +
-                            '<br> Tanggal Rapor : ' + tanggal_formatted;
+                            'Sertifikasi : ' +  jenis_periode + ' JUZ : ' + juz_periode +
+                            '<br> Penanggung Jawab : ' + row.tanggungjawab_periode;
                         }
 
                     },
@@ -223,14 +247,7 @@
                         data: null,
                         name: null,
                         render: function(data, type, row) {
-                            var tanggal_mulai = new Date(row.tggl_awal_periode);
-                            var tanggal_akhir = new Date(row.tggl_akhir_periode);
-                            var tanggal = new Date(row.tggl_akhir_penilaian);
-                            var tanggal_syn = new Date(row.updated_at);
-                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
-                            var tanggal_mulai_1 = tanggal_mulai.toLocaleDateString('id-ID', options);
-                            var tanggal_akhir_2 = tanggal_akhir.toLocaleDateString('id-ID', options);
-                            
+                            var tanggal_akhir = new Date(row.tggl_akhir_penilaian);                            
                             const options2 = { 
                                 day: 'numeric', 
                                 month: 'long', 
@@ -240,18 +257,19 @@
                                 second: 'numeric',
                                 hour12: false // Use 24-hour format; set to true for 12-hour format
                             };
-                            var tanggal_formatted = tanggal.toLocaleDateString('id-ID', options2);
-                            var tanggal_sinkron= tanggal_syn.toLocaleDateString('id-ID', options2);
-                            return `Mulai Rapor : ${tanggal_mulai_1} s/d  ${tanggal_akhir_2} <br>
+                            var tanggal_formatted = tanggal_akhir.toLocaleDateString('id-ID', options2);
+
+                            var tanggal = new Date(row.tggl_periode);
+                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
+                            var tanggal_terbit = tanggal.toLocaleDateString('id-ID', options);
+
+                            return `Terbit Sertifikat : ${tanggal_terbit}<br>
                             <span class="badge ${new Date(row.tggl_akhir_penilaian) < new Date() ? 'bg-danger' : 'bg-success'}">Akhir Penilaian : ${tanggal_formatted}
                             </span> <br>
-                            <span class="badge bg-success">Sinkronisasi Data : ${tanggal_sinkron}</span>`;
+                             <span class="badge bg-success">Sesi Penilaian : ${row.sesi_periode === null ? 0 : row.sesi_periode}
+                            </span>`;
                         }
 
-                    },
-                    {
-                        data: 'pesan_periode',
-                        name: 'pesan_periode',
                     },
                     {
                         data: 'status_periode',
@@ -276,14 +294,14 @@
                                 <button class="btn btn-sm btn-danger updateBtn0 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Tidak Aktif" data-id="${row.id_periode}"><i class="fas fa-power-off"></i></button>
                                 <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_periode}"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_periode}"><i class="fas fa-trash"></i></button>
-                                <button class="btn btn-sm btn-primary pesertaBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Data Rapor" data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" data-periode="${row.id_periode}"><i class="fas fa-users"></i></button>
+                                <button class="btn btn-sm btn-primary viewBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Sertifkat" data-id="${row.id_periode}"><i class="fas fa-eye"></i></button>
                             `;
                             } else {
                                 return `
                                 <button class="btn btn-sm btn-success updateBtn1 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.id_periode}"><i class="fas fa-power-off"></i></button>
                                 <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id_periode}"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_periode}"><i class="fas fa-trash"></i></button>
-                                <button class="btn btn-sm btn-primary pesertaBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Data Rapor" data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" data-periode="${row.id_periode}"><i class="fas fa-users"></i></button>
+                                <button class="btn btn-sm btn-primary viewBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Sertifkat" data-id="${row.id_periode}"><i class="fas fa-eye"></i></button>
                             `;
                             }
                         }
@@ -317,29 +335,26 @@
                                 $(this).prop('selected', true);
                             }
                         });
-
                         $('select[name="tahun_ajaran"]').select2();
-                        $('select[name="kegiatan"] option').each(function() {
+
+                        $('select[name="sertifikasi"] option').each(function() {
                             if ($(this).val() === data.data.jenis_periode) {
                                 $(this).prop('selected', true);
                             }
                         });
-                        $('select[name="kegiatan"]').select2();
+                        $('select[name="sertifikasi"]').select2();
 
-                        $('select[name="jenis_kegiatan"]').select2();
-                        $('select[name="jenis_kegiatan"] option').each(function() {
-                            if ($(this).val() === data.data.jenis_kegiatan) {
-                                $(this).prop('selected', true);
-                            }
-                        });
-                        $('select[name="jenis_kegiatan"]').select2();
+                        var selectedJuzValue = data.data.juz_periode;
+                        $('select[name="juz_sertifikasi"]').val(selectedJuzValue).trigger('change');
+                        $('select[name="juz_sertifikasi"]').select2();
 
-                        $('#dataForm input[name="tggl_awal_periode"]').val(data.data.tggl_awal_periode);
-                        $('#dataForm input[name="tggl_akhir_periode"]').val(data.data.tggl_akhir_periode);
+                        var selectedValue = data.data.sesi_periode;
+                        $('select[name="sesi_sertifikasi"]').val(selectedValue).trigger('change');
+                        $('select[name="sesi_sertifikasi"]').select2();
+
                         $('#dataForm input[name="tggl_akhir_penilaian"]').val(data.data.tggl_akhir_penilaian);
-                        $('#dataForm input[name="tggl_periode"]').val(data.data.tggl_periode);
-                        $('#dataForm input[name="tanggungjawab_periode"]').val(data.data.tanggungjawab_periode);
-                        $('#dataForm textarea[name="pesan_periode"]').val(data.data.pesan_periode);
+                        $('#dataForm input[name="tggl_sertifikasi"]').val(data.data.tggl_periode);
+                        $('#dataForm input[name="tanggungjawab_sertifikasi"]').val(data.data.tanggungjawab_periode);
                     },
                     error: function(response) {
                         Swal.fire({
@@ -356,10 +371,10 @@
         // save dan update data
         $('#saveBtn').on('click', function() {
             var id = $('#id_periode').val();
-            var url = '{{ url('admin/periode_rapor/store_periode_rapor') }}';
+            var url = '{{ url('admin/periode_sertifikasi/store_periode_sertifikasi') }}';
 
             if (id) {
-                url = '{{ url('admin/periode_rapor/update_periode_rapor') }}/' + id;
+                url = '{{ url('admin/periode_sertifikasi/update_periode_sertifikasi') }}/' + id;
             }
             var form = $('#dataForm')[0];
             var formData = new FormData(form);
@@ -373,6 +388,7 @@
                     $('#dataForm')[0].reset();
                     $('.select2').val(null).trigger('change');
                     $('#datatables-ajax').DataTable().ajax.reload();
+                    saveBtn.disabled  = true;
                     Swal.fire({
                         title: response.success ? 'Success' : 'Error',
                         text: response.message,
@@ -408,7 +424,7 @@
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
                 $.ajax({
-                    url: '{{ url('admin/periode_rapor/delete_periode_rapor') }}/' +
+                    url: '{{ url('admin/periode_sertifikasi/delete_periode_sertifikasi') }}/' +
                         id, // URL to delete data for the selected row
                     type: 'DELETE',
                     data: {
@@ -455,7 +471,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('admin/periode_rapor/status_periode_rapor') }}/' + id + '/' + status,
+                        url: '{{ url('admin/periode_sertifikasi/status_periode_sertifikasi') }}/' + id + '/' + status,
                         type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'
@@ -484,54 +500,31 @@
             });
         });
 
-        //peserta
-        $(document).on('click', '.pesertaBtn', function() {
-            var tahun = $(this).data('tahun');
-            var rapor = $(this).data('rapor');
-            var periode = $(this).data('periode');
-            Swal.fire({
-                title: 'Peserta',
-                text: 'Apakah Anda Ingin Generate Peserta?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, saya generate data peserta'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Generate Peserta...',
-                        text: 'Sedang generate data peserta, harap tunggu.',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
+        // view sertifikat
+        $(document).on('click', '.viewBtn', function() {
+            $('#ModalLabelUpload').text('Sertifkat');
+            var id = $(this).data('id');
+            const loadingIndicator = $('#loading-indicator');
+            const viewImage = $('#view-image');
+            // Open the edit modal and populate it with data
+            $.ajax({
+                url: '{{ url('admin/periode/edit_periode') }}/' + id, // URL to fetch data for the selected row
+                type: 'GET',
+                success: function(response) {
+                    const imageUrl = '{{ asset('storage/sertifikat') }}/' +response.data.file_periode;
+                    viewImage.attr('src', imageUrl).on('load', function() {
+                        loadingIndicator.hide(); // Hide loading indicator
+                        viewImage.show(); // Show the image
                     });
-                    $.ajax({
-                        url: '{{ url('admin/periode_rapor/peserta_periode_rapor') }}/' + tahun + '/' + rapor + '/' + periode,
-                        type: 'GET',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            $('.select2').val(null).trigger('change');
-                            Swal.fire({
-                                title: response.error ? 'Error!' : 'Success!',
-                                text: response.message,
-                                icon: response.error ? 'error' : 'success',
-                                confirmButtonText: 'OK'
-                            });
-                            $('#datatables-ajax').DataTable().ajax.reload();
-                        },
-                        error: function(response) {
-                            $('.select2').val(null).trigger('change');
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: response.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
-                        }
+                    $('#viewSertifikat').modal('show');
+                },
+                error: function(response) {
+                    $('#formModal').modal('hide');
+                    Swal.fire({
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
+                        confirmButtonText: 'OK'
                     });
                 }
             });

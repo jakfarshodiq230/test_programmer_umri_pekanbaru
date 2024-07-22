@@ -14,7 +14,10 @@ class PeriodeModel extends Model
     public $incrementing = false; 
     protected $keyType = 'string'; 
     protected $fillable = [
-        'id_periode', 'id_tahun_ajaran', 'judul_periode', 'jenis_periode', 'jenis_kegiatan', 'tggl_awal_periode', 'tggl_akhir_periode', 'tggl_akhir_penilaian', 'tggl_periode', 'tanggungjawab_periode', 'pesan_periode', 'status_periode', 'id_user','deleted_at'
+        'id_periode', 'id_tahun_ajaran', 'judul_periode', 'jenis_periode', 'jenis_kegiatan', 
+        'tggl_awal_periode', 'tggl_akhir_periode', 'tggl_akhir_penilaian', 'tggl_periode',
+        'tanggungjawab_periode', 'pesan_periode', 'status_periode', 'file_periode', 'id_user','deleted_at',
+        'juz_periode', 'sesi_periode'
     ];
 
     public static function DataAll()
@@ -43,6 +46,19 @@ class PeriodeModel extends Model
         return $data;
     }
 
+    public static function DataSertifikat()
+    {
+        $data = DB::table('periode')
+            ->join('tahun_ajaran', 'periode.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+            ->select('periode.*','tahun_ajaran.*',) 
+            ->orderBy('periode.created_at', 'DESC')
+            ->whereNull('periode.deleted_at')
+            ->where('judul_periode', 'sertifikasi')
+            ->get();
+        
+        return $data;
+    }
+
     public static function DataPesertaRapor()
     {
         $data = DB::table('periode')
@@ -52,6 +68,23 @@ class PeriodeModel extends Model
                      DB::raw('COALESCE(COUNT(rapor_kegiatan.id_siswa), 0) as siswa_count'))
             ->whereNull('periode.deleted_at')
             ->where('judul_periode', 'rapor')
+            ->groupBy('periode.id_periode', 'tahun_ajaran.id_tahun_ajaran') // Group by unique identifiers
+            ->orderBy('periode.created_at', 'DESC')
+            ->get();
+
+        return $data;
+    }
+
+    public static function DataPesertaSertifikasi()
+    {
+        $data = DB::table('periode')
+            ->leftJoin('peserta_sertifikasi', 'periode.id_periode', '=', 'peserta_sertifikasi.id_periode')
+            ->leftJoin('tahun_ajaran', 'periode.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+            ->select('periode.*', 'tahun_ajaran.*', 
+                     DB::raw('COALESCE(COUNT(peserta_sertifikasi.id_siswa), 0) as siswa_count'))
+            ->whereNull('periode.deleted_at')
+            ->whereNull('peserta_sertifikasi.deleted_at')
+            ->where('judul_periode', 'sertifikasi')
             ->groupBy('periode.id_periode', 'tahun_ajaran.id_tahun_ajaran') // Group by unique identifiers
             ->orderBy('periode.created_at', 'DESC')
             ->get();

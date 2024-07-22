@@ -72,10 +72,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 profile">
-                                    <div class="profile-item mb-3 d-flex justify-content-center">
-                                        <button class="btn btn-outline-primary me-2 addBtn text-end"
-                                            id="addBtn">Penilaian Pengembangan Diri
+                                    <div class="profile-item mb-3 d-flex flex-column align-items-center">
+                                        <button class="btn btn-outline-primary me-2 addBtn text-end" id="addBtn">
+                                            Penilaian Pengembangan Diri
                                         </button>
+                                        <span class="badge mt-2" id="warning-penilaian" >Penilaian</span>
                                     </div>
                                 </div>
                             </div>
@@ -430,7 +431,7 @@
         var periode = '{{ $periode }}';
         var jenjang = '{{ $jenjang }}';
         var tahun = '{{ $tahun }}';
-        var guru = "GR-230624-3";
+        var guru = "{{ session('user')['id']}}";
 
         if(jenjang === 'tahfidz'){
             $('#tahfidz').show();
@@ -609,6 +610,21 @@
                     $('#rapor').text(capitalizeFirstLetter(jenis_kegiatan));
                     $('#tanggal').text(capitalizeFirstLetter(tanggal));
                     $('#jenjang').text(capitalizeFirstLetter(jenis_jenjang));
+
+                    if (new Date(periode.tggl_akhir_penilaian) < new Date()) {
+                        $('#addBtn').prop('disabled', true);
+                        $('.deleteBtn').prop('disabled', true);
+                        $('.editBtn').prop('disabled', true);
+                        $('#warning-penilaian')
+                            .text(capitalizeFirstLetter('Penilaian Sudah Berakhir'))
+                            .addClass('bg-danger fw-bold');
+                    } else {
+                        $('#warning-penilaian')
+                            .text(capitalizeFirstLetter('Penilaian Belum Berakhir'))
+                            .addClass('bg-success fw-bold');;
+                    }
+
+
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX Error: ' + status + error);
@@ -639,8 +655,9 @@
                             data: 'nama_siswa',
                             name: 'nama_siswa',
                             render: function(data, type, row) {
-                                return 'Nama : '+row.nama_siswa.trim().toUpperCase() +
-                                '<br> Kelas : '+ row.nama_kelas.trim().toUpperCase();
+                                return row.nama_siswa.trim().toUpperCase() +
+                                '<br>'+ row.nisn_siswa  +
+                                '<br>'+ row.nama_kelas.trim().toUpperCase();
                             }
                         },
                         {
@@ -650,10 +667,10 @@
                                 const awal_surah_baru = row.awal_ayat_baru === 0 ? row.awal_surah_baru : row.awal_surah_baru + ' [' + row.awal_ayat_baru + ']';
                                 const akhir_surah_baru = row.akhir_ayat_baru === 0 ? row.akhir_surah_baru : row.akhir_surah_baru + ' [' + row.akhir_ayat_baru + ']';
 
-                                const awal_surah_lama = row.awal_ayat_lama === 0 ? row.awal_surah_lama : row.awal_surah_lama + ' [' + row.awal_ayat_lama + ']';
-                                const akhir_surah_lama = row.akhir_ayat_lama === 0 ? row.akhir_surah_lama : row.akhir_surah_lama + ' [' + row.akhir_ayat_lama + ']';
+                                const awal_surah_lama = row.awal_surah_lama === null ? '-' : (row.awal_ayat_lama === 0 ? row.awal_surah_lama : row.awal_surah_lama + ' [' + row.awal_ayat_lama + ']');
+                                const akhir_surah_lama = row.akhir_surah_lama === null ? '-' :(row.akhir_ayat_lama === 0 ? row.akhir_surah_lama : row.akhir_surah_lama + ' [' + row.akhir_ayat_lama + ']');
 
-                                const ktr =  row.awal_surah_baru === null ? '-' : 'Hafalan Baru: ' + awal_surah_baru + ' S/d ' + akhir_surah_baru + '<br>Hafalan Lama: ' + awal_surah_lama + ' S/d ' + akhir_surah_lama;
+                                const ktr =  row.awal_surah_baru === null ? '-' : 'Hafalan Baru: ' + awal_surah_baru + ' S/d ' + akhir_surah_baru === null ? '-' : akhir_surah_baru + '<br>Hafalan Lama: ' + awal_surah_lama === null ? '-' : awal_surah_lama  + ' S/d ' + akhir_surah_lama;
 
                                 return ktr;
                             }
@@ -761,8 +778,9 @@
                             data: 'nama_siswa',
                             name: 'nama_siswa',
                             render: function(data, type, row) {
-                                return 'Nama : '+row.nama_siswa.trim().toUpperCase() +
-                                '<br> Kelas : '+ row.nama_kelas.trim().toUpperCase();
+                                return row.nama_siswa.trim().toUpperCase() +
+                                '<br>'+ row.nisn_siswa  +
+                                '<br>'+ row.nama_kelas.trim().toUpperCase();
                             }
                         },
                         {

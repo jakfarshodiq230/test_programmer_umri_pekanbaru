@@ -96,7 +96,7 @@
             const saveBtn = document.getElementById('saveBtn');
 
             $.ajax({
-                url: '{{ url('periode/data_tahun') }}',
+                url: '{{ url('admin/periode/data_tahun') }}',
                 type: 'GET',
                 dataType: 'json', // Ensure response is treated as JSON
                 success: function(response) {
@@ -147,7 +147,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('periode/data_periode') }}',
+                ajax: '{{ url('admin/periode/data_periode') }}',
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -214,7 +214,7 @@
             var id = $(this).data('id');
             // Open the edit modal and populate it with data
             $.ajax({
-                url: '{{ url('periode/edit_periode') }}/' +
+                url: '{{ url('admin/periode/edit_periode') }}/' +
                     id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
@@ -252,10 +252,10 @@
         // save dan update data
         $('#saveBtn').on('click', function() {
             var id = $('#id_periode').val();
-            var url = '{{ url('periode/store_periode') }}';
+            var url = '{{ url('admin/periode/store_periode') }}';
 
             if (id) {
-                url = '{{ url('periode/update_periode') }}/' + id;
+                url = '{{ url('admin/periode/update_periode') }}/' + id;
             }
             var form = $('#dataForm')[0];
             var formData = new FormData(form);
@@ -304,7 +304,7 @@
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
                 $.ajax({
-                    url: '{{ url('periode/delete_periode') }}/' +
+                    url: '{{ url('admin/periode/delete_periode') }}/' +
                         id, // URL to delete data for the selected row
                     type: 'DELETE',
                     data: {
@@ -337,7 +337,6 @@
         // update status 
         $(document).on('click', '.updateBtn1, .updateBtn0', function() {
             var id = $(this).data('id');
-            console.log(id);
             var status = $(this).hasClass('updateBtn1') ? 1 : 0; // Determine status based on the class
 
             Swal.fire({
@@ -351,7 +350,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('periode/status_periode') }}/' + id + '/' + status,
+                        url: '{{ url('admin/periode/status_periode') }}/' + id + '/' + status,
                         type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'

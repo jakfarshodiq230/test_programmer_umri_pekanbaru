@@ -73,7 +73,11 @@
                             var nama_tahun_ajaran = row.nama_tahun_ajaran.charAt(0).toUpperCase() +
                                 row.nama_tahun_ajaran.slice(1);
                             var jenis_periode = row.jenis_periode.trim().toUpperCase();
-                            var formatted_string = nama_tahun_ajaran + ' [ ' + jenis_periode + ' ]';
+                            var formatted_string = nama_tahun_ajaran + ' [ ' 
+                            + jenis_periode + ' ] ' 
+                            + (row.status_periode === 1 
+                                ? '<span class="badge bg-success">AKTIF</span>' 
+                                : '<span class="badge bg-danger">TIDAK AKTIF</span>');
                             return formatted_string;
                         }
 
@@ -81,14 +85,26 @@
                     {
                         data: 'total_peserta_kegiatan',
                         name: 'total_peserta_kegiatan',
+                        render: function(data, type, row) {
+                            return row.total_peserta_kegiatan + ' Orang';
+                        }
                     },
                     {
-                        data: null,
-                        name: null,
+                        data: 'status_periode',
+                        name: 'status_periode',
                         render: function(data, type, row) {
                             return `
                                 <button class="btn btn-sm btn-secondary lihatBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Peserta" data-id_periode="${row.id_periode}" data-tahun_ajaran="${row.id_tahun_ajaran}"><i class="fas fa-eye"></i></button>
-                                <button class="btn btn-sm btn-warning penilaianBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Penilaian Peserta" data-id_periode="${row.id_periode}" data-tahun_ajaran="${row.id_tahun_ajaran}"><i class="fas fa-user-plus"></i></button>
+                                <button class="btn btn-sm btn-warning penilaianBtn me-1" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        title="Penilaian Peserta" 
+                                        data-id_periode="${row.id_periode}" 
+                                        data-tahun_ajaran="${row.id_tahun_ajaran}" 
+                                        ${row.status_periode === 0 ? 'disabled' : ''}>
+                                    <i class="fas fa-user-plus"></i>
+                                </button>
+
                             `;
                         }
                     },

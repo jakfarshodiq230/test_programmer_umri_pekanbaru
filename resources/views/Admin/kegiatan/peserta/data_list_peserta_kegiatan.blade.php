@@ -147,7 +147,7 @@
 
         $(document).ready(function() {
             $.ajax({
-                url: '{{ url('guru/data_guru') }}',
+                url: '{{ url('admin/guru/data_guru') }}',
                 method: 'GET',
                 success: function(data) {
                     var select = $('select[name="guru"]');
@@ -168,7 +168,7 @@
                 }
             });
             $.ajax({
-                url: '{{ url('peserta/data_siswa') }}/' + tahun_ajaran + '/' + periode,
+                url: '{{ url('admin/peserta/data_siswa') }}/' + tahun_ajaran + '/' + periode,
                 method: 'GET',
                 success: function(data) {
                     var select = $('select[name="peserta"]');
@@ -185,7 +185,7 @@
             });
 
             $.ajax({
-                url: '{{ url('kelas/data_kelas') }}',
+                url: '{{ url('admin/kelas/data_kelas') }}',
                 method: 'GET',
                 success: function(data) {
                     var select = $('select[name="kelas"]');
@@ -210,7 +210,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: "{{ url('peserta/data_peserta') }}/" + periode + "/" + tahun_ajaran,
+                ajax: "{{ url('admin/peserta/data_peserta') }}/" + periode + "/" + tahun_ajaran,
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -290,7 +290,7 @@
             var id = $(this).data('id');
             // Open the edit modal and populate it with data
             $.ajax({
-                url: '{{ url('peserta/edit_peserta') }}/' +
+                url: '{{ url('admin/peserta/edit_peserta') }}/' +
                     id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
@@ -364,10 +364,10 @@
         // save dan update data
         $('#saveBtn').on('click', function() {
             var id = $('#id_peserta_kegiatan').val();
-            var url = '{{ url('peserta/store_peserta') }}';
+            var url = '{{ url('admin/peserta/store_peserta') }}';
 
             if (id) {
-                url = '{{ url('peserta/update_peserta') }}/' + id;
+                url = '{{ url('admin/peserta/update_peserta') }}/' + id;
             }
             var form = $('#dataForm')[0];
             var formData = new FormData(form);
@@ -416,7 +416,7 @@
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
                 $.ajax({
-                    url: '{{ url('peserta/delete_peserta') }}/' +
+                    url: '{{ url('admin/peserta/delete_peserta') }}/' +
                         id, // URL to delete data for the selected row
                     type: 'DELETE',
                     data: {
@@ -459,7 +459,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('peserta/status_peserta') }}/' + id + '/' + status,
+                        url: '{{ url('admin/peserta/status_peserta') }}/' + id + '/' + status,
                         type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'
@@ -502,7 +502,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('peserta/status_peserta_all') }}/' + tahun_ajaran + '/' + periode + '/' + status,
+                        url: '{{ url('admin/peserta/status_peserta_all') }}/' + tahun_ajaran + '/' + periode + '/' + status,
                         type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'

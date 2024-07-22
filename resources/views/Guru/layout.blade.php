@@ -89,6 +89,24 @@
                     </li>
 
                     <li class="sidebar-header">
+                        Sertifikasi
+                    </li>
+                    <li class="sidebar-item {{ $menu == 'sertifikasi' ? 'active' : null }}">
+                        <a data-bs-target="#ui-sertifikasi" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-address-book"></i> <span
+                                class="align-middle">Sertifikasi</span>
+                        </a>
+                        <ul id="ui-sertifikasi" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                            <li class="sidebar-item {{ $submenu == 'penilaian-sertifikasi' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('guru/penilaian_sertifikasi') }}'>Penilaian</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'daftar-sertifikasi' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('guru/daftar_sertifikasi') }}'>Daftar</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-header">
                         Logout
                     </li>
                     <li class="sidebar-item">
@@ -190,7 +208,7 @@
         $(document).ready(function() {
             $('#logoutBtn, #logoutBtn2').on('click', function() {
                 $.ajax({
-                    url: '{{ url('cek_logout') }}',
+                    url: '{{ url('logout/guru') }}',
                     type: 'GET',
                     success: function(response) {
                         window.location.href = '{{ url('') }}' + response.redirect; 

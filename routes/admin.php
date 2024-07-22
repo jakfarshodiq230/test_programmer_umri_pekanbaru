@@ -12,27 +12,24 @@ use App\Http\Controllers\Admin\PesertaRaporController;
 use App\Http\Controllers\Admin\KopController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SetingMailController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Admin\PeriodeSertifikasiController;
+use App\Http\Controllers\Admin\PesertaSertifikasiController;
+use App\Http\Controllers\Admin\DashboardController as DashboardControllerAdmin;
 
 
 Route::group(['middleware' => ['auth:users']], function () {
 
     Route::prefix('admin/dashboard')->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('home');
+        Route::get('/', [DashboardControllerAdmin::class, 'index'])->name('users.home');
     });
 
-    Route::prefix('guru/dashboard')->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('home2');
-    });
-
-    Route::controller(SetingMailController::class)->group(function () {
+    Route::prefix('admin')->controller(SetingMailController::class)->group(function () {
         Route::get('email', 'index');
         Route::get('email/data_email', 'AjaxData');
         Route::post('email/update_email/{id}', 'updateData');
     });
 
-    Route::controller(SiswaController::class)->group(function () {
+    Route::prefix('admin')->controller(SiswaController::class)->group(function () {
         Route::get('siswa', 'index');
         Route::get('siswa/data_siswa', 'AjaxData');
         Route::get('siswa/edit_siswa/{id}', 'editData');
@@ -44,7 +41,7 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::post('siswa/seting_siswa', 'setingData');
     });
 
-    Route::controller(GuruController::class)->group(function () {
+    Route::prefix('admin')->controller(GuruController::class)->group(function () {
         Route::get('guru', 'index');
         Route::get('guru/data_guru', 'AjaxData');
         Route::get('guru/edit_guru/{id}', 'editData');
@@ -56,7 +53,7 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::post('guru/seting_guru', 'setingData');
     });
 
-    Route::controller(KelasController::class)->group(function () {
+    Route::prefix('admin')->controller(KelasController::class)->group(function () {
         Route::get('kelas', 'index');
         Route::get('kelas/data_kelas', 'AjaxData');
         Route::get('kelas/edit_kelas/{id}', 'editData');
@@ -66,7 +63,7 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::put('kelas/status_kelas/{id}/{status}', 'statusData');
     });
 
-    Route::controller(TahunAjaranController::class)->group(function () {
+    Route::prefix('admin')->controller(TahunAjaranController::class)->group(function () {
         Route::get('tahun_ajaran', 'index');
         Route::get('tahun_ajaran/data_tahun_ajaran', 'AjaxData');
         Route::get('tahun_ajaran/edit_tahun_ajaran/{id}', 'editData');
@@ -76,7 +73,7 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::put('tahun_ajaran/status_tahun_ajaran/{id}/{status}', 'statusData');
     });
 
-    Route::controller(PeriodeController::class)->group(function () {
+    Route::prefix('admin')->controller(PeriodeController::class)->group(function () {
         Route::get('periode', 'index');
         Route::get('periode/data_tahun', 'AjaxDataTahun');
         Route::get('periode/data_periode', 'AjaxData');
@@ -87,7 +84,7 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::put('periode/status_periode/{id}/{status}', 'statusData');
     });
 
-    Route::controller(PesertaKegiatanController::class)->group(function () {
+    Route::prefix('admin')->controller(PesertaKegiatanController::class)->group(function () {
         Route::get('peserta', 'index');
         Route::get('peserta/data_periode_peserta', 'AjaxDataPeriode');
         Route::get('peserta/data_list_periode_peserta/{periode}/{tahun}', 'DataListPesertaKegiatan');
@@ -101,7 +98,7 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::put('peserta/status_peserta_all/{tahun}/{periode}/{status}', 'statusDataAll');
     });
 
-    Route::controller(PenilaianKegiatanController::class)->group(function () {
+    Route::prefix('admin')->controller(PenilaianKegiatanController::class)->group(function () {
         Route::get('penilaian_kegiatan', 'index');
         Route::get('penilaian_kegiatan/data_periode_penilaian_kegiatan', 'AjaxDataPeriode');
         Route::get('penilaian_kegiatan/data_list_periode_penilaian_kegiatan/{periode}/{tahun}', 'DataListPenilaianKegiatan');
@@ -110,8 +107,7 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::get('penilaian_kegiatan/data_penilaian_kegiatan_all/{tahun}/{periode}/{siswa}/{guru}/{kelas}', 'AjaxDataDetailPenilaianKegiatan');
     });
 
-    // rapor
-    Route::controller(PeriodeRaporController::class)->group(function () {
+    Route::prefix('admin')->controller(PeriodeRaporController::class)->group(function () {
         Route::get('periode_rapor', 'index');
         Route::get('periode_rapor/data_tahun', 'AjaxDataTahun');
         Route::get('periode_rapor/data_periode_rapor', 'AjaxData');
@@ -123,7 +119,8 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::get('periode_rapor/peserta_periode_rapor/{tahun}/{rapor}/{periode}', 'PesertaRaport');
     });
 
-    Route::controller(PesertaRaporController::class)->group(function () {
+    Route::prefix('admin')->controller(PesertaRaporController::class)->group(function () {
+        Route::get('/peserta_rapor/cetak_rapor_admin/{param1}/{param2}/{param3}/{param4}/{param5}', 'CetakRaporPdf');
         Route::get('peserta_rapor', 'index');
         Route::get('peserta_rapor/data_peserta_rapor', 'AjaxData');
         Route::get('peserta_rapor/sync/{tahun}/{rapor}/{peserta}', 'SyncRapor');
@@ -131,6 +128,30 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::get('peserta_rapor/ajax_list_peserta/{tahun}/{rapor}/{periode}', 'AjaxDataPesertaRapor');
         Route::get('peserta_rapor/detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'DataDetailPeserta');
         Route::get('peserta_rapor/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'AjaxDataDetailPesertaRapor');
+        
+    });
+
+    Route::prefix('admin')->controller(PeriodeSertifikasiController::class)->group(function () {
+        Route::get('periode_sertifikasi', 'index');
+        Route::get('periode_sertifikasi/data_tahun', 'AjaxDataTahun');
+        Route::get('periode_sertifikasi/data_periode_sertifikasi', 'AjaxData');
+        Route::get('periode_sertifikasi/edit_periode_sertifikasi/{id}', 'editData');
+        Route::post('periode_sertifikasi/store_periode_sertifikasi', 'storeData');
+        Route::post('periode_sertifikasi/update_periode_sertifikasi/{id}', 'updateData');
+        Route::delete('periode_sertifikasi/delete_periode_sertifikasi/{id}', 'deleteData');
+        Route::put('periode_sertifikasi/status_periode_sertifikasi/{id}/{status}', 'statusData');
+        Route::get('periode_sertifikasi/peserta_periode_sertifikasi/{tahun}/{rapor}/{periode}', 'PesertaRaport');
+    });
+
+    Route::prefix('admin')->controller(PesertaSertifikasiController::class)->group(function () {
+        Route::get('peserta_sertifikasi', 'index');
+        Route::get('peserta_sertifikasi/data_peserta_sertifikasi', 'AjaxData');
+        Route::get('peserta_sertifikasi/sync/{tahun}/{rapor}/{peserta}', 'SyncRapor');
+        Route::get('peserta_sertifikasi/list_peserta/{tahun}/{rapor}/{periode}', 'DataPeserta');
+        Route::get('peserta_sertifikasi/ajax_list_peserta/{tahun}/{rapor}/{periode}', 'AjaxDataPesertaRapor');
+        Route::get('peserta_sertifikasi/detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'DataDetailPeserta');
+        Route::get('peserta_sertifikasi/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'AjaxDataDetailPesertaRapor');
+        
     });
 
     Route::prefix('admin/kop')->group(function () {

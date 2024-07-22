@@ -453,10 +453,11 @@ class PenilaianKegiatanGuruController extends Controller
 
         $pdf->SetY(30);
         // Add content
-        $nilai = PenilaianModel::DataAjaxNilaiPenilaianKartu($peserta, $tahun, $jenjang, $periode);
+        $nilai = PenilaianModel::DataAjaxNilaiPenilaianKartu($peserta, $tahun, $periode);
         $identitas = PenilaianModel::DataAjaxIdentitasPenilaianKartu($peserta, $tahun, $jenjang, $periode);
+
         $viewName = ($jenjang === 'tahfidz') ? 'Guru/kegiatan/penilaian/cetak_kartu_tahfidz' : 'Guru/kegiatan/penilaian/cetak_kartu_tahsin';
-        $html = view($viewName, compact('identitas'));
+        $html = view($viewName, compact('nilai', 'identitas'));
 
         
         // Print text using writeHTMLCell()
@@ -471,8 +472,8 @@ class PenilaianKegiatanGuruController extends Controller
          // Correctly define the image path
         $imageWidth = 30; // Set image width (3 cm)
         $imageHeight = 40; // Set image height (4 cm)
-        $x = ($pdf->getPageWidth() - $imageWidth) / 2; // Calculate X position for centering
-        $y = 230; // Set a fixed Y position from the top
+        $x = 150; // Calculate X position for centering
+        $y = 45; // Set a fixed Y position from the top
         
         // Place the image
         $pdf->Image($imagePath, $x, $y, $imageWidth, $imageHeight, '', '', '', false, 300, '', false, false, 0, false, false, false);

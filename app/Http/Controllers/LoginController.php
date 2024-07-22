@@ -127,14 +127,14 @@ class LoginController extends Controller
         LogAksesModel::create($data);
     }
 
-    public function logout($guard,Request $request)
+    public function logout($guard, Request $request)
     {
-        if (in_array($guard, ['users', 'guru']) && Auth::guard($guard)->check()) {
+        if (Auth::guard($guard)->check()) {
             Auth::guard($guard)->logout();
-            $request->session()->flush();
+            $request->session()->invalidate(); // Clear session data
+            $request->session()->regenerateToken(); // Regenerate CSRF token
             return response()->json(['redirect' => '/']);
         }
-    
-        return response()->json(['error' => 'Invalid guard or not authenticated'], 400);
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 }

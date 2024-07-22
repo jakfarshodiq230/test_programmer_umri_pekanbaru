@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Data Peserta Rapor
+                    Data Peserta Sertifikasi
                 </h1>
             </div>
             <div class="row">
@@ -58,7 +58,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('admin/peserta_rapor/data_peserta_rapor') }}',
+                ajax: '{{ url('admin/peserta_sertifikasi/data_peserta_sertifikasi') }}',
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -74,14 +74,10 @@
                             var nama_tahun_ajaran = row.nama_tahun_ajaran.charAt(0).toUpperCase() +
                                 row.nama_tahun_ajaran.slice(1);
                             var jenis_periode = row.jenis_periode.trim().toUpperCase();
-                            var jenis_kegiatan = row.jenis_kegiatan.trim().toUpperCase();
-                            var tanggal = new Date(row.tggl_periode);
-                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
-                            var tanggal_formatted = tanggal.toLocaleDateString('id-ID', options);
+                            var juz_periode =  row.juz_periode === null ? 0 : row.juz_periode;                           
                             return 'Periode : ' + nama_tahun_ajaran + '<br>' +
-                            'Rapor : ' +  jenis_periode +' '+ jenis_kegiatan +
-                            '<br> Penanggung Jawab : ' + row.tanggungjawab_periode +
-                            '<br> Tanggal Rapor : ' + tanggal_formatted;
+                            'Sertifikasi : ' +  jenis_periode + ' JUZ : ' + juz_periode +
+                            '<br> Penanggung Jawab : ' + row.tanggungjawab_periode;
                         }
 
                     },
@@ -89,14 +85,7 @@
                         data: null,
                         name: null,
                         render: function(data, type, row) {
-                            var tanggal_mulai = new Date(row.tggl_awal_periode);
-                            var tanggal_akhir = new Date(row.tggl_akhir_periode);
-                            var tanggal = new Date(row.tggl_akhir_penilaian);
-                            var tanggal_syn = new Date(row.updated_at);
-                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
-                            var tanggal_mulai_1 = tanggal_mulai.toLocaleDateString('id-ID', options);
-                            var tanggal_akhir_2 = tanggal_akhir.toLocaleDateString('id-ID', options);
-                            
+                            var tanggal_akhir = new Date(row.tggl_akhir_penilaian);                            
                             const options2 = { 
                                 day: 'numeric', 
                                 month: 'long', 
@@ -106,12 +95,17 @@
                                 second: 'numeric',
                                 hour12: false // Use 24-hour format; set to true for 12-hour format
                             };
-                            var tanggal_formatted = tanggal.toLocaleDateString('id-ID', options2);
-                            var tanggal_sinkron= tanggal_syn.toLocaleDateString('id-ID', options2);
-                            return `Mulai Rapor : ${tanggal_mulai_1} s/d  ${tanggal_akhir_2} <br>
+                            var tanggal_formatted = tanggal_akhir.toLocaleDateString('id-ID', options2);
+
+                            var tanggal = new Date(row.tggl_periode);
+                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
+                            var tanggal_terbit = tanggal.toLocaleDateString('id-ID', options);
+
+                            return `Terbit Sertifikat : ${tanggal_terbit}<br>
                             <span class="badge ${new Date(row.tggl_akhir_penilaian) < new Date() ? 'bg-danger' : 'bg-success'}">Akhir Penilaian : ${tanggal_formatted}
                             </span> <br>
-                            <span class="badge bg-success">Sinkronisasi Data : ${tanggal_sinkron}</span>`;
+                             <span class="badge bg-success">Sesi Penilaian : ${row.sesi_periode === null ? 0 : row.sesi_periode}
+                            </span>`;
                         }
 
                     },
@@ -131,65 +125,10 @@
                                 return `
                                 <button class="btn btn-sm btn-primary pesertaBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
                                 data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" data-periode="${row.id_periode}"><i class="fas fa-users"></i></button>
-                                <button class="btn btn-sm btn-success syncBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Sinkronisasi Data Rapor" 
-                                data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" data-periode="${row.id_periode}"><i class="fas fa-sync"></i></button>
                             `;
                         }
                     },
                 ]
-            });
-        });
-
-        //sync
-        $(document).on('click', '.syncBtn', function() {
-            var tahun = $(this).data('tahun');
-            var rapor = $(this).data('rapor');
-            var periode = $(this).data('periode');
-            Swal.fire({
-                title: 'Syncronisasi',
-                text: 'Apakah Anda Ingin Syncronisasi Rapor?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, saya syncronisasi rapor'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Syncronisasi Rapor...',
-                        text: 'Sedang Syncronisasi Rapor, harap tunggu.',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                    $.ajax({
-                        url: '{{ url('admin/peserta_rapor/sync') }}/' + tahun + '/' + rapor + '/' + periode,
-                        type: 'GET',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            $('.select2').val(null).trigger('change');
-                            Swal.fire({
-                                title: response.error ? 'Error!' : 'Success!',
-                                text: response.message,
-                                icon: response.error ? 'error' : 'success',
-                                confirmButtonText: 'OK'
-                            });
-                            $('#datatables-ajax').DataTable().ajax.reload();
-                        },
-                        error: function(response) {
-                            $('.select2').val(null).trigger('change');
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: response.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
-                        }
-                    });
-                }
             });
         });
 
@@ -198,7 +137,7 @@
             var tahun = $(this).data('tahun');
             var rapor = $(this).data('rapor');
             var periode = $(this).data('periode');
-            var url= '{{ url('admin/peserta_rapor/list_peserta') }}/' + tahun + '/' + rapor + '/' + periode;
+            var url= '{{ url('admin/peserta_sertifikasi/list_peserta') }}/' + tahun + '/' + rapor + '/' + periode;
             window.location.href = url;
         });
     </script>

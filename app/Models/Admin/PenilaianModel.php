@@ -23,11 +23,13 @@ class PenilaianModel extends Model
             ->join('surah as surah_awal', 'penilaian_kegiatan.surah_awal_penilaian_kegiatan', '=', 'surah_awal.nomor')
             ->join('surah as surah_akhir', 'penilaian_kegiatan.surah_akhir_penilaian_kegiatan', '=', 'surah_akhir.nomor')
             ->join('peserta_kegiatan', 'penilaian_kegiatan.id_peserta_kegiatan', '=', 'peserta_kegiatan.id_peserta_kegiatan')
+            ->leftjoin('periode', 'peserta_kegiatan.id_periode', '=', 'periode.id_periode')
             ->select(
                 'penilaian_kegiatan.*',
                 'peserta_kegiatan.*',
                 'surah_awal.namaLatin as namaLatin_awal',
-                'surah_akhir.namaLatin as namaLatin_akhir'
+                'surah_akhir.namaLatin as namaLatin_akhir',
+                'periode.status_periode'
             )
             ->whereNull('penilaian_kegiatan.deleted_at')
             ->where('peserta_kegiatan.id_tahun_ajaran', $tahun)
@@ -65,15 +67,20 @@ class PenilaianModel extends Model
         return $data; // Return the result set
     }
     
-    public static function DataAjaxNilaiPenilaianKartu($peserta, $tahun, $jenjang, $periode) {
-        return DB::table('peserta_kegiatan')
-            ->leftJoin('penilaian_kegiatan', 'peserta_kegiatan.id_peserta_kegiatan', '=', 'penilaian_kegiatan.id_peserta_kegiatan')
-            ->select('penilaian_kegiatan.*')
+    public static function DataAjaxNilaiPenilaianKartu($peserta, $tahun, $periode) {
+        return DB::table('penilaian_kegiatan')
+            ->leftJoin('peserta_kegiatan', 'penilaian_kegiatan.id_peserta_kegiatan', '=', 'peserta_kegiatan.id_peserta_kegiatan')
+            ->leftJoin('surah as surah_awal', 'penilaian_kegiatan.surah_awal_penilaian_kegiatan', '=', 'surah_awal.nomor')
+            ->leftJoin('surah as surah_akhir', 'penilaian_kegiatan.surah_akhir_penilaian_kegiatan', '=', 'surah_akhir.nomor')
+            ->select(
+                'penilaian_kegiatan.*',
+                'surah_awal.namaLatin as nama_surah_awal', 
+                'surah_akhir.namaLatin as nama_surah_akhir'
+            )
             ->whereNull('peserta_kegiatan.deleted_at')
             ->where([
-                ['peserta_kegiatan.id_siswa', $peserta],
+                ['penilaian_kegiatan.id_peserta_kegiatan', $peserta],
                 ['peserta_kegiatan.id_tahun_ajaran', $tahun],
-                ['penilaian_kegiatan.jenis_penilaian_kegiatan', $jenjang],
                 ['peserta_kegiatan.id_periode', $periode],
                 ['peserta_kegiatan.id_guru', session('user')['id']]
             ])
@@ -81,12 +88,14 @@ class PenilaianModel extends Model
             ->get();
     }
     
+    
 
     public static function DataAjaxIdentitasPenilaianKartu($peserta, $tahun, $jenjang, $periode)
     {
         return DB::table('penilaian_kegiatan')
             ->join('peserta_kegiatan', 'penilaian_kegiatan.id_peserta_kegiatan', '=', 'peserta_kegiatan.id_peserta_kegiatan')
             ->join('siswa', 'peserta_kegiatan.id_siswa', '=', 'siswa.id_siswa')
+            ->join('guru', 'peserta_kegiatan.id_guru', '=', 'guru.id_guru')
             ->join('kelas', 'peserta_kegiatan.id_kelas', '=', 'kelas.id_kelas')
             ->join('tahun_ajaran', 'peserta_kegiatan.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
             ->join('periode', 'peserta_kegiatan.id_periode', '=', 'periode.id_periode')
@@ -96,13 +105,14 @@ class PenilaianModel extends Model
                 'siswa.*',
                 'kelas.*',
                 'periode.*',
-                'tahun_ajaran.*'
+                'tahun_ajaran.*',
+                'guru.*'
             )
             ->whereNull(['penilaian_kegiatan.deleted_at', 'siswa.deleted_at'])
             ->where([
-                ['peserta_kegiatan.id_siswa', $peserta],
+                ['peserta_kegiatan.id_peserta_kegiatan', $peserta],
                 ['peserta_kegiatan.id_tahun_ajaran', $tahun],
-                ['penilaian_kegiatan.jenis_penilaian_kegiatan', $jenjang],
+                ['periode.jenis_periode', $jenjang],
                 ['peserta_kegiatan.id_periode', $periode],
                 ['peserta_kegiatan.id_guru', session('user')['id']]
             ])

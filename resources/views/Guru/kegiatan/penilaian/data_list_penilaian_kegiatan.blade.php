@@ -109,7 +109,7 @@
                                 >
                                 <i class="fas fa-eye"></i></button>
                                 <button class="btn btn-sm btn-secondary printBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Cettak Kartu Kegiatan" 
-                                data-peserta="${row.id_siswa}" 
+                                data-peserta="${row.id_peserta_kegiatan}" 
                                 data-tahun="${row.id_tahun_ajaran}" 
                                 data-jenjang="${row.jenis_periode}" 
                                 data-periode="${row.id_periode}"

@@ -98,7 +98,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('kelas/data_kelas') }}',
+                ajax: '{{ url('admin/kelas/data_kelas') }}',
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -165,7 +165,7 @@
             var id = $(this).data('id');
             // Open the edit modal and populate it with data
             $.ajax({
-                url: '{{ url('kelas/edit_kelas') }}/' + id, // URL to fetch data for the selected row
+                url: '{{ url('admin/kelas/edit_kelas') }}/' + id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
                     saveBtn.disabled = false;
@@ -187,10 +187,10 @@
         // save dan update data
         $('#saveBtn').on('click', function() {
             var id = $('#id_kelas').val();
-            var url = '{{ url('kelas/store_kelas') }}';
+            var url = '{{ url('admin/kelas/store_kelas') }}';
 
             if (id) {
-                url = '{{ url('kelas/update_kelas') }}/' + id;
+                url = '{{ url('admin/kelas/update_kelas') }}/' + id;
             }
             var form = $('#dataForm')[0];
             var formData = new FormData(form);
@@ -237,7 +237,7 @@
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
                 $.ajax({
-                    url: '{{ url('kelas/delete_kelas') }}/' +
+                    url: '{{ url('admin/kelas/delete_kelas') }}/' +
                         id, // URL to delete data for the selected row
                     type: 'DELETE',
                     data: {
@@ -281,7 +281,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('kelas/status_kelas') }}/' + id + '/' + status,
+                        url: '{{ url('admin/kelas/status_kelas') }}/' + id + '/' + status,
                         type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'

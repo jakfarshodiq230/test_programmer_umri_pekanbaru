@@ -165,7 +165,7 @@
         var kegiatan = "{{ $kegiatan }}";
         // profil
         $.ajax({
-            url: "{{ url('penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
+            url: "{{ url('admin/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
                 id_tahun + "/" +
                 id_periode + "/" +
                 id_siswa + "/" +
@@ -215,7 +215,7 @@
                     destroy: true,
                     responsive: true,
                     ajax: {
-                        url: "{{ url('penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
+                        url: "{{ url('admin/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
                             id_tahun + "/" +
                             id_periode + "/" +
                             id_siswa + "/" +
@@ -278,7 +278,7 @@
                     destroy: true,
                     responsive: true,
                     ajax: {
-                        url: "{{ url('penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
+                        url: "{{ url('admin/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
                             id_tahun + "/" +
                             id_periode + "/" +
                             id_siswa + "/" +

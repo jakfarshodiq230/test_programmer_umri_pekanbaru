@@ -117,7 +117,6 @@
                 if (selectElement.value.trim() === 'PILIH' || selectElement2.value.trim() === 'PILIH') {
                     saveBtn.disabled = true;
                 } else {
-                    console.log('ok');
                     saveBtn.disabled = false;
                 }
             }
@@ -137,7 +136,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('tahun_ajaran/data_tahun_ajaran') }}',
+                ajax: '{{ url('admin/tahun_ajaran/data_tahun_ajaran') }}',
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -204,7 +203,7 @@
             var id = $(this).data('id');
             // Open the edit modal and populate it with data
             $.ajax({
-                url: '{{ url('tahun_ajaran/edit_tahun_ajaran') }}/' +
+                url: '{{ url('admin/tahun_ajaran/edit_tahun_ajaran') }}/' +
                     id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
@@ -246,10 +245,10 @@
         // save dan update data
         $('#saveBtn').on('click', function() {
             var id = $('#id_tahun_ajaran').val();
-            var url = '{{ url('tahun_ajaran/store_tahun_ajaran') }}';
+            var url = '{{ url('admin/tahun_ajaran/store_tahun_ajaran') }}';
 
             if (id) {
-                url = '{{ url('tahun_ajaran/update_tahun_ajaran') }}/' + id;
+                url = '{{ url('admin/tahun_ajaran/update_tahun_ajaran') }}/' + id;
             }
             var form = $('#dataForm')[0];
             var formData = new FormData(form);
@@ -297,7 +296,7 @@
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
                 $.ajax({
-                    url: '{{ url('tahun_ajaran/delete_tahun_ajaran') }}/' +
+                    url: '{{ url('admin/tahun_ajaran/delete_tahun_ajaran') }}/' +
                         id, // URL to delete data for the selected row
                     type: 'DELETE',
                     data: {
@@ -330,7 +329,6 @@
         // update status 
         $(document).on('click', '.updateBtn1, .updateBtn0', function() {
             var id = $(this).data('id');
-            console.log(id);
             var status = $(this).hasClass('updateBtn1') ? 1 : 0; // Determine status based on the class
 
             Swal.fire({
@@ -344,7 +342,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('tahun_ajaran/status_tahun_ajaran') }}/' + id + '/' + status,
+                        url: '{{ url('admin/tahun_ajaran/status_tahun_ajaran') }}/' + id + '/' + status,
                         type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'

@@ -414,49 +414,50 @@
         $('#tahsin_form_keterangan').hide();
         $('#tahfidz_form').hide();
         $('#tahfidz_form_keterangan').hide();
-        // profil
-        $.ajax({
-            url: "{{ url('guru/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
-                id_tahun + "/" +
-                id_periode + "/" +
-                id_siswa + "/" +
-                id_guru + "/" +
-                id_kelas,
-            type: 'GET',
-            success: function(data) {
-                if (data.siswa.jenis_periode === 'tahfidz') {
-                    $('#kegiatan').text('Tahfidz/Murajaah');
-                } else {
-                    $('#kegiatan').text('Tahsin/Materikulasi');
-                }
-                $('#tahun_ajaran').text(capitalizeFirstLetter(data.siswa.nama_tahun_ajaran));
-                $('#pembimbing').text(capitalizeFirstLetter(data.siswa.nama_guru));
-                $('#nama').text(capitalizeFirstLetter(data.siswa.nama_siswa));
-                $('#kelas').text(data.siswa.nama_kelas);
-                if (data.siswa.foto_siswa != null) {
-                    var fotoSiswaUrl = "{{ url('storage') }}/" + data.siswa.foto_siswa;
-                    $('#avatarImg').attr('src', fotoSiswaUrl);
-                } else {
-                    var fotoSiswaUrl = '{{ asset('assets/admin/img/avatars/avatar.jpg') }}'
-                    $('#avatarImg').attr('src', fotoSiswaUrl);
-                }
-
-                function capitalizeFirstLetter(string) {
-                    return string.charAt(0).toUpperCase() + string.slice(1);
-                }
-
-            },
-            error: function(response) {
-                Swal.fire({
-                    title: response.success ? 'Success' : 'Error',
-                    text: response.message,
-                    icon: response.success ? 'success' : 'error',
-                    confirmButtonText: 'OK'
-                });
-            }
-        });
+        
         // surah
         $(document).ready(function() {
+            // profil
+            $.ajax({
+                url: "{{ url('guru/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
+                    id_tahun + "/" +
+                    id_periode + "/" +
+                    id_siswa + "/" +
+                    id_guru + "/" +
+                    id_kelas,
+                type: 'GET',
+                success: function(data) {
+                    if (data.siswa.jenis_periode === 'tahfidz') {
+                        $('#kegiatan').text('Tahfidz/Murajaah');
+                    } else {
+                        $('#kegiatan').text('Tahsin/Materikulasi');
+                    }
+                    $('#tahun_ajaran').text(capitalizeFirstLetter(data.siswa.nama_tahun_ajaran));
+                    $('#pembimbing').text(capitalizeFirstLetter(data.siswa.nama_guru));
+                    $('#nama').text(capitalizeFirstLetter(data.siswa.nama_siswa));
+                    $('#kelas').text(data.siswa.nama_kelas);
+                    if (data.siswa.foto_siswa != null) {
+                        var fotoSiswaUrl = "{{ url('storage') }}/" + data.siswa.foto_siswa;
+                        $('#avatarImg').attr('src', fotoSiswaUrl);
+                    } else {
+                        var fotoSiswaUrl = '{{ asset('assets/admin/img/avatars/avatar.jpg') }}'
+                        $('#avatarImg').attr('src', fotoSiswaUrl);
+                    }
+
+                    function capitalizeFirstLetter(string) {
+                        return string.charAt(0).toUpperCase() + string.slice(1);
+                    }
+
+                },
+                error: function(response) {
+                    Swal.fire({
+                        title: response.success ? 'Success' : 'Error',
+                        text: response.message,
+                        icon: response.success ? 'success' : 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
             $.ajax({
                 url: '{{ url('guru/penilaian_kegiatan/data_siswa') }}/' + id_tahun + '/' + id_periode +
                     '/' +
@@ -537,8 +538,11 @@
                 }
             });
         });
+
         $('#tahfidz').hide();
         $('#tahsin').hide();
+
+        // datatabel
         $(document).ready(function() {
             if (kegiatan === 'tahfidz') {
                 $('#tahfidz').show();
@@ -604,10 +608,10 @@
                             render: function(data, type, row) {
                                 return `
                                     <button class="btn btn-sm btn-info editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
-                                    data-id_penialain="${row.id_penilaian_kegiatan}">
+                                    data-id_penialain="${row.id_penilaian_kegiatan}" ${row.status_periode === 0 ? 'disabled' : ''}>
                                     <i class="fas fa-edit"></i></button>
                                     <button class="btn btn-sm btn-danger deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
-                                    data-id_penialain="${row.id_penilaian_kegiatan}">
+                                    data-id_penialain="${row.id_penilaian_kegiatan}" ${row.status_periode === 0 ? 'disabled' : ''}>
                                     <i class="fas fa-trash"></i></button>
                                     `;
                             }

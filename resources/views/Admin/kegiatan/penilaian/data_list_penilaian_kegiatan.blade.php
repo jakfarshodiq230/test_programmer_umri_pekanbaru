@@ -61,7 +61,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: "{{ url('penilaian_kegiatan/data_penilaian_kegiatan') }}/" + periode + "/" + tahun_ajaran,
+                ajax: "{{ url('admin/penilaian_kegiatan/data_penilaian_kegiatan') }}/" + periode + "/" + tahun_ajaran,
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -130,7 +130,7 @@
                 confirmButtonText: 'Ya, saya akan melihat data penilaian'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var url = "{{ url('penilaian_kegiatan/data_detail_periode_penilaian_kegiatan') }}/"
+                    var url = "{{ url('admin/penilaian_kegiatan/data_detail_periode_penilaian_kegiatan') }}/"
                     + id_tahun + "/" 
                     + id_periode + "/"
                     + id_siswa + "/"

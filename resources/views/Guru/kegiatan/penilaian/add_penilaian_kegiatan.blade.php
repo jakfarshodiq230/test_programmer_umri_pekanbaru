@@ -234,8 +234,8 @@
                                                     <div class="mb-3">
                                                         <label>Kelancaran</label>
                                                         <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                            name="keterangan_kelancaran" id="keterangan_kelancaran" data-bs-toggle="select2"
-                                                            onchange="handleNilaiChange(this, $('select[name=\'nilai_kelancaran_penilaian_kegiatan\']'))"
+                                                            name="keterangan_kelancaran_tahfidz" id="keterangan_kelancaran_tahfidz" data-bs-toggle="select2"
+                                                            onchange="handleNilaiChange(this, $('select[name=\'nilai_kelancaran_penilaian_kegiatan_tahfidz\']'))"
                                                             required>
                                                             <option>PILIH</option>
                                                             <option value="sangat_baik">SANGAT BAIK</option>
@@ -291,22 +291,6 @@
                                                         </select>
                                                         <div id="keterangan_waqof-error" class="invalid-feedback"></div>
                                                     </div>
-                                                    @if ($periode->jenis_periode === 'tahfidz')
-                                                    <div class="mb-3">
-                                                        <label>Kelancaran</label>
-                                                        <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                            name="keterangan_kelancaran_tahfidz" id="keterangan_kelancaran_tahfidz" data-bs-toggle="select2"
-                                                            onchange="handleNilaiChange(this, $('select[name=\'nilai_kelancaran_penilaian_kegiatan_tahfidz\']'))"
-                                                            required>
-                                                            <option>PILIH</option>
-                                                            <option value="sangat_baik">SANGAT BAIK</option>
-                                                            <option value="baik">BAIK</option>
-                                                            <option value="cukup">CUKUP</option>
-                                                            <option value="kurang">KURANG</option>
-                                                        </select>
-                                                        <div id="keterangan_kelancaran-error" class="invalid-feedback"></div>
-                                                    </div>
-                                                    @else
                                                     <div class="mb-3">
                                                         <label>Kelancaran</label>
                                                         <select class="form-control select2 mb-4 me-sm-2 mt-0"
@@ -321,7 +305,6 @@
                                                         </select>
                                                         <div id="keterangan_kelancaran-error" class="invalid-feedback"></div>
                                                     </div>
-                                                    @endif
                                                 </div>
                                                 {{-- end tahsin --}}
                                                 <div class="mb-3">
@@ -379,7 +362,7 @@
                                                     </select>
                                                     <div id="ayat_akhir_penilaian_kegiatan-error" class="invalid-feedback"></div>
                                                 </div>
-
+                                                <!-- tahfidz -->
                                                 <div id="tahfidz_form_keterangan">
                                                     <div class="mb-3">
                                                         <label>Nilai Tajwid</label>
@@ -409,7 +392,6 @@
                                                         <div id="nilai_kelancaran_penilaian_kegiatan_tahfidz-error" class="invalid-feedback"></div>
                                                     </div>
                                                 </div>
-
                                                 {{-- tahsin --}}
                                                 <div id="tahsin_form_keterangan">
                                                     <div class="mb-3">
@@ -714,10 +696,8 @@
                 alert("Silahkan Pilih");
             }
         }
-
-        // siswa
        
-
+        var kegiatan = "{{ $periode->jenis_periode }}";
         if (kegiatan === "tahfidz") {
             $('#tahfidz_form').show();
             $('#tahfidz_form_keterangan').show();

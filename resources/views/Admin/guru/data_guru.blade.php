@@ -249,7 +249,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('guru/data_guru') }}',
+                ajax: '{{ url('admin/guru/data_guru') }}',
                 columns: [{
                         data: 'foto_guru',
                         name: 'foto_guru',
@@ -364,7 +364,7 @@
             var id = $(this).data('id');
             // Open the edit modal and populate it with data
             $.ajax({
-                url: '{{ url('guru/edit_guru') }}/' + id, // URL to fetch data for the selected row
+                url: '{{ url('admin/guru/edit_guru') }}/' + id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
                     // Populate the modal fields with the data
@@ -402,10 +402,10 @@
         // save dan update data
         $('#saveBtn').on('click', function() {
             var id = $('#id_guru').val();
-            var url = '{{ url('guru/store_guru') }}';
+            var url = '{{ url('admin/guru/store_guru') }}';
 
             if (id) {
-                url = '{{ url('guru/update_guru') }}/' + id;
+                url = '{{ url('admin/guru/update_guru') }}/' + id;
             }
             
             var form = $('#dataForm')[0];
@@ -461,7 +461,7 @@
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
                 $.ajax({
-                    url: '{{ url('guru/delete_guru') }}/' +
+                    url: '{{ url('admin/guru/delete_guru') }}/' +
                         id, // URL to delete data for the selected row
                     type: 'DELETE',
                     data: {
@@ -505,7 +505,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('guru/status_guru') }}/' + id + '/' + status,
+                        url: '{{ url('admin/guru/status_guru') }}/' + id + '/' + status,
                         type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'
@@ -541,7 +541,7 @@
 
         // prosess imprt excel
         $('#saveBtnUpload').on('click', function() {
-            var url = '{{ url('guru/import_guru') }}';
+            var url = '{{ url('admin/guru/import_guru') }}';
             var form = $('#dataFormUpload')[0];
             var formData = new FormData(form);
 
@@ -606,7 +606,7 @@
 
         // prosess imprt excel
         $('#saveBtnSeting').on('click', function() {
-            var url = '{{ url('guru/seting_guru') }}';
+            var url = '{{ url('admin/guru/seting_guru') }}';
             // Tambahkan progres bar
             var progressBar = $(
                 '<div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div></div>'

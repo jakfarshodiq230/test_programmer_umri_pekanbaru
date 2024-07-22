@@ -59,7 +59,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('peserta/data_periode_peserta') }}',
+                ajax: '{{ url('admin/peserta/data_periode_peserta') }}',
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -83,6 +83,9 @@
                     {
                         data: 'total_peserta_kegiatan',
                         name: 'total_peserta_kegiatan',
+                        render: function(data, type, row) {
+                            return row.total_peserta_kegiatan + ' Orang';
+                        }
                     },
                     {
                         data: 'status_periode',
@@ -132,7 +135,7 @@
                 confirmButtonText: 'Ya, saya akan menambah data'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var url = "{{ url('peserta/data_list_periode_peserta') }}/" + id_periode + "/" + tahun_ajaran;
+                    var url = "{{ url('admin/peserta/data_list_periode_peserta') }}/" + id_periode + "/" + tahun_ajaran;
                     window.location.href = url;
                 }
             });

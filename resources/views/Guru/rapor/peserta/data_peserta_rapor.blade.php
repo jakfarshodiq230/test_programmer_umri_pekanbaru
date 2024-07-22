@@ -93,13 +93,26 @@
                             var tanggal_mulai = new Date(row.tggl_awal_periode);
                             var tanggal_akhir = new Date(row.tggl_akhir_periode);
                             var tanggal = new Date(row.tggl_akhir_penilaian);
+                            var tanggal_syn = new Date(row.updated_at);
                             var options = { day: 'numeric', month: 'long', year: 'numeric' };
                             var tanggal_mulai_1 = tanggal_mulai.toLocaleDateString('id-ID', options);
                             var tanggal_akhir_2 = tanggal_akhir.toLocaleDateString('id-ID', options);
-                            var tanggal_formatted = tanggal.toLocaleDateString('id-ID', options);
-                            return 'Mulai Rapor : ' + tanggal_mulai_1 + '<br>' +
-                            'Akhir Rapor : ' + tanggal_akhir_2 +
-                            '<br> Akhir Penilaian : ' + tanggal_formatted;
+                            
+                            const options2 = { 
+                                day: 'numeric', 
+                                month: 'long', 
+                                year: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                second: 'numeric',
+                                hour12: false // Use 24-hour format; set to true for 12-hour format
+                            };
+                            var tanggal_formatted = tanggal.toLocaleDateString('id-ID', options2);
+                            var tanggal_sinkron= tanggal_syn.toLocaleDateString('id-ID', options2);
+                            return `Mulai Rapor : ${tanggal_mulai_1} s/d  ${tanggal_akhir_2} <br>
+                            <span class="badge ${new Date(row.tggl_akhir_penilaian) < new Date() ? 'bg-danger' : 'bg-success'}">Akhir Penilaian : ${tanggal_formatted}
+                            </span> <br>
+                            <span class="badge bg-success">Sinkronisasi Data : ${tanggal_sinkron}</span>`;
                         }
 
                     },
@@ -117,7 +130,7 @@
                         render: function(data, type, row) {
                             
                                 return `
-                                <button class="btn btn-sm btn-primary pesertaBtn me-1 ${row.siswa_count === 0 ? 'disabled' : ''} " data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
+                                <button class="btn btn-sm btn-primary pesertaBtn me-1 ${row.siswa_count === 0} " data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
                                 data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" data-periode="${row.id_periode}"><i class="fas fa-users"></i></button>
                             `;
                         }

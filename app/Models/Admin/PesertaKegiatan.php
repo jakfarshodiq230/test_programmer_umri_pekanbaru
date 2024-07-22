@@ -87,6 +87,7 @@ class PesertaKegiatan extends Model
                 'siswa.nama_siswa',
                 'siswa.foto_siswa',
                 'periode.jenis_periode',
+                'periode.status_periode',
                 'guru.nama_guru',
                 'kelas.nama_kelas',
                 'tahun_ajaran.nama_tahun_ajaran'
@@ -181,7 +182,6 @@ class PesertaKegiatan extends Model
     
         return $data; // Return the result set
     }
-
 
     // rapor
     public static function DataPesertaRapor($id_tahun_ajaran, $jenisRapor, $tglMulai, $tglAkhir)
@@ -321,6 +321,34 @@ class PesertaKegiatan extends Model
     
         return  $dataKeterangan;
     }
+
+    public static function DataDaftarPeserta($tahun, $jenjang, $periode, $selectedIds)
+    {
+        $data = DB::table('periode')
+            ->join('tahun_ajaran', 'periode.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+            ->join('peserta_kegiatan', 'periode.id_periode', '=', 'peserta_kegiatan.id_periode')
+            ->join('siswa', 'peserta_kegiatan.id_siswa', '=', 'siswa.id_siswa')
+            ->join('kelas', 'peserta_kegiatan.id_kelas', '=', 'kelas.id_kelas')
+            ->join('guru', 'peserta_kegiatan.id_guru', '=', 'guru.id_guru')
+            ->select(
+                'periode.*',
+                'tahun_ajaran.*',
+                'siswa.*',
+                'kelas.*',
+                'guru.*'
+            )
+            ->whereNull('periode.deleted_at')
+            ->whereNull('peserta_kegiatan.deleted_at')
+            ->where('tahun_ajaran.id_tahun_ajaran', $tahun)
+            ->where('periode.jenis_periode', $jenjang)
+            ->where('peserta_kegiatan.id_guru', session('user')['id'])
+            ->whereNotIn('siswa.id_siswa', $selectedIds) // Properly qualified column name
+            ->orderBy('periode.created_at', 'DESC')
+            ->get();
+
+        return $data; // Return the result set
+    }
+
     
     
     

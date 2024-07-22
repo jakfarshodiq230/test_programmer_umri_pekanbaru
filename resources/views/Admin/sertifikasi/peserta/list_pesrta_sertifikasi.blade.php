@@ -38,7 +38,7 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title" id="judul_header">
-                    Data Peserta Rapor
+                    Data Peserta Sertifikasi
                 </h1>
             </div>
             <div class="row">
@@ -53,23 +53,12 @@
                                             <span class="separator">:</span>
                                             <span class="value text-start" id="tahun_ajaran" style="flex: 1;">Andi</span>
                                         </div>
-                                        <div class="profile-item mb-3 d-flex justify-content-between">
-                                            <span class="label text-end" style="flex: 1;">Rapor</span>
-                                            <span class="separator">:</span>
-                                            <span class="value text-start" id="rapor" style="flex: 1;">Andi</span>
-                                        </div>
-                                        
                                     </div>
                                     <div class="col-md-6 profile">
                                         <div class="profile-item mb-3 d-flex justify-content-between">
-                                            <span class="label text-end" style="flex: 1;">Jenjang</span>
+                                            <span class="label text-end" style="flex: 1;">Sertifikasi</span>
                                             <span class="separator">:</span>
-                                            <span class="value text-start" id="jenjang" style="flex: 1;">Andi</span>
-                                        </div>
-                                        <div class="profile-item mb-3 d-flex justify-content-between">
-                                            <span class="label text-end" style="flex: 1;">Tanggal</span>
-                                            <span class="separator">:</span>
-                                            <span class="value text-start" id="tanggal" style="flex: 1;">Andi</span>
+                                            <span class="value text-start" id="rapor" style="flex: 1;">Andi</span>
                                         </div>
                                     </div>
                                 </div>
@@ -86,6 +75,7 @@
                                         <th>Nama</th>
                                         <th>Pembimbing</th>
                                         <th>Kelas</th>
+                                        <th>Penguji</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -95,6 +85,7 @@
                                         <th>Nama</th>
                                         <th>Pembimbing</th>
                                         <th>Kelas</th>
+                                        <th>Penguji</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
@@ -126,15 +117,10 @@
                    // Ensure data.periode and its properties exist
                     var periode = data.periode || {};
                     var nama_tahun_ajaran = periode.nama_tahun_ajaran || '';
-                    var jenis_kegiatan = periode.jenis_periode || '';
-                    var jenis_periode = periode.jenis_periode || '';
                     var jenis_jenjang = periode.jenis_kegiatan || '';
-                    var tanggal = periode.tggl_periode || '';
 
                     // Update the HTML elements
                     $('#tahun_ajaran').text(capitalizeFirstLetter(nama_tahun_ajaran));
-                    $('#rapor').text(capitalizeFirstLetter(jenis_kegiatan));
-                    $('#tanggal').text(capitalizeFirstLetter(tanggal));
                     $('#jenjang').text(capitalizeFirstLetter(jenis_jenjang));
                 },
                 error: function(xhr, status, error) {
@@ -150,8 +136,8 @@
                 destroy: true,
                 responsive: true,
                 ajax: {
-                        url: '{{ url('admin/peserta_rapor/ajax_list_peserta') }}/' +tahun+'/'+jenjang+'/'+periode,
-                        dataSrc: 'peserta', // Specify the data source as 'nilai'
+                        url: '{{ url('admin/peserta_sertifikasi/ajax_list_peserta') }}/' +tahun+'/'+jenjang+'/'+periode,
+                        dataSrc: 'peserta',
                     },
                 columns: [{
                         "data": null,
@@ -180,6 +166,13 @@
                         name: 'nama_kelas',
                         render: function(data, type, row) {
                             return row.nama_kelas.trim().toUpperCase();
+                        }
+                    },
+                    {
+                        data: 'nama_guru',
+                        name: 'nama_guru',
+                        render: function(data, type, row) {
+                            return row.nama_guru.trim().toUpperCase();
                         }
                     },
                     {

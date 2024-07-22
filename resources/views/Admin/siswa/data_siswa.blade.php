@@ -288,7 +288,7 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('siswa/data_siswa') }}',
+                ajax: '{{ url('admin/siswa/data_siswa') }}',
                 columns: [{
                         data: 'foto_siswa',
                         name: 'foto_siswa',
@@ -404,7 +404,7 @@
             var id = $(this).data('id');
             // Open the edit modal and populate it with data
             $.ajax({
-                url: '{{ url('siswa/edit_siswa') }}/' + id, // URL to fetch data for the selected row
+                url: '{{ url('admin/siswa/edit_siswa') }}/' + id, // URL to fetch data for the selected row
                 type: 'GET',
                 success: function(data) {
                     // Populate the modal fields with the data
@@ -443,10 +443,10 @@
         // save dan update data
         $('#saveBtn').on('click', function() {
             var id = $('#id_siswa').val();
-            var url = '{{ url('siswa/store_siswa') }}';
+            var url = '{{ url('admin/siswa/store_siswa') }}';
 
             if (id) {
-                url = '{{ url('siswa/update_siswa') }}/' + id;
+                url = '{{ url('admin/siswa/update_siswa') }}/' + id;
             }
             
             var form = $('#dataForm')[0];
@@ -515,7 +515,7 @@
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
                 $.ajax({
-                    url: '{{ url('siswa/delete_siswa') }}/' +
+                    url: '{{ url('admin/siswa/delete_siswa') }}/' +
                         id, // URL to delete data for the selected row
                     type: 'DELETE',
                     data: {
@@ -555,11 +555,11 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, saya menghapus data ini'
+                confirmButtonText: 'Ya, saya Mengaktifkan/Menonaktifkan data ini'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('siswa/status_siswa') }}/' + id + '/' + status,
+                        url: '{{ url('admin/siswa/status_siswa') }}/' + id + '/' + status,
                         type: 'PUT',
                         data: {
                             _token: '{{ csrf_token() }}'
@@ -595,7 +595,7 @@
 
         // prosess imprt excel
         $('#saveBtnUpload').on('click', function() {
-            var url = '{{ url('siswa/import_siswa') }}';
+            var url = '{{ url('admin/siswa/import_siswa') }}';
             var form = $('#dataFormUpload')[0];
             var formData = new FormData(form);
 
@@ -660,7 +660,7 @@
 
         // prosess seting
         $('#saveBtnSeting').on('click', function() {
-            var url = '{{ url('siswa/seting_siswa') }}';
+            var url = '{{ url('admin/siswa/seting_siswa') }}';
             // Tambahkan progres bar
             var progressBar = $(
                 '<div class="progress"><div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div></div>'

@@ -88,15 +88,15 @@
                         <ul id="ui" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
 
                             <li class="sidebar-item {{ $submenu == 'siswa' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('siswa') }}'>Siswa</a>
+                                    class='sidebar-link' href='{{ url('admin/siswa') }}'>Siswa</a>
                             </li>
                             <li class="sidebar-item {{ $submenu == 'guru' ? 'active' : null }}"><a class='sidebar-link'
-                                    href='{{ url('guru') }}'>Guru</a>
+                                    href='{{ url('admin/guru') }}'>Guru</a>
                             </li>
                             <li class="sidebar-item {{ $submenu == 'tahun_ajaran' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('tahun_ajaran') }}'>Tahun Ajaran</a>
+                                    class='sidebar-link' href='{{ url('admin/tahun_ajaran') }}'>Tahun Ajaran</a>
                             <li class="sidebar-item {{ $submenu == 'kelas' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('kelas') }}'>Kelas</a>
+                                    class='sidebar-link' href='{{ url('admin/kelas') }}'>Kelas</a>
                             </li>
                         </ul>
                     </li>
@@ -111,13 +111,13 @@
                         </a>
                         <ul id="ui-tahfidz" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                             <li class="sidebar-item {{ $submenu == 'periode' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('periode') }}'>Periode</a>
+                                    class='sidebar-link' href='{{ url('admin/periode') }}'>Periode</a>
                             </li>
                             <li class="sidebar-item {{ $submenu == 'peserta' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('peserta') }}'>Peserta</a>
+                                    class='sidebar-link' href='{{ url('admin/peserta') }}'>Peserta</a>
                             </li>
                             <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
-                                class='sidebar-link' href='{{ url('penilaian_kegiatan') }}'>Penilaian</a>
+                                class='sidebar-link' href='{{ url('admin/penilaian_kegiatan') }}'>Penilaian</a>
                             </li>
                         </ul>
                     </li>
@@ -132,10 +132,28 @@
                         </a>
                         <ul id="ui-rapor" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                             <li class="sidebar-item {{ $submenu == 'periode-rapor' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('periode_rapor') }}'>Periode</a>
+                                    class='sidebar-link' href='{{ url('admin/periode_rapor') }}'>Periode</a>
                             </li>
                             <li class="sidebar-item {{ $submenu == 'peserta-rapor' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('peserta_rapor') }}'>Peserta</a>
+                                    class='sidebar-link' href='{{ url('admin/peserta_rapor') }}'>Peserta</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Ujian
+                    </li>
+                    <li class="sidebar-item {{ $menu == 'ujian' ? 'active' : null }}">
+                        <a data-bs-target="#ui-ujian" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-address-book"></i> <span
+                                class="align-middle">Sertifikasi</span>
+                        </a>
+                        <ul id="ui-ujian" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                            <li class="sidebar-item {{ $submenu == 'periode-sertifikasi' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/periode_sertifikasi') }}'>Periode</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'peserta-sertifikasi' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/peserta_sertifikasi') }}'>Peserta</a>
                             </li>
                         </ul>
                     </li>
@@ -172,12 +190,13 @@
                             </li>
                         </ul>
                     </li>
+                    
 
                     <li class="sidebar-header">
                         Logout
                     </li>
                     <li class="sidebar-item">
-                        <div class="d-flex justify-content-center" id="logoutBtn" data-guard="users"><a class='btn btn-outline-primary' >LOGOUT</a></div>
+                        <div class="d-flex justify-content-center" id="logoutBtn"><a class='btn btn-outline-primary' >LOGOUT</a></div>
 
                     </li>
                 </ul>
@@ -198,7 +217,7 @@
                                 {{ ucfirst(session('user')['nama_user']) }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" id="logoutBtn2" data-guard="users">
+                                <a class="dropdown-item" id="logoutBtn2">
                                     <i class="align-middle me-1 fas fa-fw fa-arrow-alt-circle-right"></i> Sign out
                                 </a>
                             </div>
@@ -274,20 +293,16 @@
             });
 
         });
-
-        // logout
         $(document).ready(function() {
             $('#logoutBtn, #logoutBtn2').on('click', function() {
-                var guard = $(this).data('guard'); // Make sure the buttons have data-guard attributes
-                console.log(guard);
                 $.ajax({
-                    url: '{{ url('cek_logout') }}/' + guard,
-                    type: 'post',
+                    url: '{{ url('logout/users') }}',
+                    type: 'GET',
                     data: {
-                        _token: '{{ csrf_token() }}' // Include the CSRF token
+                        _token: "{{ csrf_token() }}"
                     },
                     success: function(response) {
-                        window.location.href = '{{ url('') }}' + response.redirect + '/'+guard;
+                        window.location.href = '{{ url('/') }}'; 
                     },
                     error: function(xhr, status, error) {
                         console.error('Logout failed: ', error);
@@ -295,8 +310,8 @@
                 });
             });
         });
-
     </script>
+
 </body>
 
 </html>
