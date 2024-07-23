@@ -146,11 +146,12 @@ Route::group(['middleware' => ['auth:users']], function () {
     Route::prefix('admin')->controller(PesertaSertifikasiController::class)->group(function () {
         Route::get('peserta_sertifikasi', 'index');
         Route::get('peserta_sertifikasi/data_peserta_sertifikasi', 'AjaxData');
-        Route::get('peserta_sertifikasi/sync/{tahun}/{rapor}/{peserta}', 'SyncRapor');
         Route::get('peserta_sertifikasi/list_peserta/{tahun}/{rapor}/{periode}', 'DataPeserta');
-        Route::get('peserta_sertifikasi/ajax_list_peserta/{tahun}/{rapor}/{periode}', 'AjaxDataPesertaRapor');
-        Route::get('peserta_sertifikasi/detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'DataDetailPeserta');
-        Route::get('peserta_sertifikasi/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'AjaxDataDetailPesertaRapor');
+        Route::get('peserta_sertifikasi/ajax_list_peserta/{tahun}/{rapor}/{periode}', 'AjaxDataPesertaSertifikasi');
+        Route::post('peserta_sertifikasi/ajax_store_peserta/', 'StoreData');
+        Route::post('peserta_sertifikasi/ajax_reset_peserta/{id}/{peserta}/{tahun}/{periode}', 'ResetData');
+        // Route::get('peserta_sertifikasi/detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'DataDetailPeserta');
+        // Route::get('peserta_sertifikasi/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'AjaxDataDetailPesertaRapor');
         
     });
 

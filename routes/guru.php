@@ -55,10 +55,23 @@ Route::middleware('auth:guru')->group(function () {
         Route::post('/store_daftar', [DaftarSertifikasiController::class, 'storeData'])->name('guru.daftar_sertifikasi.storeData');
         Route::get('/ajax_peserta_daftar/{tahun}/{sertifikasi}/{periode}', [DaftarSertifikasiController::class, 'AjaxDataDaftarPeserta'])->name('guru.daftar_sertifikasi.AjaxDataDaftarPeserta');
         Route::delete('/ajax_delete_peserta/{id}', [DaftarSertifikasiController::class, 'deleteData'])->name('guru.daftar_sertifikasi.deleteData');
+        Route::get('/detail_penilaian_sertifikasi/{id}', [DaftarSertifikasiController::class, 'DetailNilaiPeserta'])->name('guru.daftar_sertifikasi.DetailNilaiPeserta');
+        Route::get('/ajax_detail_penilaian_peserta/{peserta}', [DaftarSertifikasiController::class, 'AjaxDataDetailPeserta'])->name('guru.daftar_sertifikasi.AjaxDataDetailPeserta');
+        Route::get('/download_sertifikat/{id}', [DaftarSertifikasiController::class, 'CetakSertifikatPdf'])->name('guru.daftar_sertifikasi.CetakSertifikatPdf');
     });
 
     Route::prefix('guru/penilaian_sertifikasi')->group(function () {
-        Route::get('/', [DaftarSertifikasiController::class, 'index'])->name('guru.penilaian_sertifikasi.index');
-        Route::get('/data_peserta_sertifikasi', [DaftarSertifikasiController::class, 'AjaxData'])->name('guru.penilaian_sertifikasi.AjaxData');
+        Route::get('/', [SertifikasiController::class, 'index'])->name('guru.penilaian_sertifikasi.index');
+        Route::get('/data_peserta_sertifikasi', [SertifikasiController::class, 'AjaxData'])->name('guru.penilaian_sertifikasi.AjaxData');
+        Route::get('/list_data_sertifikasi/{tahun}/{sertifikasi}/{periode}', [SertifikasiController::class, 'listDaftar'])->name('guru.penilaian_sertifikasi.list_data_sertifikasi');
+        Route::get('/list_peserta/{tahun}/{sertifikasi}/{periode}', [SertifikasiController::class, 'DataPeserta'])->name('guru.penilaian_sertifikasi.DataPeserta');
+        Route::post('/store_daftar', [SertifikasiController::class, 'storeData'])->name('guru.penilaian_sertifikasi.storeData');
+        Route::get('/ajax_peserta_daftar/{tahun}/{sertifikasi}/{periode}', [SertifikasiController::class, 'AjaxDataNilaiPeserta'])->name('guru.penilaian_sertifikasi.AjaxDataNilaiPeserta');
+        Route::get('/detail_penilaian_peserta/{peserta}', [SertifikasiController::class, 'DetailNilaiPeserta'])->name('guru.penilaian_sertifikasi.DetailNilaiPeserta');
+        Route::get('/ajax_detail_penilaian_peserta/{peserta}', [SertifikasiController::class, 'AjaxDataDetailPeserta'])->name('guru.penilaian_sertifikasi.AjaxDataDetailPeserta');
+        Route::delete('/hapus_penilaian_sertifikasi/{id}', [SertifikasiController::class, 'deleteData'])->name('guru.penilaian_sertifikasi.deleteData');
+        Route::get('/edit_penilaian_sertifikasi/{id}', [SertifikasiController::class, 'editData'])->name('guru.penilaian_sertifikasi.editData');
+        Route::post('/update_penilaian_sertifikasi/{id}', [SertifikasiController::class, 'updateData'])->name('guru.penilaian_sertifikasi.updateData');
+        Route::get('/cetak_sertifikat/{id}', [SertifikasiController::class, 'CetakSertifikat'])->name('guru.penilaian_sertifikasi.CetakSertifikat');
     });
 });

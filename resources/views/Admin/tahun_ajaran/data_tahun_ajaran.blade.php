@@ -295,34 +295,36 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
-                $.ajax({
-                    url: '{{ url('admin/tahun_ajaran/delete_tahun_ajaran') }}/' +
-                        id, // URL to delete data for the selected row
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // Reload the table data
-                        $('.select2').val(null).trigger('change');
-                        Swal.fire({
-                            title: response.success ? 'Success' : 'Error',
-                            text: response.message,
-                            icon: response.success ? 'success' : 'error',
-                            confirmButtonText: 'OK'
-                        });
-                        $('#datatables-ajax').DataTable().ajax.reload();
-                    },
-                    error: function(response) {
-                        $('.select2').val(null).trigger('change');
-                        Swal.fire({
-                            title: response.success ? 'Success' : 'Error',
-                            text: response.message,
-                            icon: response.success ? 'success' : 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ url('admin/tahun_ajaran/delete_tahun_ajaran') }}/' +
+                            id, // URL to delete data for the selected row
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            // Reload the table data
+                            $('.select2').val(null).trigger('change');
+                            Swal.fire({
+                                title: response.success ? 'Success' : 'Error',
+                                text: response.message,
+                                icon: response.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            $('#datatables-ajax').DataTable().ajax.reload();
+                        },
+                        error: function(response) {
+                            $('.select2').val(null).trigger('change');
+                            Swal.fire({
+                                title: response.success ? 'Success' : 'Error',
+                                text: response.message,
+                                icon: response.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                }
             });
         });
 

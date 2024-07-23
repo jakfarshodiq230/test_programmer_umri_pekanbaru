@@ -57,6 +57,14 @@
                                             SILAHKAN MASUKAN USERNAME & PASSWORD
                                         </p>
                                     </div>
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                        <div class="alert-icon">
+                                            <i class="far fa-fw fa-bell"></i>
+                                        </div>
+                                        <div class="alert-message">
+                                            -
+                                        </div>
+                                    </div>
                                     <form  method="POST" id="formLogin">
                                         @csrf
                                         <div class="mb-3">
@@ -100,6 +108,7 @@
     </svg>
     <script src=" {{ asset('assets/admin/js/app.js') }}"></script>
     <script>
+        $('.alert').hide();
         $(document).ready(function() {
             $('#formLogin').on('submit', function(event) {
                 event.preventDefault(); // Prevent the default form submission
@@ -113,16 +122,18 @@
                     data: formData,
                     success: function(response) {
                         // Handle success response
-                        if (response.redirect) {
+                        if (response.success === true) {
                             window.location.href = '{{ url("") }}'+response.redirect; // Redirect on successful login
                         } else {
                             // Show error message
-                            alert(response.message);
+                            $('.alert').show();
+                            $('.alert-message').text(response.massage);
                         }
                     },
                     error: function(xhr) {
                         // Handle error response
-                        alert('Login failed. Please try again.');
+                        $('.alert').show();
+                        $('.alert-message').text(response.massage);
                     }
                 });
             });

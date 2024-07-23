@@ -13,6 +13,7 @@ use App\Models\Admin\RaporKegiatanModel;
 use App\Models\Admin\PesertaKegiatan;
 use App\Models\Admin\PesertaSertifikasiModel;
 use App\Models\Guru\PenilaianPengembanganDiriModel;
+use App\Models\Admin\GuruModel;
 use App\Pdf\CustomPdf;
 
 class PesertaSertifikasiController extends Controller
@@ -43,15 +44,91 @@ class PesertaSertifikasiController extends Controller
         return view ('Admin/sertifikasi/peserta/list_pesrta_sertifikasi',compact('menu','submenu','tahun','jenjang','periode'));
     }  
 
-    public function AjaxDataPesertaRapor($tahun,$jenjang,$periode) {
+    public function AjaxDataPesertaSertifikasi($tahun,$jenjang,$periode) {
         $DataPeserta = PesertaSertifikasiModel::DataPesertaSertifikasi($tahun,$jenjang,$periode);
         $DataPeriode = PeriodeModel:: DataPeriodeRapor($tahun,$jenjang,$periode);
-        if ($DataPeriode == true) {
-            return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'peserta' => $DataPeserta,'periode'=>$DataPeriode]);
+        // peserta
+        $DataPesertaPenguji = PesertaSertifikasiModel::DataDaftarPeserta($tahun, $jenjang, $periode);
+        $DataGuru = GuruModel::get();
+
+        if ($DataPeriode) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Ditemukan', 
+                'peserta' => $DataPeserta,
+                'periode'=>$DataPeriode,
+                'listPeserta' => $DataPesertaPenguji,
+                'guru' => $DataGuru
+            ]);
         }else{
             return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
         }
     }
+
+    public function StoreData(Request $request) {
+        try {
+            // Validate incoming request data
+            $validatedData = $request->validate([
+                'peserta' => 'required|string',
+                'penguji' => 'required|string',
+            ]);
+    
+            // Prepare data for insertion
+            $data = [
+                'id_peserta_sertifikasi' => $validatedData['peserta'],
+                'id_penguji' => $validatedData['penguji'],
+                'id_user' => session('user')['id'],
+            ];
+
+            $Peserta = PesertaSertifikasiModel::where('id_peserta_sertifikasi', $validatedData['peserta'])->update($data);
+            if ($Peserta) {
+                return response()->json(['success' => true, 'message' => 'Berhasil Tambah Penguji Sertifikasi']);
+            } else {
+                return response()->json(['error' => true, 'message' => 'Gagal Tambah Penguji Sertifikasi']);
+            }
+    
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        }catch (\Exception $e) {
+            // Handle any exceptions that occur during validation or data insertion
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function ResetData($id,$peserta,$tahun,$periode,Request $request) {
+        try {
+            $Peserta = PesertaSertifikasiModel::where([
+                ['id_peserta_sertifikasi', $id],
+                ['id_siswa', $peserta],
+                ['id_tahun_ajaran', $tahun],
+                ['id_periode', $periode]
+            ])->first();
+        
+            if ($Peserta) {
+                // Update the record if it exists
+                PesertaSertifikasiModel::where('id_peserta_sertifikasi', $id)
+                    ->update(['id_penguji' => null]);
+                    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Berhasil Reset Penguji Sertifikasi'
+                ]);
+            } else {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Gagal Reset Penguji Sertifikasi'
+                ]);
+            }
+        
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during validation or data insertion
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ]);
+        }        
+    }
+
 
     public function DataDetailPeserta($id,$peserta,$tahun,$jenjang,$periode){
         $menu = 'rapor';
@@ -66,63 +143,5 @@ class PesertaSertifikasiController extends Controller
         }else{
             return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
         }
-    }
-
-    public function CetakRaporPdf($idRapor,$peserta,$tahun,$jenjang,$periode){
-        $pdf = new CustomPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        // Set document information
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetTitle('Bukti Pembelian');
-
-        // Remove default header/footer
-        $pdf->setPrintHeader(true); // Enable custom header
-        $pdf->setPrintFooter(true); // Enable custom footer
-
-        // Set default monospaced font
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-        // Set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-        // Set auto page breaks
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-        // Set image scale factor
-        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-        $pdf->SetFont('dejavusans', '', 14, '', true);
-        $pdf->AddPage('P', 'A4');
-
-        $pdf->SetY(30);
-        //Add content
-        $nilai = PenilaianPengembanganDiriModel::DataAjaxPenilaianPengembanganRapor($idRapor,$peserta,$tahun,$jenjang,$periode);
-        if ($jenjang === 'tahfidz') {
-            $html = view('Admin/rapor/peserta/cetak_rapor_tahfidz',compact('nilai'));
-        } else {
-            $html = view('Admin/rapor/peserta/cetak_rapor_tahsin',compact('nilai'));
-        }
-        
-        // Print text using writeHTMLCell()
-        $pdf->writeHTML($html, true, false, true, false, '');
-
-        // Center the image
-        if (file_exists(public_path('storage/siswa/' . $nilai->foto_siswa))) {
-            $imagePath = public_path('storage/siswa/' . $nilai->foto_siswa);
-        } else {
-            $imagePath = public_path('assets/admin/img/avatars/pas_foto.jpg');
-        }        
-         // Correctly define the image path
-        $imageWidth = 30; // Set image width (3 cm)
-        $imageHeight = 40; // Set image height (4 cm)
-        $x = ($pdf->getPageWidth() - $imageWidth) / 2; // Calculate X position for centering
-        $y = 230; // Set a fixed Y position from the top
-        
-        // Place the image
-        $pdf->Image($imagePath, $x, $y, $imageWidth, $imageHeight, '', '', '', false, 300, '', false, false, 0, false, false, false);
-           
-
-        // Close and output PDF document
-        $pdf->Output($nilai->nama_siswa.'.pdf', 'I'); // 'I' for inline display or 'D' for download
     }
 }

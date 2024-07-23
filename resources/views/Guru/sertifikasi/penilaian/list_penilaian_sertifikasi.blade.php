@@ -38,7 +38,7 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title" id="judul_header">
-                    Data Pendaftaran Peserta Sertifikasi
+                    Data Penilaian Peserta Sertifikasi
                 </h1>
             </div>
             <div class="row">
@@ -66,47 +66,45 @@
                                         <span class="value text-start" id="juz" style="flex: 1;">-</span>
                                     </div>
                                     <div class="profile-item mb-3 d-flex justify-content-between">
-                                        <span class="label text-end" style="flex: 1;">Pendaftaran</span>
+                                        <span class="label text-end" style="flex: 1;">Penilaian</span>
                                         <span class="separator">:</span>
-                                        <span class="value text-start" id="pendaftaran" style="flex: 1;">-</span>
+                                        <span class="value text-start" id="penilaian" style="flex: 1;">-</span>
                                     </div>
                                 </div>
                                 <div class="col-md-4 profile">
                                     <div class="profile-item mb-3 d-flex flex-column align-items-center">
                                         <button class="btn btn-outline-primary me-2 addBtn text-end" id="addBtn">
-                                            PENDAFTARAN
+                                            PENILAIAN SERTIFIKASI
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <table id="datatables-ajax" class="table table-striped mt-4" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Nama</th>
-                                            <th>Kelas</th>
-                                            <th>Pembimbing</th>
-                                            <th>Penguji</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Nama</th>
-                                            <th>Kelas</th>
-                                            <th>Pembimbing</th>
-                                            <th>Penguji</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama</th>
+                                        <th>Sesi Ujian</th>
+                                        <th>Nilai</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama</th>
+                                        <th>Sesi Ujian</th>
+                                        <th>Nilai</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                     {{-- add atau edit  --}}
                     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true"
                         data-bs-keyboard="false" data-bs-backdrop="static">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <form method="POST" id="dataForm" enctype="multipart/form-data">
                                     @csrf
@@ -117,7 +115,7 @@
                                     </div>
                                     <div class="modal-body m-3">
                                         <div class="row">
-                                            <div class="col-12 col-lg-12">
+                                            <div class="col-6 col-lg-6">
                                                 <div class="mb-3">
                                                     <label>Siswa</label>
                                                     <select class="form-control select2 mb-4 me-sm-2 mt-0"
@@ -130,20 +128,64 @@
                                                     <label>Kelas</label>
                                                     <input type="text" name="kelas" id="kelas"
                                                         class="form-control" placeholder="Kelas" readonly>
-                                                    <input type="text" name="id_kelas" id="id_kelas"
-                                                        class="form-control" placeholder="id_kelas" hidden>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Pembimbing</label>
                                                     <input type="text" name="guru" id="guru"
                                                         class="form-control" placeholder="Guru" readonly>
-                                                    <input type="text" name="id_guru" id="id_guru"
-                                                        class="form-control" placeholder="Guru" hidden>
-                                                    <input type="text" name="id_periode" id="id_periode"
-                                                        class="form-control" placeholder="id_periode" hidden>
-                                                    <input type="text" name="id_tahun" id="id_tahun"
-                                                        class="form-control" placeholder="id_tahun" hidden>
                                                 </div>
+                                            </div>
+                                            <div class="col-6 col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-6 col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label>Surah Mulai</label>
+                                                            <select class="form-control select2 mb-4 me-sm-2 mt-0"
+                                                                name="surah_mulai" id="surah_mulai" data-bs-toggle="select2" required>
+                                                                <option value="PILIH">PILIH</option>
+                                                            </select>
+                                                            <div id="surah_mulai-error" class="invalid-feedback"></div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Surah Akhir</label>
+                                                            <select class="form-control select2 mb-4 me-sm-2 mt-0"
+                                                                name="surah_akhir" id="surah_akhir" data-bs-toggle="select2" required>
+                                                                <option value="PILIH">PILIH</option>
+                                                            </select>
+                                                            <div id="surah_akhir-error" class="invalid-feedback"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label>Ayat Mulai</label>
+                                                            <select class="form-control select2 mb-4 me-sm-2 mt-0"
+                                                                name="ayat_mulai" id="ayat_mulai" data-bs-toggle="select2" required>
+                                                                <option value="PILIH">PILIH</option>
+                                                            </select>
+                                                            <div id="ayat_mulai-error" class="invalid-feedback"></div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label>Ayat Akhir</label>
+                                                            <select class="form-control select2 mb-4 me-sm-2 mt-0"
+                                                                name="ayat_akhir" id="ayat_akhir" data-bs-toggle="select2" required>
+                                                                <option value="PILIH">PILIH</option>
+                                                            </select>
+                                                            <div id="ayat_akhir-error" class="invalid-feedback"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label>Nilai</label>
+                                                    <input type="text" name="nilai" id="nilai"
+                                                        class="form-control" placeholder="Nilai Sertifikasi">
+                                                    <div id="nilai-error" class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="text-center">Koreksi dan Saran</label>
+                                                <textarea name="koreksi_saran" id="koreksi_saran"
+                                                    class="form-control" placeholder="Koreksi dan Saran Sertifikasi" > </textarea>
+                                                <div id="koreksi_saran-error" class="invalid-feedback"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -174,60 +216,125 @@
         }
         function loadPeserta() {
             $.ajax({
-                url: '{{ url('guru/daftar_sertifikasi/list_peserta') }}/' + tahun + '/' + sertifikasi + '/' + periode,
+                url: '{{ url('guru/penilaian_sertifikasi/list_peserta') }}/' + tahun + '/' + sertifikasi + '/' + periode,
                 method: 'GET',
                 success: function(data) {
                     var select = $('select[name="siswa"]');
                     select.empty().append('<option value="">PILIH</option>');
 
                     $.each(data.peserta, function(key, value) {
-                        select.append('<option value="' + value.id_siswa + '">' + 
+                        //if (value.count_penilaian < 2) {
+                            select.append('<option value="' + value.id_peserta_sertifikasi + '">' + 
                             value.nama_siswa.trim().toUpperCase() + ' [ ' + value.nisn_siswa + ' ]' + 
                             '</option>');
+                        //}
                     });
 
                     select.change(function() {
                         var selectedId = $(this).val();
                         var selectedSiswa = data.peserta.find(function(peserta) {
-                            return peserta.id_siswa == selectedId;
+                            return peserta.id_peserta_sertifikasi == selectedId;
                         });
 
                         if (selectedSiswa) {
                             $('#kelas').val(selectedSiswa.nama_kelas.trim().toUpperCase());
-                            $('#id_kelas').val(selectedSiswa.id_kelas);
-                            $('#id_guru').val(selectedSiswa.id_guru);
                             $('#guru').val(selectedSiswa.nama_guru.trim().toUpperCase());
-                            $('#id_periode').val(periode);
-                            $('#id_tahun').val(tahun);
                         } else {
                             $('#kelas').val('');
                             $('#guru').val('');
-                            $('#id_kelas').val('');
-                            $('#id_siswa').val('');
-                            $('#id_guru').val('');
-                            $('#id_periode').val('');
-                            $('#id_tahun').val('');
                         }
                     });
                 }
             });
 
             $.ajax({
-                url: '{{ url('guru/daftar_sertifikasi/list_peserta') }}/' + tahun + '/' + sertifikasi + '/' + periode,
+                url: '{{ url('guru/penilaian_sertifikasi/list_peserta') }}/' + tahun + '/' + sertifikasi + '/' + periode,
                 method: 'GET',
                 success: function(response) {
                     $('#tahun_ajaran').text(response.periode.nama_tahun_ajaran);
                     $('#sertifikasi').text(capitalizeFirstLetter(response.periode.jenis_periode.toUpperCase()));
                     $('#juz').text(response.periode.juz_periode);
-                    if (response.periode.status_periode === 0) {
+                    if (response.periode.tggl_akhir_penilaian < new Date()) {
                         $('#addBtn').addClass('disabled');
                         $('.deleteBtn').addClass('disabled');
-                        $('#pendaftaran').addClass('text-danger').text('TUTUP');
+                        $('#penilaian').addClass('text-danger').text('TUTUP');
                     } else {
                         $('#addBtn').removeClass('disabled');
                         $('.deleteBtn').removeClass('disabled');
-                        $('#pendaftaran').addClass('text-success').text('BUKA');
+                        $('#penilaian').addClass('text-success').text('BUKA');
                     }
+                }
+            });
+
+            $.ajax({
+                url: '{{ url('guru/penilaian_sertifikasi/list_peserta') }}/' + tahun + '/' + sertifikasi + '/' + periode,
+                method: 'GET',
+                success: function(data) {
+                    // surah awal
+                    var select_surah = $('select[name="surah_mulai"]');
+                    select_surah.empty();
+                    select_surah.append('<option>PILIH</option>'); // Add default option
+                    $.each(data.surah, function(key, value) {
+                        select_surah.append('<option value="' + value.nomor + '">' + value
+                            .namaLatin.trim().toUpperCase() + '</option>');
+                    });
+                    // Update #kelas text when an option is selected
+                    select_surah.change(function() {
+                        var selectedId_surah = $(this).val();
+                        var selected_surah = data.surah.find(function(surah) {
+                            return surah.nomor == selectedId_surah;
+                        });
+
+                        if (selected_surah) {
+                            var select_ayat_awal = $(
+                                'select[name="ayat_mulai"]');
+                            select_ayat_awal.empty();
+                            select_ayat_awal.append(
+                                '<option>PILIH</option>'); // Add default option
+                            var jumlahAyat = selected_surah.jumlahAyat;
+                            for (var i = 1; i <= jumlahAyat; i++) {
+                                select_ayat_awal.append('<option value="' + i + '">' + i +
+                                    '</option>');
+                            }
+
+                        } else {
+                            $('#ayat_mulai').val(
+                                ''); // Handle case where no surah is selected
+                        }
+                    });
+
+                    // surah akhir
+                    var select_surah = $('select[name="surah_akhir"]');
+                    select_surah.empty();
+                    select_surah.append('<option>PILIH</option>'); // Add default option
+                    $.each(data.surah, function(key, value) {
+                        select_surah.append('<option value="' + value.nomor + '">' + value
+                            .namaLatin.trim().toUpperCase() + '</option>');
+                    });
+                    // Update #kelas text when an option is selected
+                    select_surah.change(function() {
+                        var selectedId_surah = $(this).val();
+                        var selected_surah = data.surah.find(function(surah) {
+                            return surah.nomor == selectedId_surah;
+                        });
+
+                        if (selected_surah) {
+                            var select_ayat_awal = $(
+                                'select[name="ayat_akhir"]');
+                            select_ayat_awal.empty();
+                            select_ayat_awal.append(
+                                '<option>PILIH</option>'); // Add default option
+                            var jumlahAyat = selected_surah.jumlahAyat;
+                            for (var i = 1; i <= jumlahAyat; i++) {
+                                select_ayat_awal.append('<option value="' + i + '">' + i +
+                                    '</option>');
+                            }
+
+                        } else {
+                            $('#ayat_mulai').val(
+                                ''); // Handle case where no surah is selected
+                        }
+                    });
                 }
             });
         }
@@ -242,7 +349,9 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('guru/daftar_sertifikasi/ajax_peserta_daftar') }}/' + tahun + '/' + sertifikasi + '/' + periode,
+                ajax: {
+                    url: '{{ url('guru/penilaian_sertifikasi/ajax_peserta_daftar') }}/' + tahun + '/' + sertifikasi + '/' + periode,
+                },
                 columns: [{
                         "data": null,
                         "name": "rowNumber",
@@ -256,36 +365,21 @@
                         name: 'nama_siswa',
                         render: function(data, type, row) {
                             var nama_siswa = row.nama_siswa.toUpperCase() ;
-                            return nama_siswa;
+                            return nama_siswa + '<br>' + row.nisn_siswa + '<br>' + row.nama_kelas.toUpperCase();
                         }
                     },
                     {
-                        data: 'nama_kelas',
-                        name: 'nama_kelas',
+                        data: 'count_penilaian',
+                        name: 'count_penilaian',
                         render: function(data, type, row) {
-                            var nama_kelas = row.nama_kelas.toUpperCase();
-                            return nama_kelas;
+                                return 'SESI '+ row.count_penilaian + ' / ' + row.sesi_periode;
                         }
                     },
                     {
-                        data: 'pembimbing_nama',
-                        name: 'pembimbing_nama',
+                        data: 'avg_penilaian',
+                        name: 'avg_penilaian',
                         render: function(data, type, row) {
-                            var pembimbing_nama = row.pembimbing_nama.toUpperCase();
-                            return pembimbing_nama;
-                        }
-                    },
-                    {
-                        data: 'penguji_nama',
-                        name: 'penguji_nama',
-                        render: function(data, type, row) {
-                            if (row.penguji_nama) {
-                                var penguji_nama = row.penguji_nama.charAt(0)
-                                    .toUpperCase() + row.penguji_nama.slice(1);
-                                return penguji_nama;
-                            } else {
-                                return 'MENUNGGU PENGUJI';
-                            }
+                                return row.avg_penilaian === null ? 0 : row.avg_penilaian;
                         }
                     },
                     {
@@ -293,8 +387,9 @@
                         name: 'status_peserta_sertifikasi',
                         render: function(data, type, row) {
                                 return `
-                                    <button class="btn btn-sm btn-danger deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id_peserta_sertifikasi}"><i class="fas fa-trash"></i></button>
-                                    <button class="btn btn-sm btn-info lihatBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Nilai Sertifikasi" data-id="${row.id_peserta_sertifikasi}"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-info lihatBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Nilai Sertifikasi" 
+                                    data-peserta="${row.id_peserta_sertifikasi}">
+                                    <i class="fas fa-eye"></i></button>
                                 `;
                         }
                     },
@@ -304,7 +399,7 @@
 
         // dafatar
         $('#addBtn').on('click', function() {
-            $('#ModalLabel').text('Daftar Sertifikasi');
+            $('#ModalLabel').text('Penilaian Sertifikasi');
             $('#dataForm')[0].reset();
             $('.select2').val(null).trigger('change');
             $('#formModal').modal('show');
@@ -312,7 +407,7 @@
 
         // save button
         $('#saveBtn').on('click', function() {
-            url = '{{ url('guru/daftar_sertifikasi/store_daftar') }}';
+            url = '{{ url('guru/penilaian_sertifikasi/store_daftar') }}';
             
             var form = $('#dataForm')[0];
             var formData = new FormData(form);
@@ -360,52 +455,10 @@
             });
         });
 
-        // delete 
-        $(document).on('click', '.deleteBtn', function() {
-            var id = $(this).data('id');
-            // Make an Ajax call to delete the record
-            Swal.fire({
-                title: 'Hapus Data',
-                text: 'Apakah Anda Ingin Menghapus Data Ini?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, saya menghapus data ini'
-            }).then((result) => {
-                $.ajax({
-                    url: '{{ url('guru/daftar_sertifikasi/ajax_delete_peserta') }}/' +
-                        id, // URL to delete data for the selected row
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        loadPeserta();
-                        Swal.fire({
-                            title: response.success ? 'Success' : 'Error',
-                            text: response.message,
-                            icon: response.success ? 'success' : 'error',
-                            confirmButtonText: 'OK'
-                        });
-                        $('#datatables-ajax').DataTable().ajax.reload();
-                    },
-                    error: function(response) {
-                        Swal.fire({
-                            title: response.success ? 'Success' : 'Error',
-                            text: response.message,
-                            icon: response.success ? 'success' : 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
-            });
-        });
-
         // detail 
         $(document).on('click', '.lihatBtn', function() {
-            var id = $(this).data('id');
-            var url= '{{ url('guru/daftar_sertifikasi/detail_penilaian_sertifikasi') }}/'+ id;
+            var peserta = $(this).data('peserta');
+            var url= '{{ url('guru/penilaian_sertifikasi/detail_penilaian_peserta') }}/'+ peserta;
             window.location.href = url;
         });
 </script>

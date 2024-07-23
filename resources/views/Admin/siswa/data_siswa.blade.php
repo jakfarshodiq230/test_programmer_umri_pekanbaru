@@ -514,32 +514,34 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ya, saya menghapus data ini'
             }).then((result) => {
-                $.ajax({
-                    url: '{{ url('admin/siswa/delete_siswa') }}/' +
-                        id, // URL to delete data for the selected row
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // Reload the table data
-                        Swal.fire({
-                            title: response.success ? 'Success' : 'Error',
-                            text: response.message,
-                            icon: response.success ? 'success' : 'error',
-                            confirmButtonText: 'OK'
-                        });
-                        $('#datatables-ajax').DataTable().ajax.reload();
-                    },
-                    error: function(response) {
-                        Swal.fire({
-                            title: response.success ? 'Success' : 'Error',
-                            text: response.message,
-                            icon: response.success ? 'success' : 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ url('admin/siswa/delete_siswa') }}/' +
+                            id, // URL to delete data for the selected row
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            // Reload the table data
+                            Swal.fire({
+                                title: response.success ? 'Success' : 'Error',
+                                text: response.message,
+                                icon: response.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            $('#datatables-ajax').DataTable().ajax.reload();
+                        },
+                        error: function(response) {
+                            Swal.fire({
+                                title: response.success ? 'Success' : 'Error',
+                                text: response.message,
+                                icon: response.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                }
             });
         });
 

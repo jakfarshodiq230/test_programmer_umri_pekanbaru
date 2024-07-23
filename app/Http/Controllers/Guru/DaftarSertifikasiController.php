@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Pdf\CustomPdf;
+use TCPDF;
 
 use App\Models\Admin\PeriodeModel;
 use App\Models\Admin\PesertaKegiatan;
 use App\Models\Admin\PesertaSertifikasiModel;
+use App\Models\Admin\PenilaianSertifikasiModel;
+use App\Models\Admin\SurahModel;
 
 class DaftarSertifikasiController extends Controller
 {
@@ -132,4 +134,84 @@ class DaftarSertifikasiController extends Controller
             return response()->json(['error' => true, 'message' => 'Gagal Hapus Data: ' . $e->getMessage()]);
         }
     }
+
+    public function DetailNilaiPeserta($peserta){
+        $menu = 'sertifikasi';
+        $submenu= 'daftar-sertifikasi';
+        return view ('Guru/sertifikasi/peserta/detail_penilaian_sertifikasi',compact('menu','submenu','peserta'));
+    }
+
+    public function AjaxDataDetailPeserta($peserta){
+        $DataPeserta = PesertaSertifikasiModel::DataDetailPesertaSertifikasi($peserta);
+        $Nilai = PenilaianSertifikasiModel::DataDetailNilaiPesertaSertifikasi($peserta);
+        $DataSurah = SurahModel::get();
+        if ($DataPeserta ) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Ditemukan',
+                'nilai' => $Nilai,
+                'identitas' => $DataPeserta,
+                'surah' => $DataSurah,
+            ]);
+        }else{
+            return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
+        }
+    }
+
+    public function CetakSertifikatPdf($id) {
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(330.2, 215.9), true, 'UTF-8', false);
+    
+        // Set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetTitle('SERTIFIKAT');
+    
+        // Remove default header/footer
+        $pdf->setPrintHeader(false); // Disable default header
+        $pdf->setPrintFooter(false); // Disable default footer
+    
+        // Set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+    
+        // Set margins
+        $pdf->SetMargins(0, 0, 0, 0);
+        $pdf->SetHeaderMargin(0);
+        $pdf->SetFooterMargin(0);
+    
+        // Set auto page breaks
+        $pdf->SetAutoPageBreak(FALSE, 0);
+    
+        // Set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+    
+        // Set font
+        $pdf->SetFont('dejavusans', '', 14, '', true);
+    
+        // Add a page with F4 landscape size
+        $pdf->AddPage('L', array(330.2, 215.9));
+
+        // Set background image
+        $backgroundImagePath = public_path('assets/admin/img/avatars/dicoding.jpg');
+        $pdf->Image($backgroundImagePath, 0, 0, 330.2, 215.9, '', '', '', false, 300, '', false, false, 0);
+
+        $pdf->AddPage('L', array(330.2, 215.9));
+
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $identitas = PesertaSertifikasiModel::DataDetailPesertaSertifikasi($id);
+        $nilai = PenilaianSertifikasiModel::DataDetailNilaiPesertaSertifikasi($id);
+        $viewName = 'Guru/sertifikasi/peserta/cetak_penilaian' ;
+        $html = view($viewName, compact('nilai', 'identitas'));
+
+        
+        // Print text using writeHTMLCell()
+        $pdf->writeHTML($html, true, false, true, false, '');
+        // Output PDF
+        $pdf->Output('sertifikat.pdf', 'I');
+    }
+    
+    
+    
+    
 }
