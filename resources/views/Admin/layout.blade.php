@@ -159,6 +159,27 @@
                     </li>
 
                     <li class="sidebar-header">
+                        Rekap
+                    </li>
+                    <li class="sidebar-item {{ $menu == 'rekap' ? 'active' : null }}">
+                        <a data-bs-target="#ui-rekap" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-cog"></i> <span
+                                class="align-middle">Rekap</span>
+                        </a>
+                        <ul id="ui-rekap" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                            <li class="sidebar-item {{ $submenu == 'rekap-rapor' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/rekap/rapor') }}'>Rapor</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'rekap-sertifikasi' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/rekap/sertifikasi') }}'>Sertifikasi</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'rekap-kegiatan' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/rekap/sertifikasi') }}'>Kegiatan</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-header">
                         Seting
                     </li>
                     <li class="sidebar-item {{ $menu == 'seting' ? 'active' : null }}">

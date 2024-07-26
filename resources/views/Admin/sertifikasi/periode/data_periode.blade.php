@@ -135,7 +135,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Batal</button>
-                                            <button type="button" id="downloadPdf"
+                                            <button type="button" id="downloadPdf" 
                                                 class="btn btn-primary">Download PDF</button>
                                         </div>
                                 </div>
@@ -508,15 +508,16 @@
             var id = $(this).data('id');
             const loadingIndicator = $('#loading-indicator');
             const viewImage = $('#view-image');
-            // Open the edit modal and populate it with data
+            $('#downloadPdf').attr('data-id', id);
+
             $.ajax({
-                url: '{{ url('admin/periode/edit_periode') }}/' + id, // URL to fetch data for the selected row
+                url: '{{ url('admin/periode/edit_periode') }}/' + id, 
                 type: 'GET',
                 success: function(response) {
                     const imageUrl = '{{ asset('storage/sertifikat') }}/' +response.data.file_periode;
                     viewImage.attr('src', imageUrl).on('load', function() {
-                        loadingIndicator.hide(); // Hide loading indicator
-                        viewImage.show(); // Show the image
+                        loadingIndicator.hide();
+                        viewImage.show();
                     });
                     $('#viewSertifikat').modal('show');
                 },
@@ -528,6 +529,22 @@
                         icon: response.success ? 'success' : 'error',
                         confirmButtonText: 'OK'
                     });
+                }
+            });
+        });
+
+        // view download
+        $(document).on('click', '#downloadPdf', function() {
+            $('#ModalLabelUpload').text('Sertifkat');
+            var id = $(this).data('id');
+            $.ajax({
+                url: '{{ url('admin/periode_sertifikasi/test_sertifikat') }}/' + id, 
+                type: 'GET',
+                success: function(response) {
+                    $('#viewSertifikat').modal('hide');
+                },
+                error: function(response) {
+                    $('#formModal').modal('hide');
                 }
             });
         });

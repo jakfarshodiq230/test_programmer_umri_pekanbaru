@@ -11,6 +11,7 @@ use App\Models\Admin\PeriodeModel;
 use App\Models\Admin\TahunAjaranModel;
 use App\Models\Admin\RaporKegiatanModel;
 use App\Models\Admin\PesertaKegiatan;
+use TCPDF;
 class PeriodeSertifikasiController extends Controller
 {
     public function __construct()
@@ -230,6 +231,72 @@ class PeriodeSertifikasiController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => true, 'message' => 'Gagal: ' . $e->getMessage()]); // Tangani jika terjadi kesalahan dalam pencarian atau pembaruan
         }
+    }
+
+    public function TestSertifikat($id) {
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(330.2, 215.9), true, 'UTF-8', false);
+    
+        // Set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetTitle('SERTIFIKAT');
+    
+        // Remove default header/footer
+        $pdf->setPrintHeader(false); // Disable default header
+        $pdf->setPrintFooter(false); // Disable default footer
+    
+        // Set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+    
+        // Set margins
+        $pdf->SetMargins(0, 0, 0, 0);
+        $pdf->SetHeaderMargin(0);
+        $pdf->SetFooterMargin(0);
+    
+        // Set auto page breaks
+        $pdf->SetAutoPageBreak(FALSE, 0);
+    
+        // Set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+    
+        // Add a page with F4 landscape size
+        $pdf->AddPage('L', array(330.2, 215.9));
+
+        $identitas = PeriodeModel:: find($id);
+        $nama_sertif = $identitas->judul_periode.' ( Warna Tulisan Hitam )';
+        $juz_sertif = 'Telah Mengikuti Ujian Hafalan Juz'.$identitas->juz_periode.' ( Warna Tulisan Putih )';
+        $nilai_sertif = 'Dan Dinyatakan Lulus Dengan Predikat A ( Warna Tulisan Hitam ) ';
+        // Set background image
+        $backgroundImagePath = public_path('storage/sertifikat/' . $identitas->file_periode);
+        $pdf->Image($backgroundImagePath, 0, 0, 330.2, 215.9, '', '', '', false, 300, '', false, false, 0);
+
+        // Set font
+        $pdf->SetFont('times', '', 24, '', true);
+        // Set text color (optional)
+        $pdf->SetTextColor(0, 0, 0); // RGB value for black
+        // Add text to the PDF
+        $pdf->SetXY(0, 110); // Set position (X, Y)
+        $pdf->Cell(0, 0, $nama_sertif, 0, 1, 'C');
+
+        // Set text color to white
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->SetFont('times', '', 16, '', true);
+        $pdf->SetXY(0, 124); // Set position (X, Y)
+        $pdf->Cell(0, 0, $juz_sertif, 0, 1, 'C');
+
+        $pdf->SetTextColor(0, 0, 0); // RGB value for black
+        $pdf->SetXY(0, 135); // Set position (X, Y)
+        $pdf->Cell(0, 0, $nilai_sertif, 0, 1, 'C');
+
+        $pdf->AddPage('L', array(330.2, 215.9));
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        
+
+        $file_name = $nama_sertif.'.pdf';
+        // Output PDF
+        $pdf->Output($file_name, 'I');
     }
     
         

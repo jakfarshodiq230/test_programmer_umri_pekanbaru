@@ -49,6 +49,43 @@ class PenilaianSertifikasiModel extends Model
         return $data; // Return the result set
     }
 
+    public static function DataRenkNilaiPesertaSertifikasi($id)
+    {
+        // Build the initial query
+        $query = DB::table('penilaian_sertifikasi')
+            ->select(DB::raw('SUM(nilai_sertifikasi) as total_nilai, COUNT(*) as count'))
+            ->whereNull('deleted_at')
+            ->where('id_peserta_sertifikasi', $id);
+        
+        // Modify the query based on user level
+        if (session('user')['level_user'] === 'admin') {
+            $data = $query->first(); // Get a single result with SUM and COUNT
+        } else {
+            $data = $query->where('id_user', session('user')['id'])->first(); // Get a single result with SUM and COUNT with filter
+        }
+    
+        // Calculate average
+        $rata = ($data->total_nilai ?? 0) / ($data->count ?? 1); // Avoid division by zero
+    
+        // Determine grade based on average
+        if ($rata >= 94 && $rata <= 100) {
+            $ktr = "A";
+        } elseif ($rata >= 87 && $rata < 94) {
+            $ktr = "B";
+        } elseif ($rata >= 80 && $rata < 87) {
+            $ktr = "C";
+        } else {
+            $ktr = "D";
+        }
+    
+        // Return both the total score and the grade
+        return [
+            'total_nilai' => $data->total_nilai ?? 0,
+            'rata' => $rata,
+            'grade' => $ktr
+        ];
+    }
+    
     public static function EditNilaiPesertaSertifikasi($id)
     {
         $data = DB::table('penilaian_sertifikasi')

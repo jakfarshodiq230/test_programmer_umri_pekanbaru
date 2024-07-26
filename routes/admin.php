@@ -148,6 +148,7 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::delete('periode_sertifikasi/delete_periode_sertifikasi/{id}', 'deleteData');
         Route::put('periode_sertifikasi/status_periode_sertifikasi/{id}/{status}', 'statusData');
         Route::get('periode_sertifikasi/peserta_periode_sertifikasi/{tahun}/{rapor}/{periode}', 'PesertaRaport');
+        Route::get('periode_sertifikasi/test_sertifikat/{id}', 'TestSertifikat');
     });
 
     Route::prefix('admin')->controller(PesertaSertifikasiController::class)->group(function () {

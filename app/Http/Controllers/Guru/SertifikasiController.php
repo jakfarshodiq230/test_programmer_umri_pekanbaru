@@ -235,6 +235,8 @@ class SertifikasiController extends Controller
         $identitas = PesertaSertifikasiModel::DataDetailPesertaSertifikasi($id);
         $nilai = PenilaianSertifikasiModel::DataDetailNilaiPesertaSertifikasi($id);
         
+        
+
         $viewName = 'Guru/sertifikasi/penilaian/cetak_hasil_penilaian' ;
         $html = view($viewName, compact('nilai', 'identitas'));
 

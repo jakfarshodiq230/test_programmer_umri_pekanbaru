@@ -240,31 +240,53 @@ class PesertaSertifikasiController extends Controller
         // Set image scale factor
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
     
-        // Set font
-        $pdf->SetFont('dejavusans', '', 14, '', true);
-    
         // Add a page with F4 landscape size
         $pdf->AddPage('L', array(330.2, 215.9));
 
+        $identitas = PesertaSertifikasiModel::DataDetailPesertaSertifikasi($id);
+        $nilai = PenilaianSertifikasiModel::DataDetailNilaiPesertaSertifikasi($id);
+        $nilai_ktr = PenilaianSertifikasiModel::DataRenkNilaiPesertaSertifikasi($id);
+
+        $nama_sertif = strtoupper($identitas->nama_siswa);
+        $juz_sertif = 'Telah Mengikuti Ujian Hafalan '.$identitas->juz_periode.' Juz';
+        $nilai_sertif = 'Dan Dinyatakan Lulus Dengan Predikat '.$nilai_ktr['grade'];
         // Set background image
-        $backgroundImagePath = public_path('assets/admin/img/avatars/dicoding.jpg');
+        $backgroundImagePath = public_path('storage/sertifikat/' . $identitas->file_periode);
         $pdf->Image($backgroundImagePath, 0, 0, 330.2, 215.9, '', '', '', false, 300, '', false, false, 0);
 
-        $pdf->AddPage('L', array(330.2, 215.9));
+        // Set font
+        $pdf->SetFont('times', '', 24, '', true);
+        // Set text color (optional)
+        $pdf->SetTextColor(0, 0, 0); // RGB value for black
+        // Add text to the PDF
+        $pdf->SetXY(0, 110); // Set position (X, Y)
+        $pdf->Cell(0, 0, $nama_sertif, 0, 1, 'C');
 
+        // Set text color to white
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->SetFont('times', '', 16, '', true);
+        $pdf->SetXY(0, 124); // Set position (X, Y)
+        $pdf->Cell(0, 0, $juz_sertif, 0, 1, 'C');
+
+        $pdf->SetTextColor(0, 0, 0); // RGB value for black
+        $pdf->SetXY(0, 135); // Set position (X, Y)
+        $pdf->Cell(0, 0, $nilai_sertif, 0, 1, 'C');
+
+        $pdf->AddPage('L', array(330.2, 215.9));
         $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
         $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-        $identitas = PesertaSertifikasiModel::DataDetailPesertaSertifikasi($id);
-        $nilai = PenilaianSertifikasiModel::DataDetailNilaiPesertaSertifikasi($id);
+        
         $viewName = 'Guru/sertifikasi/peserta/cetak_penilaian' ;
         $html = view($viewName, compact('nilai', 'identitas'));
 
-        
         // Print text using writeHTMLCell()
         $pdf->writeHTML($html, true, false, true, false, '');
+        $file_name = $nama_sertif.'.pdf';
         // Output PDF
-        $pdf->Output('sertifikat.pdf', 'I');
+        $pdf->Output($file_name, 'I');
     }
+
+
 }
