@@ -66,7 +66,7 @@
                                         <span class="value text-start" id="jenjang" style="flex: 1;">Andi</span>
                                     </div>
                                     <div class="profile-item mb-3 d-flex justify-content-between">
-                                        <span class="label text-end" style="flex: 1;">Tanggal</span>
+                                        <span class="label text-end" style="flex: 1;">Tanggal Batas Penilaian</span>
                                         <span class="separator">:</span>
                                         <span class="value text-start" id="tanggal" style="flex: 1;">Andi</span>
                                     </div>
@@ -592,36 +592,62 @@
 
         //datatable
         $(document).ready(function() {
+            function formatIndoDate(dateString) {
+                if (!dateString) return ''; 
+
+                const date = new Date(dateString);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+                return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+            }
+            
+
             // identitas
             $.ajax({
                 url: '{{ url('guru/penilaian_rapor/ajax_list_peserta') }}/' + tahun + '/' + jenjang + '/' + periode,
                 type: 'GET',
                 success: function(data) {
+                    console.log(data);
                    // Ensure data.periode and its properties exist
                     var periode = data.periode || {};
                     var nama_tahun_ajaran = periode.nama_tahun_ajaran || '';
                     var jenis_kegiatan = periode.jenis_periode || '';
                     var jenis_periode = periode.jenis_periode || '';
                     var jenis_jenjang = periode.jenis_kegiatan || '';
-                    var tanggal = periode.tggl_periode || '';
+                    var tanggal = periode.tggl_akhir_penilaian || '';
+                    var formattedTanggal = formatIndoDate(tanggal);
 
                     // Update the HTML elements
                     $('#tahun_ajaran').text(capitalizeFirstLetter(nama_tahun_ajaran));
                     $('#rapor').text(capitalizeFirstLetter(jenis_kegiatan));
-                    $('#tanggal').text(capitalizeFirstLetter(tanggal));
+                    $('#tanggal').text(capitalizeFirstLetter(formattedTanggal));
                     $('#jenjang').text(capitalizeFirstLetter(jenis_jenjang));
 
-                    if (new Date(periode.tggl_akhir_penilaian) < new Date()) {
+                    if (periode.status_periode === 1) {
+                        if (new Date(periode.tggl_akhir_penilaian) < new Date()) {
+                            $('#addBtn').prop('disabled', true);
+                            $('.deleteBtn').prop('disabled', true);
+                            $('.editBtn').prop('disabled', true);
+                            $('#warning-penilaian')
+                            .text(capitalizeFirstLetter('Penilaian Sudah Berakhir'))
+                            .addClass('bg-danger fw-bold');
+                        } else {
+                            $('#warning-penilaian')
+                            .text(capitalizeFirstLetter('Penilaian Belum Berakhir'))
+                            .addClass('bg-success fw-bold');;
+                        }
+                        
+                    } else {
                         $('#addBtn').prop('disabled', true);
                         $('.deleteBtn').prop('disabled', true);
                         $('.editBtn').prop('disabled', true);
                         $('#warning-penilaian')
-                            .text(capitalizeFirstLetter('Penilaian Sudah Berakhir'))
-                            .addClass('bg-danger fw-bold');
-                    } else {
-                        $('#warning-penilaian')
-                            .text(capitalizeFirstLetter('Penilaian Belum Berakhir'))
-                            .addClass('bg-success fw-bold');;
+                            .text(capitalizeFirstLetter('Periode Sudah Berakhir'))
+                            .addClass('bg-danger fw-bold');;
                     }
 
 

@@ -69,11 +69,11 @@
                             <li class="sidebar-item {{ $submenu == 'home' ? 'active' : null }}"><a class='sidebar-link'
                                     href='{{ url('admin/dashboard') }}'>Default</a>
                             </li>
-                            <li class="sidebar-item {{ $submenu == 'statistik' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('home/statistik') }}'>Statistik</a>
+                            <li class="sidebar-item {{ $submenu == 'histori' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/dashboard/histori') }}'>Histori</a>
                             </li>
-                            <li class="sidebar-item {{ $submenu == 'log_akses' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('log_akses') }}'>Akses Login</a>
+                            <li class="sidebar-item {{ $submenu == 'log' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/dashboard/log') }}'>Akses Login</a>
                             </li>
                         </ul>
                     </li>
@@ -145,7 +145,7 @@
                     </li>
                     <li class="sidebar-item {{ $menu == 'ujian' ? 'active' : null }}">
                         <a data-bs-target="#ui-ujian" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-address-book"></i> <span
+                            <i class="align-middle me-2 fas fa-fw fa-id-card"></i> <span
                                 class="align-middle">Sertifikasi</span>
                         </a>
                         <ul id="ui-ujian" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">

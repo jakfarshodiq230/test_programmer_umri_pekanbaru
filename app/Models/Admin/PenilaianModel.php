@@ -118,6 +118,28 @@ class PenilaianModel extends Model
             ])
             ->first();
     }
+
+    public static function DataAjaxDashbort($peserta, $tahun, $jenjang) {
+        $query = DB::table('penilaian_kegiatan')
+            ->leftJoin('peserta_kegiatan', 'penilaian_kegiatan.id_peserta_kegiatan', '=', 'peserta_kegiatan.id_peserta_kegiatan')
+            ->leftJoin('surah as surah_awal', 'penilaian_kegiatan.surah_awal_penilaian_kegiatan', '=', 'surah_awal.nomor')
+            ->leftJoin('surah as surah_akhir', 'penilaian_kegiatan.surah_akhir_penilaian_kegiatan', '=', 'surah_akhir.nomor')
+            ->select(
+                'penilaian_kegiatan.*',
+                'surah_awal.namaLatin as nama_surah_awal', 
+                'surah_akhir.namaLatin as nama_surah_akhir'
+            )
+            ->whereNull('penilaian_kegiatan.deleted_at')
+            ->where('penilaian_kegiatan.jenis_penilaian_kegiatan', $jenjang)
+            ->where([
+                ['peserta_kegiatan.id_siswa', $peserta],
+                ['peserta_kegiatan.id_tahun_ajaran', $tahun]
+            ]);
+    
+        return $query->orderBy('penilaian_kegiatan.created_at', 'DESC')
+                     ->get();
+    }
+    
     
     
     

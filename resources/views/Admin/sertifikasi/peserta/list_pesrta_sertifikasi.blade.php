@@ -306,10 +306,8 @@
                             
                                 return `
                                 <button class="btn btn-sm btn-primary lihatBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
-                                data-id="${row.id_peserta_sertifikasi}" data-peserta="${row.id_siswa}" 
-                                data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" 
-                                data-periode="${row.id_periode}"><i class="fas fa-eye"></i></button>
-                                <button class="btn btn-sm btn-warning resetBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Reset Penguji Sertifikasi" 
+                                data-id="${row.id_peserta_sertifikasi}"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-sm btn-warning resetBtn me-1 ${ row.status_periode === 0 ? 'disabled' : ''}" data-bs-toggle="tooltip" data-bs-placement="top" title="Reset Penguji Sertifikasi" 
                                 data-id="${row.id_peserta_sertifikasi}" data-peserta="${row.id_siswa}" 
                                 data-tahun="${row.id_tahun_ajaran}" data-periode="${row.id_periode}"><i class="fas fa-history"></i></button>
                             `;
@@ -325,11 +323,7 @@
         // lihat data
         $(document).on('click', '.lihatBtn', function() {
             var id = $(this).data('id');
-            var peserta = $(this).data('peserta');
-            var tahun = $(this).data('tahun');
-            var rapor = $(this).data('rapor');
-            var periode = $(this).data('periode');
-            var url= '{{ url('admin/peserta_sertifikasi/detail_peserta') }}/' + id + '/'+ peserta + '/'+ tahun + '/' + rapor + '/' + periode;
+            var url= '{{ url('admin/peserta_sertifikasi/detail_peserta') }}/' + id;
             window.location.href = url;
         });
 

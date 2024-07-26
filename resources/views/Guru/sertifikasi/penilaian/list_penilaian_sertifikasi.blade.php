@@ -254,15 +254,19 @@
                     $('#tahun_ajaran').text(response.periode.nama_tahun_ajaran);
                     $('#sertifikasi').text(capitalizeFirstLetter(response.periode.jenis_periode.toUpperCase()));
                     $('#juz').text(response.periode.juz_periode);
-                    if (response.periode.tggl_akhir_penilaian < new Date()) {
-                        $('#addBtn').addClass('disabled');
-                        $('.deleteBtn').addClass('disabled');
-                        $('#penilaian').addClass('text-danger').text('TUTUP');
+                    if (response.periode.status_periode === 1) {
+                        if (response.periode.tggl_akhir_penilaian < new Date()) {
+                            $('#addBtn').addClass('disabled');
+                            $('#penilaian').addClass('text-danger').text('TUTUP');
+                        } else {
+                            $('#addBtn').addClass('disabled');
+                            $('#penilaian').addClass('text-danger').text('TAHAP PENDAFTARAN');
+                        }
                     } else {
                         $('#addBtn').removeClass('disabled');
-                        $('.deleteBtn').removeClass('disabled');
                         $('#penilaian').addClass('text-success').text('BUKA');
                     }
+                    
                 }
             });
 

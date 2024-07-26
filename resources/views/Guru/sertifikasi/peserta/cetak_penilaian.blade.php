@@ -1,7 +1,7 @@
 <br><br><br><br><br><br>
     <table cellpadding="0">
         <tr >
-            <td style="height: 40px;text-align:center;" width="100%"><b>HASIL UJIAN SERTIFIKASI JUZ {{strtoupper($identitas->juz_periode)}} <br> TAHUN PELAJARAN {{ $identitas->nama_tahun_ajaran}}</b></td>
+            <td style="height: 40px;text-align:center;" width="100%"><b>HASIL UJIAN SERTIFIKASI </b></td>
         </tr>
     </table>
 <br><br>
@@ -22,9 +22,9 @@
         </tr>
         <tr>
             <th width="15%" style="height: 20px;" >Pembimbing</th>
-            <th width="60%" style="height: 20px;" >: <b> {{ $identitas->nama_guru }}</b></th>
+            <th width="60%" style="height: 20px;" >: <b> {{ ucwords($identitas->nama_guru) }}</b></th>
             <th width="10%" style="height: 20px;" >Penguji</th>
-            <th width="40%" style="height: 20px;" >: <b> {{ $identitas->nama_tahun_ajaran}}</b></th>
+            <th width="40%" style="height: 20px;" >: <b> {{ ucwords($identitas->nama_penguji)}}</b></th>
         </tr>
     </table>
  </div>
@@ -71,10 +71,10 @@
         </tr>
         <?php 
                 endforeach; 
-                $total_ahir = $total / $identitas->sesi_periode;
+                $total_ahir = round($total / $identitas->sesi_periode);
         ?>
         <tr style="background-color:#d3d3d3;">
-            <td colspan="4" style="height: 30px; text-align:center; padding-top: 10px; ">Dengan INI Dinyatakan <strong>{{cekKelulusan($total_ahir)}}</strong> Sertifikasi Hafalan Juz {{ $identitas->juz_periode }}</td>
+            <td colspan="4" style="height: 30px; text-align:center; padding-top: 10px; ">Dengan Ini Dinyatakan <strong>{{cekKelulusan($total_ahir)}}</strong> Sertifikasi Hafalan Juz {{ $identitas->juz_periode }}</td>
             <td style="height: 30px; text-align:center; padding-top: 10px;"><strong>{{$total_ahir}}</strong></td>
             <td style="height: 30px; text-align:center; padding-top: 10px;"><strong>{{cekKelulusan($total_ahir)}}</strong></td>
         </tr>

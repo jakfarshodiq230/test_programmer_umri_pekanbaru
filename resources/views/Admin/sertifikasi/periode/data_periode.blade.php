@@ -128,7 +128,7 @@
                                             <div class="row">
                                                 <div class="col-12 col-lg-12">
                                                     <div id="loading-indicator" style="display:none;">Loading...</div>
-                                                    <img id="view-image" src="" alt="Dynamic Image" width="800" height="150" style="display:none;" />
+                                                    <img id="view-image" src="" alt="Dynamic Image" width="840" height="500" style="display:none;" />
                                                 </div>
                                             </div>
                                         </div>

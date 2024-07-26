@@ -268,8 +268,7 @@
                         name: 'nama_guru',
                         render: function(data, type, row) {
                             // Convert tempat_lahir_guru to start with uppercase letter
-                            var nama_guru = row.nama_guru.charAt(0)
-                                .toUpperCase() + row.nama_guru.slice(1);
+                            var nama_guru = row.nama_guru.charAt(0).toUpperCase() + row.nama_guru.slice(1);
 
                             // Return formatted string
                             return nama_guru;

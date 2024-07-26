@@ -149,12 +149,13 @@ class PesertaSertifikasiModel extends Model
 
     public static function DataDetailPesertaSertifikasi($id)
     {
-        $data = DB::table('peserta_sertifikasi')
+        $query = DB::table('peserta_sertifikasi')
             ->join('tahun_ajaran', 'peserta_sertifikasi.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
             ->join('periode', 'peserta_sertifikasi.id_periode', '=', 'periode.id_periode')
             ->join('siswa', 'peserta_sertifikasi.id_siswa', '=', 'siswa.id_siswa')
             ->join('kelas', 'peserta_sertifikasi.id_kelas', '=', 'kelas.id_kelas')
             ->join('guru', 'peserta_sertifikasi.id_guru', '=', 'guru.id_guru')
+            ->join('guru as guru_penguji', 'peserta_sertifikasi.id_guru', '=', 'guru_penguji.id_guru')
             ->select(
                 'periode.*',
                 'tahun_ajaran.*',
@@ -162,13 +163,17 @@ class PesertaSertifikasiModel extends Model
                 'kelas.*',
                 'guru.*',
                 'peserta_sertifikasi.*',
+                'guru_penguji.nama_guru as nama_penguji'
             )
             ->whereNull('periode.deleted_at')
             ->whereNull('peserta_sertifikasi.deleted_at')
-            ->where('peserta_sertifikasi.id_peserta_sertifikasi', $id)
-            ->where('id_penguji', session('user')['id'])
-            ->first();
-    
+            ->where('peserta_sertifikasi.id_peserta_sertifikasi', $id);
+            if(session('user')['level_user'] === 'admin') {
+                $data= $query->first();
+            } else {
+                $data= $query->where('id_penguji', session('user')['id'])
+                ->first();
+            }
         return $data; // Return the result set
     }
 

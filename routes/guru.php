@@ -11,6 +11,11 @@ Route::middleware('auth:guru')->group(function () {
 
     Route::prefix('guru/dashboard')->group(function () {
         Route::get('/', [DashboardControllerGuru::class, 'index'])->name('guru.home');
+        Route::get('/ajax_data_dashboard', [DashboardControllerGuru::class, 'AjaxData'])->name('guru.AjaxData');
+        Route::get('/statistik', [DashboardControllerGuru::class, 'statistik'])->name('guru.statistik');
+        Route::get('/ajax_statistik', [DashboardControllerGuru::class, 'AjaxStatistikTahun'])->name('guru.AjaxStatistikTahun');
+        Route::get('/ajax_statistik_peserta/{id}', [DashboardControllerGuru::class, 'AjaxStatistikPeserta'])->name('guru.AjaxStatistikPeserta');
+        Route::get('/ajax_data_statistik/{id}/{tahun}', [DashboardControllerGuru::class, 'AjaxDataStatistik'])->name('guru.AjaxDataStatistik');
     });
 
     Route::prefix('guru/penilaian_kegiatan')->group(function () {

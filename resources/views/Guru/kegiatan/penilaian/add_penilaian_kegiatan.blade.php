@@ -59,7 +59,7 @@
                                         <span class="label text-end" style="flex: 1;">Kegiatan</span>
                                         <span class="separator">:</span>
                                         <span class="value text-start" id="kegiatan" style="flex: 1;">
-                                            {{ $periode->jenis_periode == 'tahfidz' ? 'Tahfidz/Murajaah' : 'Tahsin/Materikulasi' }}</span>
+                                            {{ $periode->jenis_periode === 'tahfidz' ? 'Tahfidz/Murajaah' : 'Tahsin/Materikulasi' }}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-2 profile">
@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="col-md-4 profile">
                                     <div class="profile-item mb-3 d-flex justify-content-center">
-                                        <button class="btn btn-outline-primary addBtn me-2  text-end"
+                                        <button class="btn btn-outline-primary addBtn me-2  text-end {{ $periode->status_periode === 0 ? 'disabled' : '' }}"
                                             id="addBtn">Penilaian
                                         </button>
                                         <button class="btn btn-outline-warning text-start kirimBtn" id="kirimBtn">Kirim

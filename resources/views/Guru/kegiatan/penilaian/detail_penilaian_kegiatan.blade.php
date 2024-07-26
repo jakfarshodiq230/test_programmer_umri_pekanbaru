@@ -415,6 +415,159 @@
         $('#tahfidz_form').hide();
         $('#tahfidz_form_keterangan').hide();
         
+                // datatabel
+                $(document).ready(function() {
+            if (kegiatan === 'tahfidz') {
+                $('#tahfidz').show();
+                $('#datatables-ajax-tahfidz').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    retrieve: false,
+                    destroy: true,
+                    responsive: true,
+                    ajax: {
+                        url: "{{ url('guru/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
+                            id_tahun + "/" +
+                            id_periode + "/" +
+                            id_siswa + "/" +
+                            id_guru + "/" +
+                            id_kelas,
+                        dataSrc: 'nilai' // Specify the data source as 'nilai'
+                    },
+
+                    columns: [{
+                            "data": null,
+                            "name": "rowNumber",
+                            "render": function(data, type, row, meta) {
+                                return meta.row + 1;
+                            }
+                        },
+                        {
+                            data: 'jenis_penilaian_kegiatan',
+                            name: 'jenis_penilaian_kegiatan',
+                            render: function(data, type, row) {
+                                return row.jenis_penilaian_kegiatan.trim().toUpperCase()
+                            }
+                        },
+                        {
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+                                return 'SURAH AWAL : ' + row.namaLatin_awal.trim().toUpperCase() +
+                                    ' [ ' + row.ayat_awal_penilaian_kegiatan + ' ]<br>' +
+                                    'SURAH AKHIR : ' + row.namaLatin_akhir.trim().toUpperCase() +
+                                    ' [ ' + row.ayat_akhir_penilaian_kegiatan + ' ]';
+                            }
+                        },
+                        {
+                            data: 'nilai_tajwid_penilaian_kegiatan',
+                            name: 'nilai_tajwid_penilaian_kegiatan'
+                        },
+                        {
+                            data: 'nilai_fasohah_penilaian_kegiatan',
+                            name: 'nilai_fasohah_penilaian_kegiatan'
+                        },
+                        {
+                            data: 'nilai_kelancaran_penilaian_kegiatan',
+                            name: 'nilai_kelancaran_penilaian_kegiatan'
+                        },
+                        {
+                            data: 'keterangan_penilaian_kegiatan',
+                            name: 'keterangan_penilaian_kegiatan'
+                        },
+                        {
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+                                return `
+                                    <button class="btn btn-sm btn-info editBtn me-1 ${row.status_periode === 0 ? 'disabled' : ''} " data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
+                                    data-id_penialain="${row.id_penilaian_kegiatan}" ${row.status_periode === 0 ? 'disabled' : ''}>
+                                    <i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger deleteBtn me-1 ${row.status_periode === 0 ? 'disabled' : ''} " data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
+                                    data-id_penialain="${row.id_penilaian_kegiatan}" ${row.status_periode === 0 ? 'disabled' : ''}>
+                                    <i class="fas fa-trash"></i></button>
+                                    `;
+                            }
+                        }
+                    ]
+                });
+            } else {
+                $('#tahsin').show();
+                $('#datatables-ajax-tahsin').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    retrieve: false,
+                    destroy: true,
+                    responsive: true,
+                    ajax: {
+                        url: "{{ url('guru/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
+                            id_tahun + "/" +
+                            id_periode + "/" +
+                            id_siswa + "/" +
+                            id_guru + "/" +
+                            id_kelas,
+                        dataSrc: 'nilai' // Specify the data source as 'nilai'
+                    },
+
+                    columns: [{
+                            "data": null,
+                            "name": "rowNumber",
+                            "render": function(data, type, row, meta) {
+                                return meta.row + 1;
+                            }
+                        },
+                        {
+                            data: 'jenis_penilaian_kegiatan',
+                            name: 'jenis_penilaian_kegiatan',
+                            render: function(data, type, row) {
+                                return row.jenis_penilaian_kegiatan.trim().toUpperCase()
+                            }
+                        },
+                        {
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+                                return 'SURAH AWAL : ' + row.namaLatin_awal.trim().toUpperCase() +
+                                    ' [ ' + row.ayat_awal_penilaian_kegiatan + ' ]<br>' +
+                                    'SURAH AKHIR : ' + row.namaLatin_akhir.trim().toUpperCase() +
+                                    ' [ ' + row.ayat_akhir_penilaian_kegiatan + ' ]';
+                            }
+                        },
+                        {
+                            data: 'nilai_ghunnah_penilaian_kegiatan',
+                            name: 'nilai_ghunnah_penilaian_kegiatan'
+                        },
+                        {
+                            data: 'nilai_mad_penilaian_tahsin',
+                            name: 'nilai_mad_penilaian_tahsin'
+                        },
+                        {
+                            data: 'nilai_waqof_penilaian_tahsin',
+                            name: 'nilai_waqof_penilaian_tahsin'
+                        },
+                        {
+                            data: 'keterangan_penilaian_kegiatan',
+                            name: 'keterangan_penilaian_kegiatan'
+                        },
+                        {
+                            data: null,
+                            name: null,
+                            render: function(data, type, row) {
+                                return `
+                                    <button class="btn btn-sm btn-info editBtn me-1 ${row.status_periode === 0 ? 'disabled' : ''} " data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
+                                    data-id_penialain="${row.id_penilaian_kegiatan}">
+                                    <i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger deleteBtn me-1 ${row.status_periode === 0 ? 'disabled' : ''} "  data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
+                                    data-id_penialain="${row.id_penilaian_kegiatan}">
+                                    <i class="fas fa-trash"></i></button>
+                                    `;
+                            }
+                        }
+                    ]
+                });
+            }
+        });
+
         // surah
         $(document).ready(function() {
             // profil
@@ -447,6 +600,9 @@
                     function capitalizeFirstLetter(string) {
                         return string.charAt(0).toUpperCase() + string.slice(1);
                     }
+
+                    
+
 
                 },
                 error: function(response) {
@@ -542,158 +698,7 @@
         $('#tahfidz').hide();
         $('#tahsin').hide();
 
-        // datatabel
-        $(document).ready(function() {
-            if (kegiatan === 'tahfidz') {
-                $('#tahfidz').show();
-                $('#datatables-ajax-tahfidz').DataTable({
-                    processing: true,
-                    serverSide: false,
-                    retrieve: false,
-                    destroy: true,
-                    responsive: true,
-                    ajax: {
-                        url: "{{ url('guru/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
-                            id_tahun + "/" +
-                            id_periode + "/" +
-                            id_siswa + "/" +
-                            id_guru + "/" +
-                            id_kelas,
-                        dataSrc: 'nilai' // Specify the data source as 'nilai'
-                    },
 
-                    columns: [{
-                            "data": null,
-                            "name": "rowNumber",
-                            "render": function(data, type, row, meta) {
-                                return meta.row + 1;
-                            }
-                        },
-                        {
-                            data: 'jenis_penilaian_kegiatan',
-                            name: 'jenis_penilaian_kegiatan',
-                            render: function(data, type, row) {
-                                return row.jenis_penilaian_kegiatan.trim().toUpperCase()
-                            }
-                        },
-                        {
-                            data: null,
-                            name: null,
-                            render: function(data, type, row) {
-                                return 'SURAH AWAL : ' + row.namaLatin_awal.trim().toUpperCase() +
-                                    ' [ ' + row.ayat_awal_penilaian_kegiatan + ' ]<br>' +
-                                    'SURAH AKHIR : ' + row.namaLatin_akhir.trim().toUpperCase() +
-                                    ' [ ' + row.ayat_akhir_penilaian_kegiatan + ' ]';
-                            }
-                        },
-                        {
-                            data: 'nilai_tajwid_penilaian_kegiatan',
-                            name: 'nilai_tajwid_penilaian_kegiatan'
-                        },
-                        {
-                            data: 'nilai_fasohah_penilaian_kegiatan',
-                            name: 'nilai_fasohah_penilaian_kegiatan'
-                        },
-                        {
-                            data: 'nilai_kelancaran_penilaian_kegiatan',
-                            name: 'nilai_kelancaran_penilaian_kegiatan'
-                        },
-                        {
-                            data: 'keterangan_penilaian_kegiatan',
-                            name: 'keterangan_penilaian_kegiatan'
-                        },
-                        {
-                            data: null,
-                            name: null,
-                            render: function(data, type, row) {
-                                return `
-                                    <button class="btn btn-sm btn-info editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
-                                    data-id_penialain="${row.id_penilaian_kegiatan}" ${row.status_periode === 0 ? 'disabled' : ''}>
-                                    <i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
-                                    data-id_penialain="${row.id_penilaian_kegiatan}" ${row.status_periode === 0 ? 'disabled' : ''}>
-                                    <i class="fas fa-trash"></i></button>
-                                    `;
-                            }
-                        }
-                    ]
-                });
-            } else {
-                $('#tahsin').show();
-                $('#datatables-ajax-tahsin').DataTable({
-                    processing: true,
-                    serverSide: false,
-                    retrieve: false,
-                    destroy: true,
-                    responsive: true,
-                    ajax: {
-                        url: "{{ url('guru/penilaian_kegiatan/data_penilaian_kegiatan_all') }}/" +
-                            id_tahun + "/" +
-                            id_periode + "/" +
-                            id_siswa + "/" +
-                            id_guru + "/" +
-                            id_kelas,
-                        dataSrc: 'nilai' // Specify the data source as 'nilai'
-                    },
-
-                    columns: [{
-                            "data": null,
-                            "name": "rowNumber",
-                            "render": function(data, type, row, meta) {
-                                return meta.row + 1;
-                            }
-                        },
-                        {
-                            data: 'jenis_penilaian_kegiatan',
-                            name: 'jenis_penilaian_kegiatan',
-                            render: function(data, type, row) {
-                                return row.jenis_penilaian_kegiatan.trim().toUpperCase()
-                            }
-                        },
-                        {
-                            data: null,
-                            name: null,
-                            render: function(data, type, row) {
-                                return 'SURAH AWAL : ' + row.namaLatin_awal.trim().toUpperCase() +
-                                    ' [ ' + row.ayat_awal_penilaian_kegiatan + ' ]<br>' +
-                                    'SURAH AKHIR : ' + row.namaLatin_akhir.trim().toUpperCase() +
-                                    ' [ ' + row.ayat_akhir_penilaian_kegiatan + ' ]';
-                            }
-                        },
-                        {
-                            data: 'nilai_ghunnah_penilaian_kegiatan',
-                            name: 'nilai_ghunnah_penilaian_kegiatan'
-                        },
-                        {
-                            data: 'nilai_mad_penilaian_tahsin',
-                            name: 'nilai_mad_penilaian_tahsin'
-                        },
-                        {
-                            data: 'nilai_waqof_penilaian_tahsin',
-                            name: 'nilai_waqof_penilaian_tahsin'
-                        },
-                        {
-                            data: 'keterangan_penilaian_kegiatan',
-                            name: 'keterangan_penilaian_kegiatan'
-                        },
-                        {
-                            data: null,
-                            name: null,
-                            render: function(data, type, row) {
-                                return `
-                                    <button class="btn btn-sm btn-info editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
-                                    data-id_penialain="${row.id_penilaian_kegiatan}">
-                                    <i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Data" 
-                                    data-id_penialain="${row.id_penilaian_kegiatan}">
-                                    <i class="fas fa-trash"></i></button>
-                                    `;
-                            }
-                        }
-                    ]
-                });
-            }
-        });
 
         // delete 
         $(document).on('click', '.deleteBtn', function() {

@@ -54,7 +54,10 @@
                         </a>
                         <ul id="main" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
                             <li class="sidebar-item {{ $submenu == 'home' ? 'active' : null }}"><a class='sidebar-link'
-                                    href='{{ url('home') }}'>Default</a>
+                                    href='{{ url('guru/dashboard') }}'>Default</a>
+                            </li>
+                            <li class="sidebar-item {{ $submenu == 'statistik' ? 'active' : null }}"><a class='sidebar-link'
+                                    href='{{ url('guru/dashboard/statistik') }}'>History</a>
                             </li>
                         </ul>
                     </li>
@@ -93,7 +96,7 @@
                     </li>
                     <li class="sidebar-item {{ $menu == 'sertifikasi' ? 'active' : null }}">
                         <a data-bs-target="#ui-sertifikasi" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-address-book"></i> <span
+                            <i class="align-middle me-2 fas fa-fw fa-id-card"></i> <span
                                 class="align-middle">Sertifikasi</span>
                         </a>
                         <ul id="ui-sertifikasi" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
@@ -127,7 +130,7 @@
                             <a class="nav-link dropdown-toggle position-relative" href="#" id="userDropdown"
                                 data-bs-toggle="dropdown">
                                 <i class="align-middle fas fa-user"></i>
-                                okey
+                                {{ ucfirst(strtolower(session('user')['nama_user'])) }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" id="logoutBtn2"><i

@@ -30,7 +30,7 @@ class PenilaianSertifikasiModel extends Model
 
     public static function DataDetailNilaiPesertaSertifikasi($id)
     {
-        $data = DB::table('penilaian_sertifikasi')
+        $query = DB::table('penilaian_sertifikasi')
             ->leftjoin('surah as surahMulai', 'penilaian_sertifikasi.surah_mulai', '=', 'surahMulai.nomor')
             ->leftjoin('surah as surahAkhir', 'penilaian_sertifikasi.surah_akhir', '=', 'surahAkhir.nomor')
             ->select(
@@ -39,10 +39,13 @@ class PenilaianSertifikasiModel extends Model
                 'penilaian_sertifikasi.*',
             )
             ->whereNull('penilaian_sertifikasi.deleted_at')
-            ->where('penilaian_sertifikasi.id_peserta_sertifikasi', $id)
-            ->where('penilaian_sertifikasi.id_user', session('user')['id'])
-            ->get();
-    
+            ->where('penilaian_sertifikasi.id_peserta_sertifikasi', $id);
+            if(session('user')['level_user'] === 'admin') {
+                $data= $query->get();
+            } else {
+                $data= $query->where('penilaian_sertifikasi.id_user', session('user')['id'])
+                ->get();
+            }
         return $data; // Return the result set
     }
 
@@ -71,4 +74,42 @@ class PenilaianSertifikasiModel extends Model
     
         return $data; // Return the result set
     }
+
+    public static function DataSertifDashbord($peserta, $tahun)
+    {
+        // Start the query
+        $query = DB::table('penilaian_sertifikasi')
+            ->leftJoin('peserta_sertifikasi', 'penilaian_sertifikasi.id_peserta_sertifikasi', '=', 'peserta_sertifikasi.id_peserta_sertifikasi')
+            ->leftJoin('periode', 'peserta_sertifikasi.id_periode', '=', 'periode.id_periode')
+            ->leftJoin('surah as surahMulai', 'penilaian_sertifikasi.surah_mulai', '=', 'surahMulai.nomor')
+            ->leftJoin('surah as surahAkhir', 'penilaian_sertifikasi.surah_akhir', '=', 'surahAkhir.nomor')
+            ->select(
+                'surahMulai.namaLatin as SurahMulai',
+                'surahAkhir.namaLatin as SurahAkhir',
+                'periode.juz_periode',
+                'periode.judul_periode',
+                'periode.jenis_periode',
+                DB::raw('SUM(penilaian_sertifikasi.nilai_sertifikasi) / COUNT(penilaian_sertifikasi.id_peserta_sertifikasi) as total_nilai_sertifikasi')
+            )
+            ->whereNull('peserta_sertifikasi.deleted_at')
+            ->where([
+                ['peserta_sertifikasi.id_siswa', $peserta],
+                ['peserta_sertifikasi.id_tahun_ajaran', $tahun]
+            ]);
+    
+        // Add the additional condition if the user level is 'guru'
+        if (session('user')['level_user'] === 'guru') {
+            $query->where('peserta_sertifikasi.id_guru', session('user')['id']);
+        }
+    
+        // Group by statement
+        $query->groupBy('penilaian_sertifikasi.id_peserta_sertifikasi');
+    
+        // Execute the query and return the results
+        return $query->get();
+    }
+    
+    
+    
+    
 }

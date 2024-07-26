@@ -20,7 +20,14 @@ use App\Http\Controllers\Admin\DashboardController as DashboardControllerAdmin;
 Route::group(['middleware' => ['auth:users']], function () {
 
     Route::prefix('admin/dashboard')->group(function () {
-        Route::get('/', [DashboardControllerAdmin::class, 'index'])->name('users.home');
+        Route::get('/', [DashboardControllerAdmin::class, 'index'])->name('dashboard.home');
+        Route::get('/data_home_default', [DashboardControllerAdmin::class, 'AjaxDataPeriode'])->name('dashboard.AjaxDataPeriode');
+        Route::get('/log', [DashboardControllerAdmin::class, 'LogLogin'])->name('dashboard.LogLogin');
+        Route::get('/data_home_log', [DashboardControllerAdmin::class, 'AjaxDataLog'])->name('dashboard.AjaxDataLog');
+        Route::get('/histori', [DashboardControllerAdmin::class, 'Histori'])->name('dashboard.Histori');
+        Route::get('/ajax_histori', [DashboardControllerAdmin::class, 'AjaxHistoriTahun'])->name('dashboard.AjaxHistoriTahun');
+        Route::get('/ajax_histori_peserta/{id}', [DashboardControllerAdmin::class, 'AjaxHistoriPeserta'])->name('dashboard.AjaxHistoriPeserta');
+        Route::get('/ajax_data_histori/{id}/{tahun}', [DashboardControllerAdmin::class, 'AjaxDataHistori'])->name('dashboard.AjaxDataHistori');
     });
 
     Route::prefix('admin')->controller(SetingMailController::class)->group(function () {
@@ -150,8 +157,10 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::get('peserta_sertifikasi/ajax_list_peserta/{tahun}/{rapor}/{periode}', 'AjaxDataPesertaSertifikasi');
         Route::post('peserta_sertifikasi/ajax_store_peserta/', 'StoreData');
         Route::post('peserta_sertifikasi/ajax_reset_peserta/{id}/{peserta}/{tahun}/{periode}', 'ResetData');
-        // Route::get('peserta_sertifikasi/detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'DataDetailPeserta');
-        // Route::get('peserta_sertifikasi/ajax_detail_peserta/{id}/{peserta}/{tahun}/{rapor}/{periode}', 'AjaxDataDetailPesertaRapor');
+        Route::get('peserta_sertifikasi/detail_peserta/{id}', 'DataDetailPeserta');
+        Route::get('peserta_sertifikasi/ajax_detail_peserta/{id}', 'AjaxDataDetailPesertaSertif');
+        Route::get('peserta_sertifikasi/cetak_sertifikat/{id}','CetakSertifikat');
+        Route::get('peserta_sertifikasi/download_sertifikat/{id}','CetakSertifikatPdf');
         
     });
 

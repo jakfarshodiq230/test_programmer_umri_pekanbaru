@@ -49,7 +49,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body ">
-                            <div class="row border-navy">
+                            <div class="row border-navy mb-4">
                                 <div class="col-md-4 profile">
                                     <div class="profile-item mb-3 d-flex justify-content-between">
                                         <span class="label text-end" style="flex: 1;">Tahun Ajaran</span>
@@ -247,11 +247,97 @@
             return string.toUpperCase();
         }
 
+        // datatabel
+        $(document).ready(function() {
+            // menampilkan data
+            $('#datatables-ajax').DataTable({
+                processing: true,
+                serverSide: false,
+                retrieve: false,
+                destroy: true,
+                responsive: true,
+                ajax: {
+                    url: '{{ url('guru/penilaian_sertifikasi/ajax_detail_penilaian_peserta') }}/' + peserta,
+                    dataSrc:'nilai',
+                },
+                columns: [{
+                        "data": null,
+                        "name": "rowNumber",
+                        "render": function(data, type, row, meta) {
+                            return meta.row +
+                                1;
+                        }
+                    },
+                    {
+                        data: null,
+                        name: null,
+                        render: function(data, type, row, meta) {
+                                return 'SESI KE-' + (meta.row + 1);
+                        }
+                    },
+                    {
+                        data: 'SurahMulai',
+                        name: 'SurahMulai',
+                        render: function(data, type, row) {
+                            var surah_mulai = row.ayat_awal === 0 ? row.SurahMulai :  row.SurahMulai + ' [ ' + row.ayat_awal + ' ]';
+                            var surah_akhir = row.ayat_akhir === 0 ? row.SurahAkhir :  row.SurahAkhir + ' [ ' + row.ayat_akhir + ' ]';
+                            return surah_mulai + ' s/d ' + surah_akhir;
+                        }
+                    },
+                    {
+                        data: 'koreksi_sertifikasi',
+                        name: 'koreksi_sertifikasi',
+                    },
+                    {
+                        data: 'nilai_sertifikasi',
+                        name: 'nilai_sertifikasi',
+                        render: function(data, type, row) {
+                                return row.nilai_sertifikasi === null ? 0 : row.nilai_sertifikasi;
+                        }
+                    },
+                    {
+                        data: null,
+                        name: null,
+                        render: function(data, type, row) {
+                                return `
+                                    <button class="btn btn-sm btn-danger deleteBtn me-1 " id="deleteBTN" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Nilai Sertifikasi" 
+                                    data-id="${row.id_penilaian_sertifikasi}">
+                                    <i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-warning editBtn me-1" id="editBTN" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Nilai Sertifikasi" 
+                                    data-id="${row.id_penilaian_sertifikasi}">
+                                    <i class="fas fa-edit"></i></button>
+                                `;
+                        }
+                    },
+                ],
+                drawCallback: function(settings) {
+                    var api = this.api();
+                    var columnIndex = 4; // Index of the column for 'nilai_sertifikasi'
+
+                    var total = api.column(columnIndex).data().reduce(function(a, b) {
+                        return a + parseFloat(b);
+                    }, 0);
+
+                    var count = api.column(columnIndex).data().count();
+                    var average = count > 0 ? (total / count).toFixed(0) : 0;
+                    var nilai_ktr = average + ' (' + categorizeAverageScore(average) + ')';
+                    $('#average-column5').text(nilai_ktr);
+                    if (average < 65 && average > 0) {
+                        $('#download-button').addClass('disabled');
+                    } else {
+                        $('#download-button').removeClass('disabled');
+                    }
+                    
+                }
+            });
+        });
+
         function loadPeserta() {
             $.ajax({
                 url: '{{ url('guru/penilaian_sertifikasi/ajax_detail_penilaian_peserta') }}/' + peserta,
                 method: 'GET',
                 success: function(response) {
+
                     $('#tahun_ajaran').text(response.identitas.nama_tahun_ajaran);
                     $('#sertifikasi').text(capitalizeFirstLetter(response.identitas.jenis_periode.toUpperCase()));
                     $('#juz').text(response.identitas.juz_periode);
@@ -265,7 +351,18 @@
                         var fotoSiswaUrl = '{{ asset('assets/admin/img/avatars/avatar.jpg') }}'
                         $('#avatarImg').attr('src', fotoSiswaUrl);
                     }
+                    
                     $('.downloadBtn').attr('data-id', response.identitas.id_peserta_sertifikasi);
+
+                    if (response.identitas.status_periode === 1) {
+                        if (response.identitas.tggl_akhir_penilaian < new Date()) {
+                            $('#editBTN').removeClass('disabled');
+                        } else {
+                            $('#editBTN').addClass('disabled');
+                        }
+                    } else {
+                        $('#editBTN').addClass('disabled');
+                    }
                 }
             });
 
@@ -343,90 +440,7 @@
         }
         loadPeserta();
 
-        // datatabel
-        $(document).ready(function() {
-            // menampilkan data
-            $('#datatables-ajax').DataTable({
-                processing: true,
-                serverSide: false,
-                retrieve: false,
-                destroy: true,
-                responsive: true,
-                ajax: {
-                    url: '{{ url('guru/penilaian_sertifikasi/ajax_detail_penilaian_peserta') }}/' + peserta,
-                    dataSrc:'nilai',
-                },
-                columns: [{
-                        "data": null,
-                        "name": "rowNumber",
-                        "render": function(data, type, row, meta) {
-                            return meta.row +
-                                1;
-                        }
-                    },
-                    {
-                        data: null,
-                        name: null,
-                        render: function(data, type, row, meta) {
-                                return 'SESI KE-' + (meta.row + 1);
-                        }
-                    },
-                    {
-                        data: 'SurahMulai',
-                        name: 'SurahMulai',
-                        render: function(data, type, row) {
-                            var surah_mulai = row.ayat_awal === 0 ? row.SurahMulai :  row.SurahMulai + ' [ ' + row.ayat_awal + ' ]';
-                            var surah_akhir = row.ayat_akhir === 0 ? row.SurahAkhir :  row.SurahAkhir + ' [ ' + row.ayat_akhir + ' ]';
-                            return surah_mulai + ' s/d ' + surah_akhir;
-                        }
-                    },
-                    {
-                        data: 'koreksi_sertifikasi',
-                        name: 'koreksi_sertifikasi',
-                    },
-                    {
-                        data: 'nilai_sertifikasi',
-                        name: 'nilai_sertifikasi',
-                        render: function(data, type, row) {
-                                return row.nilai_sertifikasi === null ? 0 : row.nilai_sertifikasi;
-                        }
-                    },
-                    {
-                        data: null,
-                        name: null,
-                        render: function(data, type, row) {
-                                return `
-                                    <button class="btn btn-sm btn-danger deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Nilai Sertifikasi" 
-                                    data-id="${row.id_penilaian_sertifikasi}">
-                                    <i class="fas fa-trash"></i></button>
-                                    <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Nilai Sertifikasi" 
-                                    data-id="${row.id_penilaian_sertifikasi}">
-                                    <i class="fas fa-edit"></i></button>
-                                `;
-                        }
-                    },
-                ],
-                drawCallback: function(settings) {
-                    var api = this.api();
-                    var columnIndex = 4; // Index of the column for 'nilai_sertifikasi'
 
-                    var total = api.column(columnIndex).data().reduce(function(a, b) {
-                        return a + parseFloat(b);
-                    }, 0);
-
-                    var count = api.column(columnIndex).data().count();
-                    var average = count > 0 ? (total / count).toFixed(0) : 0;
-                    var nilai_ktr = average + ' (' + categorizeAverageScore(average) + ')';
-                    $('#average-column5').text(nilai_ktr);
-                    if (average < 65 && average > 0) {
-                        $('#download-button').addClass('disabled');
-                    } else {
-                        $('#download-button').removeClass('disabled');
-                    }
-                    
-                }
-            });
-        });
 
         // delete 
         $(document).on('click', '.deleteBtn', function() {

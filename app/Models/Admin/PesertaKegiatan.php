@@ -120,6 +120,7 @@ class PesertaKegiatan extends Model
         ->where('peserta_kegiatan.id_tahun_ajaran', $tahun)
         ->where('peserta_kegiatan.id_periode', $periode)
         ->where('peserta_kegiatan.id_guru', $guru)
+        ->where('peserta_kegiatan.status_peserta_kegiatan', 1)
         ->get();
         return $data; // Return the result set
     }
@@ -207,6 +208,7 @@ class PesertaKegiatan extends Model
             ->where('periode.judul_periode', 'setoran')
             ->where('periode.jenis_periode', $jenisRapor)
             ->where('tahun_ajaran.id_tahun_ajaran', $id_tahun_ajaran)
+            ->where('peserta_kegiatan.status_peserta_kegiatan', 1)
             ->whereBetween('penilaian_kegiatan.tanggal_penilaian_kegiatan', [$tglMulai, $tglAkhir]);
     
         $queryKeterangan = clone $queryBase;
@@ -349,14 +351,27 @@ class PesertaKegiatan extends Model
         return $data; // Return the result set
     }
 
+    public static function DataDashbordGuru($tahun, $guru)
+    {
+        $query = DB::table('peserta_kegiatan')
+            ->leftJoin('siswa', 'peserta_kegiatan.id_siswa', '=', 'siswa.id_siswa')
+            ->select(
+                'siswa.*'
+            )
+            ->where('peserta_kegiatan.id_tahun_ajaran', $tahun)
+            ->groupBy(
+                'siswa.id_siswa'
+            )
+            ->orderBy('siswa.nama_siswa', 'DESC');
     
+        if ($guru !== null) {
+            $query->where('peserta_kegiatan.id_guru', $guru);
+        }
     
+        $data = $query->get();
     
-    
-    
-    
-    
-    
+        return $data; // Return the result set
+    }
     
     
 }

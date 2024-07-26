@@ -106,6 +106,42 @@ class PeriodeModel extends Model
     
         return $data;
     }
-    
 
+    public static function PresentasePeriode()
+    {
+        $data = DB::table('periode')
+            ->leftJoin('peserta_kegiatan', 'periode.id_periode', '=', 'peserta_kegiatan.id_periode')
+            ->leftJoin('peserta_sertifikasi', 'periode.id_periode', '=', 'peserta_sertifikasi.id_periode')
+            ->leftJoin('tahun_ajaran', 'periode.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+            ->select(
+                'periode.judul_periode',
+                'periode.jenis_periode',
+                'periode.juz_periode',
+                'tahun_ajaran.nama_tahun_ajaran',
+                DB::raw('COUNT(DISTINCT peserta_kegiatan.id_siswa) as jumlah_siswa_setoran'),
+                DB::raw('COUNT(DISTINCT peserta_sertifikasi.id_siswa) as jumlah_siswa_sertifikasi'),
+            )
+            ->whereNull('periode.deleted_at')
+            ->where('periode.judul_periode', '!=', 'rapor')
+            ->groupBy(
+                'periode.id_periode',
+            )
+            ->get();
+            
+        return $data;
+    }
+
+    public static function Dashboard()
+    {
+        $data = DB::table('periode')
+            ->select('*')
+            ->whereNull('periode.deleted_at')
+            ->where('periode.judul_periode', '!=', 'setoran')
+            ->where('periode.status_periode', '=', 1)
+            ->orderBy('periode.tggl_akhir_penilaian','ASC')
+            ->get();
+            
+        return $data;
+    }
+    
 }

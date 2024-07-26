@@ -131,7 +131,7 @@
                                 return `
                                 <button class="btn btn-sm btn-primary pesertaBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Peserta Rapor" 
                                 data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" data-periode="${row.id_periode}"><i class="fas fa-users"></i></button>
-                                <button class="btn btn-sm btn-success syncBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Sinkronisasi Data Rapor" 
+                                <button class="btn btn-sm btn-success syncBtn me-1 ${row.status_periode === 0 ? 'disabled' : ''}" data-bs-toggle="tooltip" data-bs-placement="top" title="Sinkronisasi Data Rapor" 
                                 data-tahun="${row.id_tahun_ajaran}" data-rapor="${row.jenis_periode}" data-periode="${row.id_periode}"><i class="fas fa-sync"></i></button>
                             `;
                         }
