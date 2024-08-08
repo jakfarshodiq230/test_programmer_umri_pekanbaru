@@ -10,7 +10,7 @@
     <meta name="description" content="Modern, flexible and responsive Bootstrap 5 admin &amp; dashboard template">
     <meta name="author" content="Bootlab">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>MY TAHFIDZ</title>
+    <title>SIP-UKT</title>
     <style>
         body {
             opacity: 0;
@@ -30,29 +30,14 @@
     <div class="wrapper">
         <nav id="sidebar" class="sidebar">
             <a class='sidebar-brand' href='#'>
-                MY TAHFIDZ
+            SIP-UKT
             </a>
             <div class="sidebar-content">
                 <div class="sidebar-user">
                     <img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" class="img-fluid rounded-circle mb-2"
                         alt="Linda Miller" />
-                    <div class="fw-bold">{{ ucfirst(strtolower(session('user')['nama_user'])) }}</div>
-                    @php
-                        $levelUser = session('user')['user_level'];
-                    @endphp
-
-                    <small>
-                        @switch($levelUser)
-                            @case(1)
-                                Admin
-                                @break
-                            @case(2)
-                                Superadmin
-                                @break
-                            @default
-                                {{ ucfirst(strtolower($levelUser)) }}
-                        @endswitch
-                    </small>
+                    <div class="fw-bold">Jakfar Shodiq</div>
+                    Mahasiswa
                 </div>
 
                 <ul class="sidebar-nav">
@@ -69,12 +54,6 @@
                             <li class="sidebar-item {{ $submenu == 'home' ? 'active' : null }}"><a class='sidebar-link'
                                     href='{{ url('admin/dashboard') }}'>Default</a>
                             </li>
-                            <li class="sidebar-item {{ $submenu == 'histori' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/dashboard/histori') }}'>Histori</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'log' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/dashboard/log') }}'>Akses Login</a>
-                            </li>
                         </ul>
                     </li>
                     <li class="sidebar-header">
@@ -87,131 +66,14 @@
                         </a>
                         <ul id="ui" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
 
-                            <li class="sidebar-item {{ $submenu == 'siswa' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/siswa') }}'>Siswa</a>
+                            <li class="sidebar-item {{ $submenu == 'mahasiswa' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/mahasiswa') }}'>Mahasiswa</a>
                             </li>
-                            <li class="sidebar-item {{ $submenu == 'guru' ? 'active' : null }}"><a class='sidebar-link'
-                                    href='{{ url('admin/guru') }}'>Guru</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'tahun_ajaran' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/tahun_ajaran') }}'>Tahun Ajaran</a>
-                            <li class="sidebar-item {{ $submenu == 'kelas' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/kelas') }}'>Kelas</a>
+                            <li class="sidebar-item {{ $submenu == 'prodi' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/prodi') }}'>Prodi</a>
                             </li>
                         </ul>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Kegiatan
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'kegiatan' ? 'active' : null }}">
-                        <a data-bs-target="#ui-tahfidz" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-address-card"></i> <span
-                                class="align-middle">Kegiatan</span>
-                        </a>
-                        <ul id="ui-tahfidz" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'periode' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/periode') }}'>Periode</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'peserta' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/peserta') }}'>Peserta</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'penilaian' ? 'active' : null }}"><a
-                                class='sidebar-link' href='{{ url('admin/penilaian_kegiatan') }}'>Penilaian</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Rapor
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'rapor' ? 'active' : null }}">
-                        <a data-bs-target="#ui-rapor" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-address-book"></i> <span
-                                class="align-middle">Rapor</span>
-                        </a>
-                        <ul id="ui-rapor" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'periode-rapor' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/periode_rapor') }}'>Periode</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'peserta-rapor' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/peserta_rapor') }}'>Peserta</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Ujian
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'ujian' ? 'active' : null }}">
-                        <a data-bs-target="#ui-ujian" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-id-card"></i> <span
-                                class="align-middle">Sertifikasi</span>
-                        </a>
-                        <ul id="ui-ujian" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'periode-sertifikasi' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/periode_sertifikasi') }}'>Periode</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'peserta-sertifikasi' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/peserta_sertifikasi') }}'>Peserta</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Rekap
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'rekap' ? 'active' : null }}">
-                        <a data-bs-target="#ui-rekap" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-cog"></i> <span
-                                class="align-middle">Rekap</span>
-                        </a>
-                        <ul id="ui-rekap" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'rekap-rapor' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/rekap/rapor') }}'>Rapor</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'rekap-sertifikasi' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/rekap/sertifikasi') }}'>Sertifikasi</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'rekap-kegiatan' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/rekap/kegiatan') }}'>Kegiatan</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Seting
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'seting' ? 'active' : null }}">
-                        <a data-bs-target="#ui-seting" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-cog"></i> <span
-                                class="align-middle">Seting</span>
-                        </a>
-                        <ul id="ui-seting" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'kop' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/kop') }}'>Kop</a>
-                            </li>
-                            <li class="sidebar-item {{ $submenu == 'email' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/mail') }}'>Mail</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-header">
-                        Users
-                    </li>
-                    <li class="sidebar-item {{ $menu == 'user' ? 'active' : null }}">
-                        <a data-bs-target="#ui-user" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-users"></i> <span
-                                class="align-middle">Users</span>
-                        </a>
-                        <ul id="ui-user" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                            <li class="sidebar-item {{ $submenu == 'user' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/users') }}'>Users</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
+                    </li>            
 
                     <li class="sidebar-header">
                         Logout
@@ -235,7 +97,7 @@
                             <a class="nav-link dropdown-toggle position-relative" href="#" id="userDropdown"
                                 data-bs-toggle="dropdown">
                                 <i class="align-middle fas fa-user"></i>
-                                {{ ucfirst(session('user')['nama_user']) }}
+                                Jakfar Shodiq
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" id="logoutBtn2">
@@ -317,7 +179,7 @@
         $(document).ready(function() {
             $('#logoutBtn, #logoutBtn2').on('click', function() {
                 $.ajax({
-                    url: '{{ url('logout/users') }}',
+                    url: '{{ url('logout') }}',
                     type: 'GET',
                     data: {
                         _token: "{{ csrf_token() }}"

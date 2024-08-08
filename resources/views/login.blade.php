@@ -9,7 +9,7 @@
     <meta name="description" content="APKIS merupakan sistem manajemen sederhana dalam memajemen pemebelian, penjualan dan pengeluaran pengepul sawit untuk UKM menengah ke bawah">
     <meta name="author" content="Bootlab">
 
-    <title>MY TAHFIDZ</title>
+    <title>SIP-UKT</title>
     <style>
         body {
             opacity: 0;
@@ -52,7 +52,7 @@
                                             class="img-fluid rounded-circle" width="100" height="100" />
                                     </div>
                                     <div class="text-center mt-2">
-                                        <h1 class="h2">MY TAHFIDZ</h1>
+                                        <h1 class="h2">SIP-UKT</h1>
                                         <p class="lead">
                                             SILAHKAN MASUKAN USERNAME & PASSWORD
                                         </p>

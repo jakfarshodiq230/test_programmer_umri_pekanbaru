@@ -5,9 +5,9 @@
 
         <div class="header">
             <h1 class="header-title">
-                Selamat Datang {{ ucfirst(strtolower(session('user')['nama_user'])) }},  Di MY TAHFIDZ.
+                Selamat Datang Di Sistem SIP-UKT.
             </h1>
-            <p class="header-subtitle">MY TAHFIDZ merupakan sistem informasi dan manajemen Tahsin, Tahfidz dan Sertifikasi Al-Qur'an.</p>
+            <p class="header-subtitle">SIP-UKT merupakan sistem informasi dan manajemen pembayaran uang kuliah tunggal (UKT). </p>
         </div>
 
         <div class="row">
@@ -198,94 +198,5 @@
         </div>
     </div>
 </main>
-@endsection
-
-@section('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $.ajax({
-            url: '{{ url('admin/dashboard/data_home_default') }}',
-            type: 'GET',
-            success: function(response) {
-                console.log(response);
-                // Populate the modal fields with the data
-                $('#peserta').text(response.peserta);
-                $('#guru').text(response.guru);
-                $('#tahsin').text(response.tahsin);
-                $('#tahfidz').text(response.tahfidz);
-                $('#sertifikasi').text(response.sertifikasi);
-                $('#periode').text(response.periode);
-                $('#tahun_ajaran').text(response.tahun);
-                $('#kelas').text(response.kelas);
-            },
-            error: function(response) {
-                alert('error request');
-            }
-        });
-    });
-    $(document).ready(function() {
-    // Initialize DataTable
-        $('#datatables-ajax').DataTable({
-            processing: true,
-            serverSide: false, // Change this to true if using server-side processing
-            retrieve: true,
-            destroy: true,
-            responsive: true,
-            ajax: {
-                url: '{{ url('admin/dashboard/data_home_default') }}',
-                dataSrc: 'PresentaseSetoran',
-            },
-            columns: [
-                {
-                    data: 'nama_tahun_ajaran',
-                    title: 'Periode',
-                    render: function(data, type, row, meta) {
-                        var judulPeriode = row.judul_periode.toUpperCase(); 
-                        var jenisPeriode = row.jenis_periode.toUpperCase();
-                        var namaTahunAjaran = row.nama_tahun_ajaran;
-
-                        // Return formatted string based on the value of judul_periode
-                        return row.judul_periode === 'setoran' ? jenisPeriode + ' [ ' + namaTahunAjaran + ' ]' : judulPeriode + ' ' + row.juz_periode + ' [ ' + namaTahunAjaran + ' ' + jenisPeriode + ' ]';
-                    }
-                },
-                {
-                    data: null,
-                    title: 'Peserta',
-                    className: 'text-center',
-                    render: function(data, type, row, meta) {
-                        var percentage = 0;
-                        if (row.judul_periode === 'sertifikasi') {
-                            percentage = row.jumlah_siswa_sertifikasi;
-                        } else if (row.judul_periode === "setoran") {
-                            percentage = row.jumlah_siswa_setoran ;
-                        }
-
-                        return percentage;
-                    }
-                },
-                {
-                    data: null,
-                    title: '% Peserta',
-                    className: 'd-none d-xl-table-cell w-75',
-                    render: function(data, type, row, meta) {
-                        var percentage = 0;
-                        var total = 100; 
-                        if (row.judul_periode === 'sertifikasi') {
-                            percentage = (row.jumlah_siswa_sertifikasi / total) * 100;
-                        } else if (row.judul_periode === "setoran") {
-                            percentage = (row.jumlah_siswa_setoran / total) * 100;
-                        }
-
-                        return '<div class="progress">' +
-                            '<div class="progress-bar bg-primary-dark" role="progressbar" style="width: ' + percentage + '%;" aria-valuenow="' + percentage + '"' +
-                            ' aria-valuemin="0" aria-valuemax="100">' + Math.round(percentage) + '%</div>' +
-                            '</div>';
-                    }
-                }
-            ]
-        });
-    });
-
-</script>
 @endsection
 

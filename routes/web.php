@@ -17,12 +17,11 @@ use App\Http\Controllers\LoginController;
 
 // Import routes siswa dan guru
 require __DIR__.'/admin.php';
-require __DIR__.'/guru.php';
 
 Route::controller(LoginController::class)->group(function () {
     Route::get('/', 'index')->name('login')->middleware('guest');
     Route::post('/cek_login', 'authenticate')->name("cek_login");
-    Route::get('/logout/{guard}', 'logout')->name('logout')->middleware('auth:guru,users');
+    Route::get('/logout', 'logout')->name('logout')->middleware('auth:mahasiswa');
 });
 
 

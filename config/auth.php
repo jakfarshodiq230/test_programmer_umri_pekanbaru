@@ -44,17 +44,9 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
-        'users' => [
+        'mahasiswa' => [
             'driver' => 'session',
-            'provider' => 'users',
-        ],
-        'guru' => [
-            'driver' => 'session',
-            'provider' => 'gurus',
-        ],
-        'siswa' => [
-            'driver' => 'session',
-            'provider' => 'siswas',
+            'provider' => 'mahasiswa',
         ],
     ],
 
@@ -80,15 +72,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        'gurus' => [
+        'mahasiswa' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Admin\GuruModel::class,
-        ],
-
-        'siswas' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Admin\SiswaModel::class,
+            'model' => App\Models\Admin\MahasiswaModel::class,
         ],
 
         // 'users' => [

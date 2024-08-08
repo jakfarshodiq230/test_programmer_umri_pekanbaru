@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="header">
                 <h1 class="header-title">
-                    Data Mahamahasiswa
+                    Data Jenis Pembayaran
                 </h1>
             </div>
             <div class="row">
@@ -22,30 +22,24 @@
                             <table id="datatables-ajax" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>NIM</th>
-                                        <th>Nama</th>
-                                        <th>Tempat/Tanggal Lahir</th>
-                                        <th>Jenis Kelamin</th>
+                                        <th>ID</th>
+                                        <th>Jenis Pembayaran</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th>#</th>
-                                        <th>NIM</th>
-                                        <th>Nama</th>
-                                        <th>Tempat/Tanggal Lahir</th>
-                                        <th>Jenis Kelamin</th>
+                                        <th>ID</th>
+                                        <th>Jenis Pembayaran</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
-                        {{-- add atau edit mahasiswa --}}
+                        {{-- add atau edit jenis_pembayaran --}}
                         <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true"
                             data-bs-keyboard="false" data-bs-backdrop="static">
-                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <form method="POST" id="dataForm" enctype="multipart/form-data">
                                         @csrf
@@ -56,43 +50,16 @@
                                         </div>
                                         <div class="modal-body m-3">
                                             <div class="row">
-                                                <div class="col-6 col-lg-6">
+                                                <div class="col-12 col-lg-12">
                                                     <div class="mb-3">
-                                                        <label>NIM</label>
-                                                        <input type="text" name="nim_mhs" id="nim_mhs"
-                                                            class="form-control" onkeypress="return hanyaAngka(event)"
-                                                            placeholder="Nomor Induk Mahasiswa" readonly>
-                                                            <div id="nim_mhs-error" class="invalid-feedback"></div>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>Nama</label>
-                                                        <input type="text" name="nama_mhs" id="nama_mhs" class="form-control"
-                                                            placeholder="Nama" required>
-                                                            <div id="nama_mhs-error" class="invalid-feedback"></div>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>Tanggal Lahir</label>
-                                                        <input type="date" name="tanggal_lahir"
-                                                            id="tanggal_lahir" class="form-control"
-                                                            placeholder="Tanggal Lahir" >
-                                                            <div id="tanggal_lahir-error" class="invalid-feedback"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 col-lg-6" >
-                                                    <div class="mb-3" id="view_pass">
-                                                        <label>Password</label>
-                                                        <input type="password" name="password" id="password" class="form-control"
-                                                            placeholder="Password"
-                                                            required>
-                                                            <div id="password-error" class="invalid-feedback"></div>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>Prodi</label>
-                                                        <select class="form-control select2 mb-4 me-sm-2 mt-0"
-                                                            name="id_program_studi" id="id_program_studi" data-bs-toggle="select2" required>
-                                                            <option value="PILIH">PILIH</option>
-                                                        </select>
-                                                            <div id="id_program_studi-error" class="invalid-feedback"></div>
+                                                        <label>Program Studi</label>
+                                                        <input type="text" name="nama_pembayaran" id="nama_pembayaran"
+                                                            class="form-control"
+                                                            placeholder="Nama Pembayaran">
+                                                        <input type="text" name="id_nama_pembayaran" id="id_nama_pembayaran"
+                                                            class="form-control"
+                                                            placeholder="ID Pembayaran" hidden>
+                                                            <div id="nama_jenis_pembayaran-error" class="invalid-feedback"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,7 +74,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- end atau edit mahasiswa --}}
+                        {{-- end atau edit jenis_pembayaran --}}
 
                     </div>
                 </div>
@@ -119,34 +86,6 @@
     <!-- Your other content -->
     <script>
         $('#dataForm')[0].reset();
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-        function populateDropdownsProdi(selectedId) {
-            $.ajax({
-                url: '{{ url('admin/mahasiswa/data_mahasiswa') }}',
-                type: 'GET',
-                success: function(response) {
-
-                    var select = $('select[name="id_program_studi"]');
-                    select.empty().append('<option value="">PILIH</option>');
-
-                    $.each(response.prodi, function(key, value) {
-                        select.append('<option value="' + value.id + '">' + 
-                            value.nama_prodi.trim().toUpperCase() + 
-                            '</option>');
-                    });
-
-                    if (selectedId) {
-                        select.val(selectedId);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error: ' + status + error);
-                }
-            });
-        }
-        populateDropdownsProdi();
         $(document).ready(function() {
             // menampilkan data
             $('#datatables-ajax').DataTable({
@@ -155,52 +94,22 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('admin/mahasiswa/data_mahasiswa') }}',
-                columns: [{
-                        data: null,
-                        name: null,
-                        render: function(data, type, row) {
-                            return `<img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" width="42" height="42" class="rounded-circle my-n1 border border-success border-3" alt="Avatar">`;
-                        }
+                ajax: '{{ url('admin/jenis_pembayaran/data_jenis_pembayaran') }}',
+                columns: [
+                    {
+                        data: 'id',
+                        name: 'id',
                     },
                     {
-                        data: 'nim_mhs',
-                        name: 'nim_mhs',
-                    },
-                    {
-                        data: 'nama_mhs',
-                        name: 'nama_mhs',
+                        data: 'nama_jenis_pembayaran',
+                        name: 'nama_jenis_pembayaran',
                         render: function(data, type, row) {
-                            // Convert tempat_lahir_mahasiswa to start with uppercase letter
-                            var nama_mahasiswa = row.nama_mhs.charAt(0)
-                                .toUpperCase() + row.nama_mhs.slice(1);
+                            // Convert tempat_lahir_jenis_pembayaran to start with uppercase letter
+                            var nama_jenis_pembayaran = row.nama_jenis_pembayaran.charAt(0)
+                                .toUpperCase() + row.nama_jenis_pembayaran.slice(1);
 
                             // Return formatted string
-                            return nama_mahasiswa;
-                        }
-                    },
-                    {
-                        data: 'tanggal_lahir',
-                        name: 'tanggal_lahir',
-                        render: function(data, type, row) {
-                            // Convert tempat_lahir_mahasiswa to start with uppercase letter
-                            var tanggal_lahir = new Date(row.tanggal_lahir);
-                            var options = { day: 'numeric', month: 'long', year: 'numeric' };
-                            var tanggal_formatted = tanggal_lahir.toLocaleDateString('id-ID', options);
-
-                            // Return formatted string
-                            return tanggal_formatted;
-                        }
-
-
-                    },
-                    {
-                        data: null,
-                        name: null,
-                        render: function(data, type, row) {
-                            var nama_prodi = row.nama_prodi.charAt(0)
-                                .toUpperCase() + row.nama_prodi.slice(1);
-                            return nama_prodi;
+                            return nama_jenis_pembayaran;
                         }
                     },
                     {
@@ -208,9 +117,9 @@
                         name: null,
                         render: function(data, type, row) {
                             return `
-                                <button class="btn btn-sm btn-success updateBtn1 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.nim_mhs}"><i class="fas fa-power-off"></i></button>
-                                <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.nim_mhs}"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.nim_mhs}"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-sm btn-success updateBtn1 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.id}"><i class="fas fa-power-off"></i></button>
+                                <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id}"><i class="fas fa-trash"></i></button>
                             `;
                         }
                     },
@@ -220,26 +129,22 @@
 
         // Add Button
         $('#addBtn').on('click', function() {
-            $('#ModalLabel').text('Tambah mahasiswa');
+            $('#ModalLabel').text('Tambah jenis_pembayaran');
             $('#dataForm')[0].reset();
             $('#formModal').modal('show');
         });
 
         // editData
         $(document).on('click', '.editBtn', function() {
-            $('#ModalLabel').text('Edit mahasiswa');
+            $('#ModalLabel').text('Edit jenis_pembayaran');
             var id = $(this).data('id');
             $.ajax({
-                url: '{{ url('admin/mahasiswa/edit_mahasiswa') }}/' + id, 
+                url: '{{ url('admin/jenis_pembayaran/edit_jenis_pembayaran') }}/' + id, 
                 type: 'GET',
                 success: function(data) {
                     $('#view_pass').hide();
-                    
-                    $('#formModal input[name="id_nim_mhs"]').val(data.data.id_nim_mhs);
-                    $('#formModal input[name="nim_mhs"]').val(data.data.nim_mhs);
-                    $('#formModal input[name="nama_mhs"]').val(data.data.nama_mhs);
-                    $('#formModal input[name="tanggal_lahir"]').val(data.data.tanggal_lahir);
-                    populateDropdownsProdi(data.data.id_program_studi);
+                    $('#formModal input[name="id_jenis_pembayaran"]').val(data.data.id);
+                    $('#formModal input[name="nama_jenis_pembayaran"]').val(data.data.nama_jenis_pembayaran);
                     $('#formModal').modal('show');
                 },
                 error: function(response) {
@@ -256,11 +161,11 @@
 
         // save dan update data
         $('#saveBtn').on('click', function() {
-            var id = $('#nim_mhs').val();
-            var url = '{{ url('admin/mahasiswa/store_mahasiswa') }}';
+            var id = $('#id_jenis_pembayaran').val();
+            var url = '{{ url('admin/jenis_pembayaran/store_jenis_pembayaran') }}';
 
             if (id) {
-                url = '{{ url('admin/mahasiswa/update_mahasiswa') }}/' + id;
+                url = '{{ url('admin/jenis_pembayaran/update_jenis_pembayaran') }}/' + id;
             }
             
             var form = $('#dataForm')[0];
@@ -330,7 +235,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('admin/mahasiswa/delete_mahasiswa') }}/' +
+                        url: '{{ url('admin/jenis_pembayaran/delete_jenis_pembayaran') }}/' +
                             id, // URL to delete data for the selected row
                         type: 'DELETE',
                         data: {
