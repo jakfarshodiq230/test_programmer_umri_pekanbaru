@@ -36,7 +36,7 @@
                                 </tfoot>
                             </table>
                         </div>
-                        {{-- add atau edit jenis_pembayaran --}}
+                        {{-- add atau edit jenis --}}
                         <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true"
                             data-bs-keyboard="false" data-bs-backdrop="static">
                             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
@@ -52,14 +52,14 @@
                                             <div class="row">
                                                 <div class="col-12 col-lg-12">
                                                     <div class="mb-3">
-                                                        <label>Program Studi</label>
+                                                        <label>Nama Jenis Pembayaran</label>
                                                         <input type="text" name="nama_pembayaran" id="nama_pembayaran"
                                                             class="form-control"
                                                             placeholder="Nama Pembayaran">
                                                         <input type="text" name="id_nama_pembayaran" id="id_nama_pembayaran"
                                                             class="form-control"
                                                             placeholder="ID Pembayaran" hidden>
-                                                            <div id="nama_jenis_pembayaran-error" class="invalid-feedback"></div>
+                                                            <div id="nama_jenis-error" class="invalid-feedback"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,7 +74,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- end atau edit jenis_pembayaran --}}
+                        {{-- end atau edit jenis --}}
 
                     </div>
                 </div>
@@ -94,22 +94,22 @@
                 retrieve: false,
                 destroy: true,
                 responsive: true,
-                ajax: '{{ url('admin/jenis_pembayaran/data_jenis_pembayaran') }}',
+                ajax: '{{ url('admin/jenis/data_jenis') }}',
                 columns: [
                     {
                         data: 'id',
                         name: 'id',
                     },
                     {
-                        data: 'nama_jenis_pembayaran',
-                        name: 'nama_jenis_pembayaran',
+                        data: 'nama_pembayaran',
+                        name: 'nama_pembayaran',
                         render: function(data, type, row) {
-                            // Convert tempat_lahir_jenis_pembayaran to start with uppercase letter
-                            var nama_jenis_pembayaran = row.nama_jenis_pembayaran.charAt(0)
-                                .toUpperCase() + row.nama_jenis_pembayaran.slice(1);
+                            // Convert tempat_lahir_jenis to start with uppercase letter
+                            var nama_jenis = row.nama_pembayaran.charAt(0)
+                                .toUpperCase() + row.nama_pembayaran.slice(1);
 
                             // Return formatted string
-                            return nama_jenis_pembayaran;
+                            return nama_jenis;
                         }
                     },
                     {
@@ -117,7 +117,6 @@
                         name: null,
                         render: function(data, type, row) {
                             return `
-                                <button class="btn btn-sm btn-success updateBtn1 me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status Aktif" data-id="${row.id}"><i class="fas fa-power-off"></i></button>
                                 <button class="btn btn-sm btn-warning editBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data" data-id="${row.id}"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-sm btn-secondary deleteBtn me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" data-id="${row.id}"><i class="fas fa-trash"></i></button>
                             `;
@@ -129,22 +128,22 @@
 
         // Add Button
         $('#addBtn').on('click', function() {
-            $('#ModalLabel').text('Tambah jenis_pembayaran');
+            $('#ModalLabel').text('Tambah jenis');
             $('#dataForm')[0].reset();
             $('#formModal').modal('show');
         });
 
         // editData
         $(document).on('click', '.editBtn', function() {
-            $('#ModalLabel').text('Edit jenis_pembayaran');
+            $('#ModalLabel').text('Edit jenis');
             var id = $(this).data('id');
             $.ajax({
-                url: '{{ url('admin/jenis_pembayaran/edit_jenis_pembayaran') }}/' + id, 
+                url: '{{ url('admin/jenis/edit_jenis') }}/' + id, 
                 type: 'GET',
                 success: function(data) {
                     $('#view_pass').hide();
-                    $('#formModal input[name="id_jenis_pembayaran"]').val(data.data.id);
-                    $('#formModal input[name="nama_jenis_pembayaran"]').val(data.data.nama_jenis_pembayaran);
+                    $('#formModal input[name="id_nama_pembayaran"]').val(data.data.id);
+                    $('#formModal input[name="nama_pembayaran"]').val(data.data.nama_pembayaran);
                     $('#formModal').modal('show');
                 },
                 error: function(response) {
@@ -161,11 +160,11 @@
 
         // save dan update data
         $('#saveBtn').on('click', function() {
-            var id = $('#id_jenis_pembayaran').val();
-            var url = '{{ url('admin/jenis_pembayaran/store_jenis_pembayaran') }}';
+            var id = $('#id_nama_pembayaran').val();
+            var url = '{{ url('admin/jenis/store_jenis') }}';
 
             if (id) {
-                url = '{{ url('admin/jenis_pembayaran/update_jenis_pembayaran') }}/' + id;
+                url = '{{ url('admin/jenis/update_jenis') }}/' + id;
             }
             
             var form = $('#dataForm')[0];
@@ -235,7 +234,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ url('admin/jenis_pembayaran/delete_jenis_pembayaran') }}/' +
+                        url: '{{ url('admin/jenis/delete_jenis') }}/' +
                             id, // URL to delete data for the selected row
                         type: 'DELETE',
                         data: {

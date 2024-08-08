@@ -47,11 +47,11 @@ class JenisPembayaranController extends Controller
         try {
             // Validate incoming request data
             $validatedData = $request->validate([
-                'nama_prodi' => 'required|string|max:255|unique:mtr_prodi,nama_prodi',
+                'nama_pembayaran' => 'required|string|max:255|unique:jenis_bayar,nama_pembayaran',
             ]);
 
             $data = [
-                'nama_prodi' => $validatedData['nama_prodi'],
+                'nama_pembayaran' => $validatedData['nama_pembayaran'],
             ];
 
     
@@ -77,7 +77,7 @@ class JenisPembayaranController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nama_prodi' => 'required|string|max:255|unique:mtr_prodi,nama_prodi',
+                'nama_pembayaran' => 'required|string|max:255|unique:jenis_bayar,nama_pembayaran',
             ]);
 
             $prodiCek = JenisBayarModel::where('id',$request->id)->first();
@@ -85,7 +85,7 @@ class JenisPembayaranController extends Controller
                 return response()->json(['error' => true, 'message' => 'Data Tidak Ditemukan']);
             }
             $data = [
-                'nama_prodi' => $validatedData['nama_prodi'],
+                'nama_pembayaran' => $validatedData['nama_pembayaran'],
             ];
             // Update data into database
             $prodi = JenisBayarModel::where('id',$request->id)->update($data);

@@ -3,6 +3,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MahasiswaController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProdiController;
+use App\Http\Controllers\Admin\JenisPembayaranController;
+
 Route::group(['middleware' => ['auth:mahasiswa']], function () {
 
 
@@ -22,6 +24,15 @@ Route::group(['middleware' => ['auth:mahasiswa']], function () {
         Route::post('prodi/store_prodi', 'storeData');
         Route::post('prodi/update_prodi/{id}', 'updateData');
         Route::delete('prodi/delete_prodi/{id}', 'deleteData');
+    });
+
+    Route::prefix('admin')->controller(JenisPembayaranController::class)->group(function () {
+        Route::get('jenis', 'index');
+        Route::get('jenis/data_jenis', 'AjaxData');
+        Route::get('jenis/edit_jenis/{id}', 'editData');
+        Route::post('jenis/store_jenis', 'storeData');
+        Route::post('jenis/update_jenis/{id}', 'updateData');
+        Route::delete('jenis/delete_jenis/{id}', 'deleteData');
     });
 
     Route::prefix('admin')->controller(DashboardController::class)->group(function () {

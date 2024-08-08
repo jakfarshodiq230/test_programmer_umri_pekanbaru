@@ -72,6 +72,9 @@
                             <li class="sidebar-item {{ $submenu == 'prodi' ? 'active' : null }}"><a
                                     class='sidebar-link' href='{{ url('admin/prodi') }}'>Prodi</a>
                             </li>
+                            <li class="sidebar-item {{ $submenu == 'jenis' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/jenis') }}'>Jenis</a>
+                            </li>
                         </ul>
                     </li>            
 
