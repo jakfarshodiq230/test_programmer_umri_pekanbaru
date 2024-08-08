@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SetingMailController;
 use App\Http\Controllers\Admin\PeriodeSertifikasiController;
 use App\Http\Controllers\Admin\PesertaSertifikasiController;
+use App\Http\Controllers\Admin\RekapController;
 use App\Http\Controllers\Admin\DashboardController as DashboardControllerAdmin;
 
 
@@ -185,6 +186,21 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::get('/', [SetingMailController::class, 'index'])->name('admin.mail.index');
         Route::post('/ajax_update_mail/{id}', [SetingMailController::class, 'AjaxUpdateData'])->name('admin.mail.AjaxUpdateData');
         Route::post('/ajax_test_mail/{email}', [SetingMailController::class, 'AjaxTesEmail'])->name('admin.mail.AjaxTesEmail');
+    });
+
+    Route::prefix('admin')->group(function () {
+        Route::get('rekap/rapor', [RekapController::class, 'index'])->name('admin.rekap-rapor.index');
+        Route::get('rekap/rapor/periode', [RekapController::class, 'periode'])->name('admin.rekap-rapor.periode');
+        Route::get('rekap/rapor/download/{IdPeriode}/{IdKelas}', [RekapController::class, 'cetakExcel'])->name('admin.rekap-rapor.cetakExcel');
+
+        Route::get('rekap/kegiatan', [RekapController::class, 'kegiatan'])->name('admin.rekap-kegiatan.kegiatan');
+        Route::get('rekap/kegiatan/periode_kegiatan', [RekapController::class, 'PeriodeKegiatan'])->name('admin.rekap-kegiatan.PeriodeKegiatan');
+        Route::get('rekap/kegiatan/siswa_kegiatan/{IdPeriode}/{IdKelas}', [RekapController::class, 'SiswaKegiatan'])->name('admin.rekap-kegiatan.SiswaKegiatan');
+        Route::get('rekap/kegiatan/download/{IdPeriode}/{IdKelas}/{idSiswa}', [RekapController::class, 'cetakExcelKegiatan'])->name('admin.rekap-kegiatan.cetakExcelKegiatan');
+
+        Route::get('rekap/sertifikasi', [RekapController::class, 'sertifikasi'])->name('admin.rekap-sertifikasi.sertifikasi');
+        Route::get('rekap/sertifikasi/periode_sertifikasi', [RekapController::class, 'PeriodeSertifikasi'])->name('admin.rekap-sertifikasi.PeriodeSertifikasi');
+        Route::get('rekap/sertifikasi/download/{IdPeriode}', [RekapController::class, 'cetakExcelsertifikasi'])->name('admin.rekap-sertifikasi.cetakExcelsertifikasi');
     });
 
 });

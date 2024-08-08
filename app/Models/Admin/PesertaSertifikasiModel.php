@@ -177,6 +177,37 @@ class PesertaSertifikasiModel extends Model
         return $data; // Return the result set
     }
 
+    public static function dataExcel($idPeriode) {
+        $data = DB::table('peserta_sertifikasi')
+            ->join('siswa', 'peserta_sertifikasi.id_siswa', '=', 'siswa.id_siswa')
+            ->join('kelas', 'peserta_sertifikasi.id_kelas', '=', 'kelas.id_kelas')
+            ->join('guru as pembimbing', 'peserta_sertifikasi.id_guru', '=', 'pembimbing.id_guru')
+            ->join('guru as penguji', 'peserta_sertifikasi.id_penguji', '=', 'penguji.id_guru')
+            ->join('periode', 'peserta_sertifikasi.id_periode', '=', 'periode.id_periode')
+            ->join('tahun_ajaran', 'peserta_sertifikasi.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+            ->leftJoin('penilaian_sertifikasi', 'peserta_sertifikasi.id_peserta_sertifikasi', '=', 'penilaian_sertifikasi.id_peserta_sertifikasi')
+            ->leftJoin('surah as surah_mulai', 'penilaian_sertifikasi.surah_mulai', '=', 'surah_mulai.nomor')
+            ->leftJoin('surah as surah_akhir', 'penilaian_sertifikasi.surah_akhir', '=', 'surah_akhir.nomor')
+            ->select(
+                'tahun_ajaran.nama_tahun_ajaran', // periode
+                'siswa.nama_siswa', // nama
+                'kelas.nama_kelas', // kelas
+                'pembimbing.nama_guru', // pembimbing
+                'penguji.nama_guru', // penguji
+                'periode.jenis_periode', // sertifikasi
+                DB::raw('CONCAT(surah_mulai.namaLatin, "[", IFNULL(penilaian_sertifikasi.ayat_awal, ""), "] s/d ", IFNULL(surah_akhir.namaLatin, ""), "[", IFNULL(penilaian_sertifikasi.ayat_akhir, ""), "]") as surah'),
+                'penilaian_sertifikasi.nilai_sertifikasi', // nilai
+                'penilaian_sertifikasi.koreksi_sertifikasi' // keterangan
+            )
+            ->whereNull('peserta_sertifikasi.deleted_at')
+            ->whereNull('siswa.deleted_at')
+            ->where('peserta_sertifikasi.id_periode', $idPeriode)
+            ->get();
+    
+        return $data; // Return the result set
+    }
+    
+
 
     
 

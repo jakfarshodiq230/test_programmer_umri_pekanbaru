@@ -174,7 +174,7 @@
                                     class='sidebar-link' href='{{ url('admin/rekap/sertifikasi') }}'>Sertifikasi</a>
                             </li>
                             <li class="sidebar-item {{ $submenu == 'rekap-kegiatan' ? 'active' : null }}"><a
-                                    class='sidebar-link' href='{{ url('admin/rekap/sertifikasi') }}'>Kegiatan</a>
+                                    class='sidebar-link' href='{{ url('admin/rekap/kegiatan') }}'>Kegiatan</a>
                             </li>
                         </ul>
                     </li>

@@ -372,6 +372,27 @@ class PesertaKegiatan extends Model
     
         return $data; // Return the result set
     }
+
+    public static function PesertaExcel($idPeriode,$IdKelas)  {
+        $data = DB::table('peserta_kegiatan')
+        ->join('siswa', 'peserta_kegiatan.id_siswa', '=', 'siswa.id_siswa')
+        ->join('kelas', 'peserta_kegiatan.id_kelas', '=', 'kelas.id_kelas')
+        ->select(
+            'siswa.id_siswa',
+            'siswa.nama_siswa',
+            'siswa.nisn_siswa',
+            'kelas.id_kelas',
+            'kelas.nama_kelas',
+            'peserta_kegiatan.id_peserta_kegiatan',
+        )
+        ->whereNull('peserta_kegiatan.deleted_at')
+        ->whereNull('siswa.deleted_at')
+        ->where('peserta_kegiatan.id_kelas', $IdKelas)
+        ->where('peserta_kegiatan.id_periode', $idPeriode)
+        ->where('peserta_kegiatan.status_peserta_kegiatan', 1)
+        ->get();
+        return $data; // Return the result set
+    }
     
     
 }

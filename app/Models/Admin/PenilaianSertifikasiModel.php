@@ -145,6 +145,8 @@ class PenilaianSertifikasiModel extends Model
         // Execute the query and return the results
         return $query->get();
     }
+
+
     
     
     

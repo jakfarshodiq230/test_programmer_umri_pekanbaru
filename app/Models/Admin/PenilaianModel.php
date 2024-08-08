@@ -139,6 +139,45 @@ class PenilaianModel extends Model
         return $query->orderBy('penilaian_kegiatan.created_at', 'DESC')
                      ->get();
     }
+
+    public static function dataExcel($idPeriode, $IdKelas, $idSiswa)  {
+        
+        $data = DB::table('peserta_kegiatan')
+        ->join('siswa', 'peserta_kegiatan.id_siswa', '=', 'siswa.id_siswa')
+        ->join('kelas', 'peserta_kegiatan.id_kelas', '=', 'kelas.id_kelas')
+        ->join('guru', 'peserta_kegiatan.id_guru', '=', 'guru.id_guru')
+        ->join('periode', 'peserta_kegiatan.id_periode', '=', 'periode.id_periode')
+        ->join('tahun_ajaran', 'peserta_kegiatan.id_tahun_ajaran', '=', 'tahun_ajaran.id_tahun_ajaran')
+        ->leftjoin('penilaian_kegiatan', 'peserta_kegiatan.id_peserta_kegiatan', '=', 'penilaian_kegiatan.id_peserta_kegiatan')
+        ->select(
+            'tahun_ajaran.nama_tahun_ajaran', //periode
+            'siswa.nama_siswa', // nama
+            'kelas.nama_kelas', // kelas
+            'guru.nama_guru', //pembimbing
+            'penilaian_kegiatan.jenis_penilaian_kegiatan', //rapor
+            'penilaian_kegiatan.surah_awal_penilaian_kegiatan', // hafalan baru
+            'penilaian_kegiatan.ayat_awal_penilaian_kegiatan', // hafalan lama
+            'penilaian_kegiatan.surah_akhir_penilaian_kegiatan',  // nilai tajwid baru
+            'penilaian_kegiatan.ayat_akhir_penilaian_kegiatan', // Nilai Fasohah Baru
+            'penilaian_kegiatan.nilai_tajwid_penilaian_kegiatan', // Nilai Kelancaran Baru
+            'penilaian_kegiatan.nilai_fasohah_penilaian_kegiatan', // Nilai Gunnah Baru
+            'penilaian_kegiatan.nilai_kelancaran_penilaian_kegiatan', // Nilai Mad Baru
+            'penilaian_kegiatan.nilai_ghunnah_penilaian_kegiatan', // Nilai Waqof Baru
+            'penilaian_kegiatan.nilai_mad_penilaian_tahsin', // Nilai Tajwid Lama
+            'penilaian_kegiatan.nilai_waqof_penilaian_tahsin', // Nilai Fasohah Lama
+            'penilaian_kegiatan.keterangan_penilaian_kegiatan', // Nilai Kelancaran Lama
+            'penilaian_kegiatan.tanggal_penilaian_kegiatan', // Nilai Gunnah Lama
+
+        )
+        ->whereNull('peserta_kegiatan.deleted_at')
+        ->whereNull('siswa.deleted_at')
+        ->where('peserta_kegiatan.id_periode', $idPeriode)
+        ->where('peserta_kegiatan.id_kelas', $IdKelas)
+        ->where('peserta_kegiatan.id_siswa', $idSiswa)
+        ->get();
+
+        return $data; // Return the result set
+    }
     
     
     
