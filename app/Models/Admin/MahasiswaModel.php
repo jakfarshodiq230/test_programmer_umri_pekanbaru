@@ -34,5 +34,21 @@ class MahasiswaModel extends Model
     
         return $data; // Return the result set
     }
+
+    public static function GetMahasiswaID($id)
+    {
+        $data = DB::table('mtr_mahasiswa')
+            ->leftJoin('mtr_prodi', 'mtr_mahasiswa.id_program_studi', '=', 'mtr_prodi.id')
+            ->select(
+                'mtr_mahasiswa.*',
+                'mtr_prodi.*',
+            )
+            ->whereNull('mtr_prodi.deleted_at')
+            ->whereNull('mtr_mahasiswa.deleted_at')
+            ->where('mtr_mahasiswa.nim_mhs', $id)
+            ->first();
+    
+        return $data; // Return the result set
+    }
      
 }

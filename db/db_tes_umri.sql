@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 08 Agu 2024 pada 05.21
+-- Waktu pembuatan: 08 Agu 2024 pada 23.24
 -- Versi server: 8.0.30
 -- Versi PHP: 8.1.10
 
@@ -32,11 +32,20 @@ CREATE TABLE `bayar` (
   `tanggal` datetime NOT NULL,
   `id_jenis_bayar` int NOT NULL,
   `id_mahasiswa` int NOT NULL,
-  `jumlah` tinyint(1) NOT NULL,
+  `jumlah` double NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `deleted_at` datetime NOT NULL
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data untuk tabel `bayar`
+--
+
+INSERT INTO `bayar` (`id`, `tanggal`, `id_jenis_bayar`, `id_mahasiswa`, `jumlah`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(3, '2024-08-09 00:00:00', 2, 153510357, 120000, '2024-08-09 05:54:54', '2024-08-09 06:14:45', '2024-08-09 06:14:45'),
+(4, '2024-08-09 00:00:00', 2, 153510357, 12000045, '2024-08-09 06:09:40', '2024-08-09 06:09:40', NULL),
+(5, '2024-08-09 00:00:00', 2, 153510357, 78999, '2024-08-09 06:13:53', '2024-08-09 06:14:27', NULL);
 
 -- --------------------------------------------------------
 
@@ -49,8 +58,16 @@ CREATE TABLE `jenis_bayar` (
   `nama_pembayaran` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `deleted_at` datetime NOT NULL
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data untuk tabel `jenis_bayar`
+--
+
+INSERT INTO `jenis_bayar` (`id`, `nama_pembayaran`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'SPP', '2024-08-08 17:45:17', '2024-08-08 17:45:17', NULL),
+(2, 'SPP 4', '2024-08-08 17:48:04', '2024-08-08 17:48:51', '2024-08-08 05:48:51');
 
 -- --------------------------------------------------------
 
@@ -135,6 +152,18 @@ ALTER TABLE `mtr_prodi`
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
+
+--
+-- AUTO_INCREMENT untuk tabel `bayar`
+--
+ALTER TABLE `bayar`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `jenis_bayar`
+--
+ALTER TABLE `jenis_bayar`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `mtr_prodi`

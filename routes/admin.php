@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\MahasiswaController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Admin\JenisPembayaranController;
-
+use App\Http\Controllers\Admin\PembayaranController;
 Route::group(['middleware' => ['auth:mahasiswa']], function () {
 
 
@@ -33,6 +33,16 @@ Route::group(['middleware' => ['auth:mahasiswa']], function () {
         Route::post('jenis/store_jenis', 'storeData');
         Route::post('jenis/update_jenis/{id}', 'updateData');
         Route::delete('jenis/delete_jenis/{id}', 'deleteData');
+    });
+
+    Route::prefix('admin')->controller(PembayaranController::class)->group(function () {
+        Route::get('pembayaran', 'index');
+        Route::get('pembayaran/data_pembayaran', 'AjaxData');
+        Route::get('pembayaran/data_mahasiswa_bayar/{id}', 'DataMahasiswaID');
+        Route::get('pembayaran/edit_pembayaran/{id}', 'editData');
+        Route::post('pembayaran/store_pembayaran', 'storeData');
+        Route::post('pembayaran/update_pembayaran/{id}', 'updateData');
+        Route::delete('pembayaran/delete_pembayaran/{id}', 'deleteData');
     });
 
     Route::prefix('admin')->controller(DashboardController::class)->group(function () {

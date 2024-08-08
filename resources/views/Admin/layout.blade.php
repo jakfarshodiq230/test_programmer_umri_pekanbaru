@@ -76,7 +76,37 @@
                                     class='sidebar-link' href='{{ url('admin/jenis') }}'>Jenis</a>
                             </li>
                         </ul>
-                    </li>            
+                    </li>  
+                    <li class="sidebar-header">
+                        Transaksi
+                    </li>
+                    <li class="sidebar-item {{ $menu == 'transaksi' ? 'active' : null }}">
+                        <a data-bs-target="#ui-transaksi" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                                class="align-middle">Transaksi</span>
+                        </a>
+                        <ul id="ui-transaksi" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+
+                            <li class="sidebar-item {{ $submenu == 'pembayaran' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/pembayaran') }}'>Pembayaran</a>
+                            </li>
+                        </ul>
+                    </li>      
+                    <li class="sidebar-header">
+                        Rekap
+                    </li>
+                    <li class="sidebar-item {{ $menu == 'rekap' ? 'active' : null }}">
+                        <a data-bs-target="#ui-rekap" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                                class="align-middle">Rekap</span>
+                        </a>
+                        <ul id="ui-rekap" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+
+                            <li class="sidebar-item {{ $submenu == 'rekap' ? 'active' : null }}"><a
+                                    class='sidebar-link' href='{{ url('admin/rekap') }}'>Pembayaran</a>
+                            </li>
+                        </ul>
+                    </li>              
 
                     <li class="sidebar-header">
                         Logout
