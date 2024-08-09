@@ -36,7 +36,7 @@
                                         <th>#</th>
                                         <th>NIM</th>
                                         <th>Nama</th>
-                                        <th>Tempat/Tanggal Lahir</th>
+                                        <th>Tempat</th>
                                         <th>Pembayaran</th>
                                         <th>Jumlah Bayar</th>
                                         <th>Action</th>

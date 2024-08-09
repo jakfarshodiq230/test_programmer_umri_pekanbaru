@@ -5,8 +5,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProdiController;
 use App\Http\Controllers\Admin\JenisPembayaranController;
 use App\Http\Controllers\Admin\PembayaranController;
-Route::group(['middleware' => ['auth:mahasiswa']], function () {
+use App\Http\Controllers\Admin\RekapPembayaranController;
 
+Route::group(['middleware' => ['auth:mahasiswa']], function () {
 
     Route::prefix('admin')->controller(MahasiswaController::class)->group(function () {
         Route::get('mahasiswa', 'index');
@@ -43,6 +44,12 @@ Route::group(['middleware' => ['auth:mahasiswa']], function () {
         Route::post('pembayaran/store_pembayaran', 'storeData');
         Route::post('pembayaran/update_pembayaran/{id}', 'updateData');
         Route::delete('pembayaran/delete_pembayaran/{id}', 'deleteData');
+    });
+
+    Route::prefix('admin')->controller(RekapPembayaranController::class)->group(function () {
+        Route::get('rekap', 'index');
+        Route::get('rekap/data_bayar/{awal}/{akhir}', 'AjaxData');
+        Route::get('rekap/download_excel/{awal}/{akhir}', 'ExportExcel');
     });
 
     Route::prefix('admin')->controller(DashboardController::class)->group(function () {
