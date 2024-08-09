@@ -1,4 +1,4 @@
-# Soal Tes Programmer
+# Buat Tabel
 
 Buat tabel mahasiswa
 Kolom :
@@ -10,14 +10,27 @@ Kolom :
 5. password
 
 Tabel prodi
-Kolom : 1. Id 2. Nama prodi
+Kolom :
+
+1. Id
+2. Nama prodi
 
 Tabel jenis_bayar
-Kolom : 1. id 2. nama_pembayaran
+Kolom :
+
+1. id
+2. nama_pembayaran
 
 Tabel bayar
-Kolom : 1. id 2. tanggal 3. id_jenis_bayar (relasi ke tabel jenis_bayar) 4. id_mahasiswa (relasi ke tabel mahasiswa) 5. jumlah
+Kolom :
 
-*buat login dengan tabel mahasiswa menggunakan nim & password
-*buat crud tabel prodi, mahasiswa, dan pembayaran
-\*Buat laporan data siswa, dan pembayaran siswa
+1. id
+2. tanggal
+3. id_jenis_bayar (relasi ke tabel jenis_bayar)
+4. id_mahasiswa (relasi ke tabel mahasiswa) 5. jumlah
+
+# Instruksi
+
+1. buat login dengan tabel mahasiswa menggunakan nim & password
+2. buat crud tabel prodi, mahasiswa, dan pembayaran
+3. Buat laporan data siswa, dan pembayaran siswa
