@@ -36,8 +36,10 @@
                 <div class="sidebar-user">
                     <img src="{{ asset('assets/admin/img/avatars/avatar.jpg') }}" class="img-fluid rounded-circle mb-2"
                         alt="Linda Miller" />
-                    <div class="fw-bold">Jakfar Shodiq</div>
-                    Mahasiswa
+                    <div class="fw-bold">{{ ucfirst(session('user')['nama_user']) }}
+                    </div>
+                    {{ ucfirst(session('user')['level_user']) }}
+
                 </div>
 
                 <ul class="sidebar-nav">
@@ -130,7 +132,7 @@
                             <a class="nav-link dropdown-toggle position-relative" href="#" id="userDropdown"
                                 data-bs-toggle="dropdown">
                                 <i class="align-middle fas fa-user"></i>
-                                Jakfar Shodiq
+                                {{ ucfirst(session('user')['nama_user']) }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" id="logoutBtn2">
@@ -149,7 +151,7 @@
                     <div class="row text-muted">
                         <div class="col-12 text-end">
                             <p class="mb-0">
-                                MY TAHFIDZ &copy; {{ date('Y') }}
+                                SIP-UKT &copy; {{ date('Y') }}
                             </p>
                         </div>
                     </div>

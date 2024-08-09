@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth:mahasiswa']], function () {
 
     Route::prefix('admin')->controller(DashboardController::class)->group(function () {
         Route::get('dashboard', 'index');
+        Route::get('dashboard/data_dashboard', 'AjaxData');
     });
 
 });

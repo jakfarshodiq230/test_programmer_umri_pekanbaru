@@ -27,8 +27,8 @@ class LoginController extends Controller
                 $user = Auth::guard('mahasiswa')->user();
                     $request->session()->regenerate();
                     $request->session()->put('user', [
-                        'id' => $user->id_guru,
-                        'nama_user' => $user->nama_siswa,
+                        'id' => $user->nim_mhs,
+                        'nama_user' => $user->nama_mhs,
                         'level_user' => 'mahasiswa',
                     ]);
                 return response()->json([
