@@ -68,7 +68,7 @@
                                                         <div id="nim_mhs-error" class="invalid-feedback"></div>
                                                         <input type="text" name="id_bayar"
                                                             id="id_bayar" class="form-control"
-                                                            placeholder="Tanggal ID" readonly>
+                                                            placeholder="Tanggal ID" hidden>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Tanggal Lahir</label>
