@@ -84,7 +84,7 @@
                     </li>
                     <li class="sidebar-item {{ $menu == 'transaksi' ? 'active' : null }}">
                         <a data-bs-target="#ui-transaksi" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                            <i class="align-middle me-2 fas fa-fw fa-boxes"></i> <span
                                 class="align-middle">Transaksi</span>
                         </a>
                         <ul id="ui-transaksi" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
@@ -99,7 +99,7 @@
                     </li>
                     <li class="sidebar-item {{ $menu == 'rekap' ? 'active' : null }}">
                         <a data-bs-target="#ui-rekap" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle me-2 fas fa-fw fa-database"></i> <span
+                            <i class="align-middle me-2 fas fa-fw fa-file-export"></i> <span
                                 class="align-middle">Rekap</span>
                         </a>
                         <ul id="ui-rekap" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
